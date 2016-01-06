@@ -1,0 +1,37 @@
+[
+    {
+        "username": "user1",
+        "firstname": "fn1",
+        "lastname": "ln1",
+        "email": "111@gmail.com",
+        "enabled": "Y"
+    },
+    {
+        "username": "user2",
+        "firstname": "fn2",
+        "lastname": "ln2",
+        "email": "222@gmail.com",
+        "enabled": "Y"
+    },
+    {
+        "username": "user2",
+        "firstname": "fn2",
+        "lastname": "ln2",
+        "email": "222@gmail.com",
+        "enabled": "Y"
+    },
+    {
+        "username": "user3",
+        "firstname": "fn3",
+        "lastname": "ln3",
+        "email": "333@gmail.com",
+        "enabled": "Y"
+    },
+    {
+        "username": "user4",
+        "firstname": "fn4",
+        "lastname": "ln4",
+        "email": "444@gmail.com",
+        "enabled": "Y"
+    }
+]
