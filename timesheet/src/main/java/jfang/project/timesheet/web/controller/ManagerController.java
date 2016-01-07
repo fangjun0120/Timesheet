@@ -44,8 +44,8 @@ public class ManagerController {
     	return "admin/users";
     }
     
-    @RequestMapping(value = "/employee/data", produces = "application/json")
     @ResponseBody
+    @RequestMapping(value = "/employee/data", produces = "application/json")
     public List<EmployeeResponseDto> getEmployeeData() {
         List<EmployeeResponseDto> list = new ArrayList<EmployeeResponseDto>();
         Manager manager = getCurrentManager();

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<title>Employee Timesheet</title>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.1/css/bootstrap-datepicker3.min.css" />
+	</head>
+    <body>
+		<div th:replace="fragments/header :: header"></div>
+		<div class="container">
+			<div class="row">
+			<div class="col-lg-12">
+				<!-- top dropdown, project selector -->
+				<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button"
+						id="project_dropdown" data-toggle="dropdown" aria-haspopup="true"
+						aria-expanded="true">
+						Project<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="project list"
+						id="project_list"></ul>
+				</div>
+				<div class="row">
+					<!-- left column, date picker -->
+					<div class="col-lg-3">
+						<div id="datepicker"></div>
+						<input type="hidden" id="my_hidden_input">
+					</div>
+					<!-- week sheet form table -->
+					<div class="col-lg-9">
+						<form>
+						<table class="table table-striped">
+							<colgroup>
+            					<col class="col-md-3">
+            					<col class="col-md-3">
+            					<col class="col-md-3">
+            					<col class="col-md-3">
+        					</colgroup>
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Hours</th>
+									<th>Minutes</th>
+									<th>Total Hours</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><p id="sun_date"></p></td>
+									<td><input class="form-control" id="sun_hour"
+										type="number" min="0" max="24" step="1" value="0"/></td>
+									<td><input class="form-control" id="sun_min"
+										type="number" min="0" max="60" step="1" value="0"/></td>
+									<td><p id="sun_total"></p></td>
+								</tr>
+								<tr>
+									<td><p id="mon_date"></p></td>
+									<td><input class="form-control" id="mon_hour"
+										type="number" min="0" max="24" step="1" value="0"/></td>
+									<td><input class="form-control" id="mon_min"
+										type="number" min="0" max="60" step="1" value="0"/></td>
+									<td><p id="mon_total"></p></td>
+								</tr>
+								<tr>
+									<td><p id="tue_date"></p></td>
+									<td><input class="form-control" id="tue_hour"
+										type="number" min="0" max="24" step="1" value="0"/></td>
+									<td><input class="form-control" id="tue_min"
+										type="number" min="0" max="60" step="1" value="0"/></td>
+									<td><p id="tue_total"></p></td>
+								</tr>
+								<tr>
+									<td><p id="wed_date"></p></td>
+									<td><input class="form-control" id="wed_hour"
+										type="number" min="0" max="24" step="1" value="0"/></td>
+									<td><input class="form-control" id="wed_min"
+										type="number" min="0" max="60" step="1" value="0"/></td>
+									<td><p id="wed_total"></p></td>
+								</tr>
+								<tr>
+									<td><p id="thu_date"></p></td>
+									<td><input class="form-control" id="thu_hour"
+										type="number" min="0" max="24" step="1" value="0"/></td>
+									<td><input class="form-control" id="thu_min"
+										type="number" min="0" max="60" step="1" value="0"/></td>
+									<td><p id="thu_total"></p></td>
+								</tr>
+								<tr>
+									<td><p id="fri_date"></p></td>
+									<td><input class="form-control" id="fri_hour"
+										type="number" min="0" max="24" step="1" value="0"/></td>
+									<td><input class="form-control" id="fri_min"
+										type="number" min="0" max="60" step="1" value="0"/></td>
+									<td><p id="fri_total"></p></td>
+								</tr>
+								<tr>
+									<td><p id="sat_date"></p></td>
+									<td><input class="form-control" id="sat_hour"
+										type="number" min="0" max="24" step="1" value="0"/></td>
+									<td><input class="form-control" id="sat_min"
+										type="number" min="0" max="60" step="1" value="0"/></td>
+									<td><p id="sat_total"></p></td>
+								</tr>
+							</tbody>
+						</table>
+						<button type="submit" class="btn btn-primary">Submit</button>
+						<button type="submit" class="btn btn-primary">Approve</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+		
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.1/js/bootstrap-datepicker.min.js"></script>
+
+		<script src="/timesheet/js/timesheet.js"></script>
+    </body>
+</html>

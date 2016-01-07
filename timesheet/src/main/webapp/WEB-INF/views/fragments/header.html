@@ -26,7 +26,7 @@
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
 						<li><a href="#" th:href="@{/}">Home</a></li>
-						<li><a href="#" th:href="@{/timesheet}">Timesheet</a></li>
+						<li><a href="#" th:href="@{/user/timesheet}">Timesheet</a></li>
 						<li th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
 							<a href="#" th:href="@{/admin/project}">Projects</a>
 						</li>
@@ -42,7 +42,7 @@
 							<a href="#" th:href="@{/register}">New user</a>
 						</li>
 						<li th:if="${#authorization.expression('isAuthenticated()')}">
-							<a href="#" th:href="@{/user/profile}">Profile</a>
+							<a href="#" th:href="@{/profile}">Profile</a>
 						</li>
 						<li th:if="${#authorization.expression('isAuthenticated()')}">
 							<a href="#" th:href="@{/logout}">Logout</a>

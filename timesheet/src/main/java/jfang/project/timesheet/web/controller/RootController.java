@@ -90,7 +90,7 @@ public class RootController {
     	return "login";
     }
 
-    @RequestMapping(value="/user/profile", method=RequestMethod.GET)
+    @RequestMapping(value="/profile", method=RequestMethod.GET)
     public String getProfileUpdateForm(Model model) {
     	SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
@@ -100,7 +100,7 @@ public class RootController {
     	return "user/profile";
     }
     
-    @RequestMapping(value="/user/profile", method=RequestMethod.POST)
+    @RequestMapping(value="/profile", method=RequestMethod.POST)
     public String udpateProfile(@Valid @ModelAttribute("userForm") UserForm userForm, BindingResult result) {
     	// field validation fails
     	if (result.hasErrors())
