@@ -35,6 +35,14 @@ public class DaySheet implements Serializable {
     @JoinColumn(name="WEEK_SHEET_ID")
 	private WeekSheet weekSheet;
 
+	public DaySheet() {
+	}
+
+	public DaySheet(Date date, int hour) {
+		this.date = date;
+		this.hour = hour;
+	}
+
 	public Long getDaySheetId() {
 		return daySheetId;
 	}

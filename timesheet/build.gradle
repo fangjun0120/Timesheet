@@ -62,6 +62,9 @@ dependencies {
 
 			"com.fasterxml.jackson.core:jackson-databind:2.6.3",
 
+			"net.sf.dozer:dozer-spring:5.5.1",
+			"net.sf.dozer:dozer:5.5.1",
+			
             "net.sf.ehcache:ehcache:2.10.0"
 
     testCompile "junit:junit:$junitVersion",

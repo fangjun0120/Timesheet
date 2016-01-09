@@ -131,6 +131,7 @@ public class RootController {
         throw new RuntimeException("This is a simulated error message");
     }
     
+    // TODO: use dozer mapping
     private User mapUserFormToUser(UserForm form, String role) {
     	User user = new User(form.getUsername(), form.getPassword(), role);
     	user.setEmail(form.getEmail());
@@ -140,7 +141,7 @@ public class RootController {
     	user.setCreateDate(new Date());
     	return user;
     }
-    
+    // TODO: use dozer mapping
     private UserForm mapUserToUserForm(User user) {
     	UserForm form = new UserForm();
     	form.setUsername(user.getUsername());

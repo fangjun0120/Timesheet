@@ -20,97 +20,92 @@
 					<button class="btn btn-default dropdown-toggle" type="button"
 						id="project_dropdown" data-toggle="dropdown" aria-haspopup="true"
 						aria-expanded="true">
-						Project<span class="caret"></span>
+						Projects<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" aria-labelledby="project list"
 						id="project_list"></ul>
 				</div>
 				<div class="row">
 					<!-- left column, date picker -->
-					<div class="col-lg-3">
+					<div class="col-lg-4">
 						<div id="datepicker"></div>
-						<input type="hidden" id="my_hidden_input">
+						<input type="hidden" id="my_hidden_input"></input>
 					</div>
 					<!-- week sheet form table -->
-					<div class="col-lg-9">
-						<form>
+					<div class="col-lg-8">
 						<table class="table table-striped">
 							<colgroup>
-            					<col class="col-md-3">
-            					<col class="col-md-3">
-            					<col class="col-md-3">
-            					<col class="col-md-3">
+            					<col class="col-md-2" />
+            					<col class="col-md-7" />
+            					<col class="col-md-3" />
         					</colgroup>
 							<thead>
 								<tr>
-									<th>Date</th>
-									<th>Hours</th>
-									<th>Minutes</th>
-									<th>Total Hours</th>
+									<th></th>
+									<th><p class="text-center">Date</p></th>
+									<th><p class="text-center">Hours</p></th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
-									<td><p id="sun_date"></p></td>
-									<td><input class="form-control" id="sun_hour"
+									<td><p class="text-center">Sun</p></td>
+									<td><p id="sun_date" class="text-center" th:text="*{weekSheetDto.sunDate}"></p></td>
+									<td><input class="form-control" id="sun_hour" th:value="*{weekSheetDto.sunHours}"
 										type="number" min="0" max="24" step="1" value="0"/></td>
-									<td><input class="form-control" id="sun_min"
-										type="number" min="0" max="60" step="1" value="0"/></td>
-									<td><p id="sun_total"></p></td>
 								</tr>
 								<tr>
-									<td><p id="mon_date"></p></td>
-									<td><input class="form-control" id="mon_hour"
+									<td><p class="text-center">Mon</p></td>
+									<td><p id="mon_date" class="text-center" th:text="*{weekSheetDto.monDate}"></p></td>
+									<td><input class="form-control" id="mon_hour" th:value="*{weekSheetDto.monHours}"
 										type="number" min="0" max="24" step="1" value="0"/></td>
-									<td><input class="form-control" id="mon_min"
-										type="number" min="0" max="60" step="1" value="0"/></td>
-									<td><p id="mon_total"></p></td>
 								</tr>
 								<tr>
-									<td><p id="tue_date"></p></td>
-									<td><input class="form-control" id="tue_hour"
+									<td><p class="text-center">Tue</p></td>
+									<td><p id="tue_date" class="text-center" th:text="*{weekSheetDto.tueDate}"></p></td>
+									<td><input class="form-control" id="tue_hour"  th:value="*{weekSheetDto.tueHours}"
 										type="number" min="0" max="24" step="1" value="0"/></td>
-									<td><input class="form-control" id="tue_min"
-										type="number" min="0" max="60" step="1" value="0"/></td>
-									<td><p id="tue_total"></p></td>
 								</tr>
 								<tr>
-									<td><p id="wed_date"></p></td>
-									<td><input class="form-control" id="wed_hour"
+									<td><p class="text-center">Wed</p></td>
+									<td><p id="wed_date" class="text-center" th:text="*{weekSheetDto.wedDate}"></p></td>
+									<td><input class="form-control" id="wed_hour" th:value="*{weekSheetDto.wedHours}"
 										type="number" min="0" max="24" step="1" value="0"/></td>
-									<td><input class="form-control" id="wed_min"
-										type="number" min="0" max="60" step="1" value="0"/></td>
-									<td><p id="wed_total"></p></td>
 								</tr>
 								<tr>
-									<td><p id="thu_date"></p></td>
-									<td><input class="form-control" id="thu_hour"
+									<td><p class="text-center">Thu</p></td>
+									<td><p id="thu_date" class="text-center" th:text="*{weekSheetDto.thuDate}"></p></td>
+									<td><input class="form-control" id="thu_hour" th:value="*{weekSheetDto.thuHours}"
 										type="number" min="0" max="24" step="1" value="0"/></td>
-									<td><input class="form-control" id="thu_min"
-										type="number" min="0" max="60" step="1" value="0"/></td>
-									<td><p id="thu_total"></p></td>
 								</tr>
 								<tr>
-									<td><p id="fri_date"></p></td>
-									<td><input class="form-control" id="fri_hour"
+									<td><p class="text-center">Fri</p></td>
+									<td><p id="fri_date" class="text-center" th:text="*{weekSheetDto.friDate}"></p></td>
+									<td><input class="form-control" id="fri_hour" th:value="*{weekSheetDto.friHours}"
 										type="number" min="0" max="24" step="1" value="0"/></td>
-									<td><input class="form-control" id="fri_min"
-										type="number" min="0" max="60" step="1" value="0"/></td>
-									<td><p id="fri_total"></p></td>
 								</tr>
 								<tr>
-									<td><p id="sat_date"></p></td>
-									<td><input class="form-control" id="sat_hour"
+									<td><p class="text-center">Sat</p></td>
+									<td><p id="sat_date" class="text-center" th:text="*{weekSheetDto.satDate}"></p></td>
+									<td><input class="form-control" id="sat_hour" th:value="*{weekSheetDto.satHours}"
 										type="number" min="0" max="24" step="1" value="0"/></td>
-									<td><input class="form-control" id="sat_min"
-										type="number" min="0" max="60" step="1" value="0"/></td>
-									<td><p id="sat_total"></p></td>
 								</tr>
 							</tbody>
 						</table>
-						<button type="submit" class="btn btn-primary">Submit</button>
-						<button type="submit" class="btn btn-primary">Approve</button>
-						</form>
+						<div class="row">
+							<div class="col-md-2 col-md-offset-1">
+								<button type="submit" class="btn btn-block btn-primary">Submit</button>
+							</div>
+							<div class="col-md-2">
+								<button type="submit" class="btn btn-block btn-primary">Approve</button>
+							</div>
+							<div class="col-md-1 col-md-offset-4">
+								<p class="text-center">Total:</p>
+							</div>
+							<div class="col-md-1">
+								<p id="total_hour" class="text-center" th:text="*{weekSheetDto.totalHours}">40</p>
+							</div>
+						</div>
+						
 					</div>
 				</div>
 			</div>

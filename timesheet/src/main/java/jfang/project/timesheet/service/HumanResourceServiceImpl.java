@@ -14,8 +14,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 
-
-
 @Service
 public class HumanResourceServiceImpl implements HumanResourceService {
 
@@ -31,7 +29,7 @@ public class HumanResourceServiceImpl implements HumanResourceService {
 	 * throw IllegalStateException when the Manager not found since the username is given by spring security
 	 */
 	@Override
-	public Manager getEmployeeByManagerUsername(String username) {
+	public Manager getManagerByManagerUsername(String username) {
 		return managerRepository.findByUsername(username);
 	}
 	
@@ -49,5 +47,10 @@ public class HumanResourceServiceImpl implements HumanResourceService {
 			return 0l;
 		}
         return user.getUserId();
+	}
+	
+	@Override
+	public Employee getEmployeeByEmployeeName(String employeeName) {
+		return employeeRepository.findByUsername(employeeName);
 	}
 }

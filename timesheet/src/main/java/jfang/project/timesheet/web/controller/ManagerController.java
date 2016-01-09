@@ -111,7 +111,7 @@ public class ManagerController {
     private Manager getCurrentManager() {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
-    	return humanResourceService.getEmployeeByManagerUsername(name);
+    	return humanResourceService.getManagerByManagerUsername(name);
     }
     
     private EmployeeResponseDto mapUserToEmployee(User user) {
