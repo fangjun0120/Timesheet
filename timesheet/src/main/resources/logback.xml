@@ -30,8 +30,9 @@
     <logger name="org.springframework" level="info"/>
     <logger name="org.thymeleaf" level="info"/>
     <logger name="org.hibernate" level="info"/>
-    <logger name="com.zaxxer.hikari" level = "error"/>
+    <logger name="com.zaxxer.hikari" level="error"/>
     <logger name="org.springframework.data" level="info" />
+    <logger name="org.dozer" level="error" />
 
     <!-- By default, the level of the root level is set to DEBUG -->
     <root level="debug">

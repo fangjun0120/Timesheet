@@ -1,5 +1,8 @@
 package jfang.project.timesheet.utility;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 public class StringProecessUtil {
@@ -12,5 +15,15 @@ public class StringProecessUtil {
 		for (int i = 0; i < len; i++) 
 			builder.append(PWD_CHARS.charAt(random.nextInt(PWD_CHARS.length())));
 		return builder.toString();
+	}
+	
+	public static Date StringToDate(String str) throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+		return formatter.parse(str);
+	}
+	
+	public static String DateToString(Date date) {
+		SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
+		return df.format(date);
 	}
 }

@@ -9,106 +9,132 @@
 		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.1/css/bootstrap-datepicker3.min.css" />
+<!-- 		<link rel="stylesheet" href="../../../css/timesheet.css" /> -->
+		<link rel="stylesheet" href="/timesheet/css/timesheet.css" />
 	</head>
     <body>
 		<div th:replace="fragments/header :: header"></div>
 		<div class="container">
 			<div class="row">
-			<div class="col-lg-12">
-				<!-- top dropdown, project selector -->
-				<div class="dropdown">
-					<button class="btn btn-default dropdown-toggle" type="button"
-						id="project_dropdown" data-toggle="dropdown" aria-haspopup="true"
-						aria-expanded="true">
-						Projects<span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" aria-labelledby="project list"
-						id="project_list"></ul>
-				</div>
+				<!-- left column, date picker -->
+				<div class="col-lg-4">
 				<div class="row">
-					<!-- left column, date picker -->
-					<div class="col-lg-4">
-						<div id="datepicker"></div>
-						<input type="hidden" id="my_hidden_input"></input>
-					</div>
-					<!-- week sheet form table -->
-					<div class="col-lg-8">
-						<table class="table table-striped">
-							<colgroup>
-            					<col class="col-md-2" />
-            					<col class="col-md-7" />
-            					<col class="col-md-3" />
-        					</colgroup>
-							<thead>
-								<tr>
-									<th></th>
-									<th><p class="text-center">Date</p></th>
-									<th><p class="text-center">Hours</p></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td><p class="text-center">Sun</p></td>
-									<td><p id="sun_date" class="text-center" th:text="*{weekSheetDto.sunDate}"></p></td>
-									<td><input class="form-control" id="sun_hour" th:value="*{weekSheetDto.sunHours}"
-										type="number" min="0" max="24" step="1" value="0"/></td>
-								</tr>
-								<tr>
-									<td><p class="text-center">Mon</p></td>
-									<td><p id="mon_date" class="text-center" th:text="*{weekSheetDto.monDate}"></p></td>
-									<td><input class="form-control" id="mon_hour" th:value="*{weekSheetDto.monHours}"
-										type="number" min="0" max="24" step="1" value="0"/></td>
-								</tr>
-								<tr>
-									<td><p class="text-center">Tue</p></td>
-									<td><p id="tue_date" class="text-center" th:text="*{weekSheetDto.tueDate}"></p></td>
-									<td><input class="form-control" id="tue_hour"  th:value="*{weekSheetDto.tueHours}"
-										type="number" min="0" max="24" step="1" value="0"/></td>
-								</tr>
-								<tr>
-									<td><p class="text-center">Wed</p></td>
-									<td><p id="wed_date" class="text-center" th:text="*{weekSheetDto.wedDate}"></p></td>
-									<td><input class="form-control" id="wed_hour" th:value="*{weekSheetDto.wedHours}"
-										type="number" min="0" max="24" step="1" value="0"/></td>
-								</tr>
-								<tr>
-									<td><p class="text-center">Thu</p></td>
-									<td><p id="thu_date" class="text-center" th:text="*{weekSheetDto.thuDate}"></p></td>
-									<td><input class="form-control" id="thu_hour" th:value="*{weekSheetDto.thuHours}"
-										type="number" min="0" max="24" step="1" value="0"/></td>
-								</tr>
-								<tr>
-									<td><p class="text-center">Fri</p></td>
-									<td><p id="fri_date" class="text-center" th:text="*{weekSheetDto.friDate}"></p></td>
-									<td><input class="form-control" id="fri_hour" th:value="*{weekSheetDto.friHours}"
-										type="number" min="0" max="24" step="1" value="0"/></td>
-								</tr>
-								<tr>
-									<td><p class="text-center">Sat</p></td>
-									<td><p id="sat_date" class="text-center" th:text="*{weekSheetDto.satDate}"></p></td>
-									<td><input class="form-control" id="sat_hour" th:value="*{weekSheetDto.satHours}"
-										type="number" min="0" max="24" step="1" value="0"/></td>
-								</tr>
-							</tbody>
-						</table>
-						<div class="row">
-							<div class="col-md-2 col-md-offset-1">
-								<button type="submit" class="btn btn-block btn-primary">Submit</button>
-							</div>
-							<div class="col-md-2">
-								<button type="submit" class="btn btn-block btn-primary">Approve</button>
-							</div>
-							<div class="col-md-1 col-md-offset-4">
-								<p class="text-center">Total:</p>
-							</div>
-							<div class="col-md-1">
-								<p id="total_hour" class="text-center" th:text="*{weekSheetDto.totalHours}">40</p>
-							</div>
+					<div class="col-md-6">
+						<!-- top dropdown, project selector -->
+						<div class="dropdown">
+							<button class="btn btn-primary dropdown-toggle" type="button"
+								id="project_dropdown" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="true">
+								Projects<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" aria-labelledby="project list"
+								id="project_list"></ul>
 						</div>
-						
+					</div>
+					<div class="class-md-6">
+						<p id="project_name">Project X</p>
+					</div>
+					
+					<!-- date picker -->
+					<div id="datepicker"></div>
+					<input type="hidden" id="my_hidden_input"></input>
+				</div>
+				</div>
+				<!-- left column end -->
+				
+				<!-- right column, week sheet form table -->
+				<div class="col-lg-8">
+					<table class="table table-striped">
+						<colgroup>
+							<col class="col-md-2" />
+							<col class="col-md-7" />
+							<col class="col-md-3" />
+						</colgroup>
+						<thead>
+							<tr>
+								<th></th>
+								<th><p class="text-center">Date</p></th>
+								<th><p class="text-center">Hours</p></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><p class="text-center">Sun</p></td>
+								<td><p id="sun_date" class="text-center"
+										th:text="*{weekSheetDto.sunDate}"></p></td>
+								<td><input class="form-control" id="sun_hour"
+									th:value="*{weekSheetDto.sunHours}" type="number" min="0"
+									max="24" step="1" value="0" /></td>
+							</tr>
+							<tr>
+								<td><p class="text-center">Mon</p></td>
+								<td><p id="mon_date" class="text-center"
+										th:text="*{weekSheetDto.monDate}"></p></td>
+								<td><input class="form-control" id="mon_hour"
+									th:value="*{weekSheetDto.monHours}" type="number" min="0"
+									max="24" step="1" value="0" /></td>
+							</tr>
+							<tr>
+								<td><p class="text-center">Tue</p></td>
+								<td><p id="tue_date" class="text-center"
+										th:text="*{weekSheetDto.tueDate}"></p></td>
+								<td><input class="form-control" id="tue_hour"
+									th:value="*{weekSheetDto.tueHours}" type="number" min="0"
+									max="24" step="1" value="0" /></td>
+							</tr>
+							<tr>
+								<td><p class="text-center">Wed</p></td>
+								<td><p id="wed_date" class="text-center"
+										th:text="*{weekSheetDto.wedDate}"></p></td>
+								<td><input class="form-control" id="wed_hour"
+									th:value="*{weekSheetDto.wedHours}" type="number" min="0"
+									max="24" step="1" value="0" /></td>
+							</tr>
+							<tr>
+								<td><p class="text-center">Thu</p></td>
+								<td><p id="thu_date" class="text-center"
+										th:text="*{weekSheetDto.thuDate}"></p></td>
+								<td><input class="form-control" id="thu_hour"
+									th:value="*{weekSheetDto.thuHours}" type="number" min="0"
+									max="24" step="1" value="0" /></td>
+							</tr>
+							<tr>
+								<td><p class="text-center">Fri</p></td>
+								<td><p id="fri_date" class="text-center"
+										th:text="*{weekSheetDto.friDate}"></p></td>
+								<td><input class="form-control" id="fri_hour"
+									th:value="*{weekSheetDto.friHours}" type="number" min="0"
+									max="24" step="1" value="0" /></td>
+							</tr>
+							<tr>
+								<td><p class="text-center">Sat</p></td>
+								<td><p id="sat_date" class="text-center"
+										th:text="*{weekSheetDto.satDate}"></p></td>
+								<td><input class="form-control" id="sat_hour"
+									th:value="*{weekSheetDto.satHours}" type="number" min="0"
+									max="24" step="1" value="0" /></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="row">
+						<div class="col-md-2 col-md-offset-1">
+							<button type="submit" class="btn btn-block btn-primary">Submit</button>
+						</div>
+						<div class="col-md-2"
+							th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
+							<button type="submit" class="btn btn-block btn-primary">Approve</button>
+						</div>
+						<div class="col-md-1 col-md-offset-4">
+							<p class="text-center">Total:</p>
+						</div>
+						<div class="col-md-1">
+							<p id="total_hour" class="text-center"
+								th:text="*{weekSheetDto.totalHours}">40</p>
+						</div>
 					</div>
 				</div>
-			</div>
+				<!-- right column end -->
+				
 			</div>
 		</div>
 		
@@ -121,5 +147,6 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.1/js/bootstrap-datepicker.min.js"></script>
 
 		<script src="/timesheet/js/timesheet.js"></script>
+<!-- 		<script src="../../../js/timesheet.js"></script> -->
     </body>
 </html>
