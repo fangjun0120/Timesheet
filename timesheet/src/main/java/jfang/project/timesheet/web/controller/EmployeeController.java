@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 
 import jfang.project.timesheet.constant.Constants;
 import jfang.project.timesheet.model.Employee;
-import jfang.project.timesheet.model.Project;
 import jfang.project.timesheet.model.WeekSheet;
 import jfang.project.timesheet.service.HumanResourceService;
 import jfang.project.timesheet.service.ProjectService;
@@ -58,7 +57,8 @@ public class EmployeeController {
 
 	@RequestMapping("/timesheet")
 	public String getWeekSheetPage(Model model) {
-		WeekSheetDto weekSheetDto = getWeekSheetByDate(new Date(), "");
+		WeekSheet weekSheet = timesheetService.getWeekSheetByDate(new Date(), getCurrentEmployee(), "");
+		WeekSheetDto weekSheetDto = mapWeekSheetToDTO(weekSheet);
 		logger.debug(weekSheetDto.toString());
 		model.addAttribute("weekSheetDto", weekSheetDto);
 	    return "user/timesheet";
@@ -74,28 +74,11 @@ public class EmployeeController {
 		} catch (ParseException e) {
 			throw new IllegalArgumentException("Wrong date format. Use yyyy/mm/dd.");
 		}
-		WeekSheetDto weekSheetDto = getWeekSheetByDate(datePicked, requestDto.getProjectName());
+		WeekSheet weekSheet = timesheetService.getWeekSheetByDate(
+				datePicked, getCurrentEmployee(), requestDto.getProjectName());
+		WeekSheetDto weekSheetDto = mapWeekSheetToDTO(weekSheet);
 		logger.debug("ajax response: " + weekSheetDto.toString());
 		return weekSheetDto;
-	}
-	
-	private WeekSheetDto getWeekSheetByDate(Date date, String projectName) {
-		Employee employee = getCurrentEmployee();
-
-		// get project from model
-		Project project = projectService.getProjectByName("proj1");
-		logger.debug("Looking for weeksheet for employee: " + employee.getUser().getUsername() 
-				+ " project: " + project.getName());
-		
-		// get weeksheet by date
-		WeekSheet weekSheet = timesheetService.getWeekSheetByDate(date, employee, project);
-		
-		// if none, set initial values
-		if (weekSheet == null) {
-			weekSheet = timesheetService.getBlankWeekSheet(date, employee, project);
-		}
-		
-		return mapWeekSheetToDTO(weekSheet);
 	}
 	
     private Employee getCurrentEmployee() {

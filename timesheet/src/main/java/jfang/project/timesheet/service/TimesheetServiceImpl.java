@@ -15,6 +15,7 @@ import jfang.project.timesheet.repository.WeekSheetRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,14 +26,30 @@ public class TimesheetServiceImpl implements TimesheetService {
 	@Resource
 	private WeekSheetRepository weekSheetRepository;
 
-	@Override
-	public WeekSheet getWeekSheetByDate(Date date, Employee employee, Project project) {
-		return weekSheetRepository.findByStartDateAndEmployeeIdAndProjectId(
-				getFirstDayOfWeek(date), employee.getEmployeeId(), project.getProjectId());
-	}
+	@Resource
+	private ProjectService projectService;
 	
 	@Override
-	public WeekSheet getBlankWeekSheet(Date date, Employee employee, Project project) {
+	@Cacheable(value = "weekSheetCache", key = "{#date, #employee.employeeId, #projectName}")
+	public WeekSheet getWeekSheetByDate(Date date, Employee employee, String projectName) {
+		logger.debug("Looking for weeksheet for employee: " + employee.getUser().getUsername() 
+				+ " project: " + projectName);
+		// get project name from view
+		Project project = projectService.getProjectByName("proj1");
+
+		// get weeksheet by date
+		WeekSheet weekSheet = weekSheetRepository.findByStartDateAndEmployeeIdAndProjectId(
+				getFirstDayOfWeek(date), employee.getEmployeeId(), project.getProjectId());
+
+		// if none, set initial values
+		if (weekSheet == null) {
+			weekSheet = getBlankWeekSheet(date, employee, project);
+		}
+
+		return weekSheet;
+	}
+	
+	WeekSheet getBlankWeekSheet(Date date, Employee employee, Project project) {
 		WeekSheet weekSheet = new WeekSheet(employee, project);
 		List<DaySheet> daySheets = new ArrayList<DaySheet>();
 		Date dateVar = getFirstDayOfWeek(date);

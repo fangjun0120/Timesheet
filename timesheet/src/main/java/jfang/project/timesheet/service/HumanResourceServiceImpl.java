@@ -10,6 +10,7 @@ import jfang.project.timesheet.repository.ManagerRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +51,7 @@ public class HumanResourceServiceImpl implements HumanResourceService {
 	}
 	
 	@Override
+	@Cacheable(value = "employeeCache")
 	public Employee getEmployeeByEmployeeName(String employeeName) {
 		return employeeRepository.findByUsername(employeeName);
 	}
