@@ -12,9 +12,11 @@ import jfang.project.timesheet.model.Employee;
 import jfang.project.timesheet.model.Project;
 import jfang.project.timesheet.model.WeekSheet;
 import jfang.project.timesheet.repository.WeekSheetRepository;
+import jfang.project.timesheet.utility.StringProecessUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -30,14 +32,21 @@ public class TimesheetServiceImpl implements TimesheetService {
 	private ProjectService projectService;
 	
 	@Override
-	@Cacheable(value = "weekSheetCache", key = "{#date, #employee.employeeId, #projectName}")
-	public WeekSheet getWeekSheetByDate(Date date, Employee employee, String projectName) {
+	@Cacheable(value = "weekSheetCache", key = "{#dateString, #employee.employeeId, #projectName}")
+	public WeekSheet getWeekSheetByDate(String dateString, Employee employee, String projectName) {
 		logger.debug("Looking for weeksheet for employee: " + employee.getUser().getUsername() 
 				+ " project: " + projectName);
 		// get project name from view
-		Project project = projectService.getProjectByName("proj1");
+		Project project = projectService.getProjectByName(projectName);
 
 		// get weeksheet by date
+		Date date;
+		if (dateString == null) {
+			date = new Date();
+		}
+		else {
+			date = StringProecessUtil.StringToDate(dateString);
+		}
 		WeekSheet weekSheet = weekSheetRepository.findByStartDateAndEmployeeIdAndProjectId(
 				getFirstDayOfWeek(date), employee.getEmployeeId(), project.getProjectId());
 
@@ -47,6 +56,64 @@ public class TimesheetServiceImpl implements TimesheetService {
 		}
 
 		return weekSheet;
+	}
+	
+	@Override
+	@CacheEvict(value = "weekSheetCache", key = "{#dateString, #employee.employeeId, #projectName}")
+	public boolean saveWeekSheet(Employee employee, String projectName,
+			String dateString, List<Integer> hours) {
+		if (hours.size() != 7) {
+			logger.error("Must have 7 day hours.");
+			return false;
+		}
+		// get project name from view
+		Project project = projectService.getProjectByName(projectName);
+		
+		Date date = StringProecessUtil.StringToDate(dateString);
+		WeekSheet weekSheet = weekSheetRepository.findByStartDateAndEmployeeIdAndProjectId(
+				getFirstDayOfWeek(date), employee.getEmployeeId(), project.getProjectId());
+		// update existing weeksheet
+		if (weekSheet != null) {
+			for (int i = 0; i < 7; i++) {
+				weekSheet.getSheets().get(i).setHour(hours.get(i));
+			}
+			weekSheet.setTotalHour(sumHours(hours));
+			weekSheet.setSubmitted(true);
+			weekSheetRepository.save(weekSheet);
+			return true;
+		}
+		
+		// insert new records
+		weekSheet = new WeekSheet(employee, project);
+		Date dateVar = date;
+		List<DaySheet> daySheets = new ArrayList<DaySheet>();
+		for (Integer hour: hours) {
+			DaySheet sheet = new DaySheet(dateVar, hour);
+			sheet.setWeekSheet(weekSheet);
+			daySheets.add(sheet);
+			dateVar = getNextDay(dateVar);
+		}
+		weekSheet.setSheets(daySheets);
+		weekSheet.setStartDate(date);
+		weekSheet.setTotalHour(sumHours(hours));
+		weekSheet.setSubmitted(true);
+		logger.info("udpate weeksheet: " + weekSheet);
+		weekSheetRepository.save(weekSheet);
+		
+		return true;
+	}
+
+	@Override
+	@CacheEvict(value = "weekSheetCache", key = "{#dateString, #employee.employeeId, #projectName}")
+	public boolean unsubmitWeekSheet(String dateString, Employee employee, String projectName) {
+		Project project = projectService.getProjectByName(projectName);
+
+		Date date = StringProecessUtil.StringToDate(dateString);
+		WeekSheet weekSheet = weekSheetRepository.findByStartDateAndEmployeeIdAndProjectId(
+				getFirstDayOfWeek(date), employee.getEmployeeId(), project.getProjectId());
+		weekSheet.setSubmitted(false);
+		weekSheetRepository.save(weekSheet);
+		return true;
 	}
 	
 	WeekSheet getBlankWeekSheet(Date date, Employee employee, Project project) {
@@ -79,5 +146,13 @@ public class TimesheetServiceImpl implements TimesheetService {
 		calendar.setTime(date);
 		calendar.add(Calendar.DAY_OF_WEEK, 1);
 		return calendar.getTime();
+	}
+	
+	private int sumHours(List<Integer> hours) {
+		int sum = 0;
+		for (Integer hour: hours) {
+			sum += hour;
+		}
+		return sum;
 	}
 }

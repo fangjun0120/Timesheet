@@ -2,7 +2,7 @@ package jfang.project.timesheet.web.dto;
 
 import java.io.Serializable;
 
-public class WeekSheetRequestDto implements Serializable {
+public class WeekSheetQueryReqDto implements Serializable {
 
 	private static final long serialVersionUID = 8652554695060368609L;
 	

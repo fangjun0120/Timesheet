@@ -1,11 +1,15 @@
 package jfang.project.timesheet.service;
 
-import java.util.Date;
+import java.util.List;
 
 import jfang.project.timesheet.model.Employee;
 import jfang.project.timesheet.model.WeekSheet;
 
 public interface TimesheetService {
 
-	WeekSheet getWeekSheetByDate(Date date, Employee employee, String projectName);
+	WeekSheet getWeekSheetByDate(String date, Employee employee, String projectName);
+	
+	boolean saveWeekSheet(Employee employee, String projectName, String startDate, List<Integer> hours);
+	
+	boolean unsubmitWeekSheet(String date, Employee employee, String projectName);
 }

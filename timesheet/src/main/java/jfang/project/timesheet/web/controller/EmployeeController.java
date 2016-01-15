@@ -1,19 +1,22 @@
 package jfang.project.timesheet.web.controller;
 
-import java.text.ParseException;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.Resource;
 
 import jfang.project.timesheet.constant.Constants;
+import jfang.project.timesheet.constant.ResponseStatus;
 import jfang.project.timesheet.model.Employee;
 import jfang.project.timesheet.model.WeekSheet;
 import jfang.project.timesheet.service.HumanResourceService;
 import jfang.project.timesheet.service.ProjectService;
 import jfang.project.timesheet.service.TimesheetService;
 import jfang.project.timesheet.utility.StringProecessUtil;
-import jfang.project.timesheet.web.dto.WeekSheetDto;
-import jfang.project.timesheet.web.dto.WeekSheetRequestDto;
+import jfang.project.timesheet.web.dto.AjaxResponseStatus;
+import jfang.project.timesheet.web.dto.WeekSheetPostDto;
+import jfang.project.timesheet.web.dto.WeekSheetQueryReqDto;
+import jfang.project.timesheet.web.dto.WeekSheetQueryResDto;
 
 import org.dozer.Mapper;
 import org.slf4j.Logger;
@@ -23,7 +26,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,29 +58,61 @@ public class EmployeeController {
     }
 
 	@RequestMapping("/timesheet")
-	public String getWeekSheetPage(Model model) {
-		WeekSheet weekSheet = timesheetService.getWeekSheetByDate(new Date(), getCurrentEmployee(), "");
-		WeekSheetDto weekSheetDto = mapWeekSheetToDTO(weekSheet);
-		logger.debug(weekSheetDto.toString());
-		model.addAttribute("weekSheetDto", weekSheetDto);
+	public String getWeekSheetPage() {
 	    return "user/timesheet";
 	}
 	
 	@ResponseBody
     @RequestMapping(value="/timesheet/date", method=RequestMethod.POST)
-    public WeekSheetDto ajaxGetWeekSheetData(@RequestBody WeekSheetRequestDto requestDto) {
+    public WeekSheetQueryResDto ajaxGetWeekSheetData(@RequestBody WeekSheetQueryReqDto requestDto) {
 		logger.debug("ajax request start date: " + requestDto.getDateString());
-		Date datePicked;
-		try {
-			datePicked = StringProecessUtil.StringToDate(requestDto.getDateString());
-		} catch (ParseException e) {
-			throw new IllegalArgumentException("Wrong date format. Use yyyy/mm/dd.");
-		}
 		WeekSheet weekSheet = timesheetService.getWeekSheetByDate(
-				datePicked, getCurrentEmployee(), requestDto.getProjectName());
-		WeekSheetDto weekSheetDto = mapWeekSheetToDTO(weekSheet);
+				requestDto.getDateString(), getCurrentEmployee(), "proj1");//requestDto.getProjectName());
+		WeekSheetQueryResDto weekSheetDto = mapWeekSheetToDTO(weekSheet);
 		logger.debug("ajax response: " + weekSheetDto.toString());
 		return weekSheetDto;
+	}
+	
+	@ResponseBody
+    @RequestMapping(value="/timesheet/submit", method=RequestMethod.POST)
+    public AjaxResponseStatus ajaxSubmitWeekSheetData(@RequestBody WeekSheetPostDto requestDto) {
+		List<Integer> hours = new ArrayList<Integer>();
+		hours.add(requestDto.getSunHours());
+		hours.add(requestDto.getMonHours());
+		hours.add(requestDto.getTueHours());
+		hours.add(requestDto.getWedHours());
+		hours.add(requestDto.getThuHours());
+		hours.add(requestDto.getFriHours());
+		hours.add(requestDto.getSatHours());
+		
+		boolean result = timesheetService.saveWeekSheet(getCurrentEmployee(), "proj1", requestDto.getStartDate(), hours);
+		AjaxResponseStatus response = new AjaxResponseStatus();
+		if (result) {
+			response.setStatus(ResponseStatus.SUCCESS.value());
+			response.setMessage("Timesheet updated successfully.");
+		}
+		else {
+			response.setStatus(ResponseStatus.ERROR.value());
+			response.setMessage("Failed to update timesheet.");
+		}
+		return response;
+	}
+	
+	@ResponseBody
+    @RequestMapping(value="/timesheet/unsubmit", method=RequestMethod.POST)
+    public AjaxResponseStatus ajaxUnsubmitWeekSheetData(@RequestBody WeekSheetQueryReqDto requestDto) {
+		boolean result = timesheetService.unsubmitWeekSheet(requestDto.getDateString(), getCurrentEmployee(), "proj1");
+		
+		AjaxResponseStatus response = new AjaxResponseStatus();
+		if (result) {
+			response.setStatus(ResponseStatus.SUCCESS.value());
+			response.setMessage("Timesheet unsubmitted.");
+		}
+		else {
+			response.setStatus(ResponseStatus.ERROR.value());
+			response.setMessage("Failed to unsubmit timesheet.");
+		}
+		return response;
 	}
 	
     private Employee getCurrentEmployee() {
@@ -100,8 +134,8 @@ public class EmployeeController {
         return employee;
     }
     
-    private WeekSheetDto mapWeekSheetToDTO(WeekSheet weekSheet) {
-    	WeekSheetDto dto = mapper.map(weekSheet, WeekSheetDto.class);
+    private WeekSheetQueryResDto mapWeekSheetToDTO(WeekSheet weekSheet) {
+    	WeekSheetQueryResDto dto = mapper.map(weekSheet, WeekSheetQueryResDto.class);
     	dto.setSunDate(StringProecessUtil.DateToString(weekSheet.getSheets().get(0).getDate()));
     	dto.setSunHours(weekSheet.getSheets().get(0).getHour());
     	dto.setMonDate(StringProecessUtil.DateToString(weekSheet.getSheets().get(1).getDate()));

@@ -15,6 +15,7 @@ public class TimesheetServiceImplTest {
 
 	private TimesheetServiceImpl service = new TimesheetServiceImpl();
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testGetBlankWeekSheet() throws ParseException {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");

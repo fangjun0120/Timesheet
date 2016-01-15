@@ -133,5 +133,13 @@ public class WeekSheet implements Serializable {
 	public void setApproved(boolean approved) {
 		this.approved = approved;
 	}
+
+	@Override
+	public String toString() {
+		return "WeekSheet [weekSheetId=" + weekSheetId + ", startDate="
+				+ startDate + ", sheets=" + sheets + ", totalHour=" + totalHour
+				+ ", employee=" + employee + ", project=" + project
+				+ ", submitted=" + submitted + ", approved=" + approved + "]";
+	}
 	
 }

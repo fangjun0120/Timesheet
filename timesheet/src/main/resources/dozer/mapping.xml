@@ -10,7 +10,7 @@
 
 	<mapping>
 		<class-a>jfang.project.timesheet.model.WeekSheet</class-a>
-		<class-b>jfang.project.timesheet.web.dto.WeekSheetDto</class-b>
+		<class-b>jfang.project.timesheet.web.dto.WeekSheetQueryResDto</class-b>
 		<field>
 			<a>totalHour</a>
 			<b>totalHours</b>

@@ -17,9 +17,15 @@ public class StringProecessUtil {
 		return builder.toString();
 	}
 	
-	public static Date StringToDate(String str) throws ParseException {
+	public static Date StringToDate(String str) {
+		Date date = null;
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-		return formatter.parse(str);
+		try {
+			date = formatter.parse(str);
+		} catch (ParseException e) {
+			throw new IllegalArgumentException("Wrong date format. Use yyyy/mm/dd.");
+		}
+		return date;
 	}
 	
 	public static String DateToString(Date date) {

@@ -75,4 +75,10 @@ public class DaySheet implements Serializable {
 		this.weekSheet = weekSheet;
 	}
 
+	@Override
+	public String toString() {
+		return "DaySheet [daySheetId=" + daySheetId + ", date=" + date
+				+ ", hour=" + hour + ", weekSheet=" + weekSheet.getWeekSheetId() + "]";
+	}
+
 }
