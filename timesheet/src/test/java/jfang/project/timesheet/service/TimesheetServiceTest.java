@@ -68,5 +68,20 @@ public class TimesheetServiceTest {
 		assertEquals(6, weekSheet.getSheets().get(5).getHour());
 		assertEquals(7, weekSheet.getSheets().get(6).getHour());
 	}
-	
+
+	@Test
+	public void testInsert() {
+		Integer[] hours = {1,2,3,4,5,6,7};
+		Employee employee = employeeRepository.findByUsername("emp1");
+		timesheetService.saveWeekSheet(employee, "bsscores", "2016/01/10", Arrays.asList(hours));
+		Date startDate = StringProecessUtil.StringToDate("2016/01/10");
+		WeekSheet weekSheet = weekSheetRepository.findByStartDateAndEmployeeIdAndProjectId(startDate, 1, 1);
+		assertEquals(1, weekSheet.getSheets().get(0).getHour());
+		assertEquals(2, weekSheet.getSheets().get(1).getHour());
+		assertEquals(3, weekSheet.getSheets().get(2).getHour());
+		assertEquals(4, weekSheet.getSheets().get(3).getHour());
+		assertEquals(5, weekSheet.getSheets().get(4).getHour());
+		assertEquals(6, weekSheet.getSheets().get(5).getHour());
+		assertEquals(7, weekSheet.getSheets().get(6).getHour());
+	}
 }

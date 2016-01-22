@@ -105,7 +105,7 @@ public class RootController {
     	// field validation fails
     	if (result.hasErrors())
     		return "user/profile";
-    	
+
     	// passwords not match
     	if (!userForm.getPassword().equals(userForm.getPwdConfirm())) {
     		logger.debug("password not match.");

@@ -19,11 +19,11 @@
 						<!-- Always use <form role="form"> (helps improve accessibility for people using screen readers) -->
 						<!-- Wrap labels and form controls in <div class="form-group"> (needed for optimum spacing) -->
 						<!-- Add class .form-control to all textual <input>, <textarea>, and <select> elements -->
-						<form role="form" th:action="@{/user/profile}" method="post" th:object="${userForm}">
+						<form role="form" th:action="@{/profile}" method="post" th:object="${userForm}">
 							<div class="form-group">
 								<label for="username">Username:</label>
 								<input type="text" class="form-control" id="username" 
-									name="username" th:field="*{username}" disabled="disabled" />
+									name="username" th:field="*{username}" readonly="readonly" />
 								<p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Incorrect date</p>
 							</div>
 							<div class="form-group">
@@ -39,7 +39,7 @@
 								<p th:if="${#fields.hasErrors('pwdConfirm')}" th:errors="*{pwdConfirm}">Incorrect date</p>
 							</div>
 							<div class="form-group">
-								<label for="repassword">Organization (optional):</label>
+								<label for="organization">Organization (optional):</label>
 								<input type="text" class="form-control" id="organization" 
 									name="organization" th:field="*{organization}"/>
 								<p th:if="${#fields.hasErrors('organization')}" th:errors="*{organization}">Incorrect date</p>

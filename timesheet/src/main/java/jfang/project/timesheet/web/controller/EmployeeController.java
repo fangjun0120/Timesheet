@@ -76,6 +76,7 @@ public class EmployeeController {
 	@ResponseBody
     @RequestMapping(value="/timesheet/submit", method=RequestMethod.POST)
     public AjaxResponseStatus ajaxSubmitWeekSheetData(@RequestBody WeekSheetPostDto requestDto) {
+		logger.info("WeekSheet DTO: " + requestDto.toString());
 		List<Integer> hours = new ArrayList<Integer>();
 		hours.add(requestDto.getSunHours());
 		hours.add(requestDto.getMonHours());

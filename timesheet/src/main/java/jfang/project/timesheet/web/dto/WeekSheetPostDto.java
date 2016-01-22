@@ -66,4 +66,19 @@ public class WeekSheetPostDto {
 	public void setSatHours(int satHours) {
 		this.satHours = satHours;
 	}
+
+	@Override
+	public String toString() {
+		return "WeekSheetPostDto{" +
+				"startDate='" + startDate + '\'' +
+				", projectName='" + projectName + '\'' +
+				", sunHours=" + sunHours +
+				", monHours=" + monHours +
+				", tueHours=" + tueHours +
+				", wedHours=" + wedHours +
+				", thuHours=" + thuHours +
+				", friHours=" + friHours +
+				", satHours=" + satHours +
+				'}';
+	}
 }

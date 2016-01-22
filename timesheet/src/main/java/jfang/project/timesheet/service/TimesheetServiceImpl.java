@@ -82,7 +82,8 @@ public class TimesheetServiceImpl implements TimesheetService {
 			weekSheetRepository.save(weekSheet);
 			return true;
 		}
-		
+
+		logger.info("No records found. Inserting new records ...");
 		// insert new records
 		weekSheet = new WeekSheet(employee, project);
 		Date dateVar = date;

@@ -11,7 +11,7 @@ $(document).ready(function() {
 		var firstDate = firstDateOfWeek(datePicked);
 		if (dateCurrent != firstDate) {
 			dateCurrent = firstDate;
-			console.log("Week sheet starting from " + firstDate);
+			console.log("Date select: Week sheet starting from " + firstDate);
 			loadWeekSheet();
 		}
 	});
@@ -19,6 +19,7 @@ $(document).ready(function() {
 
 //ajax call to refresh sheet
 function loadWeekSheet() {
+	console.log("ajax loading weeksheet ...");
 	var json = { "projectName": $('#project_name').val(), "dateString": dateCurrent};
 	$.ajax({
 		url: "/timesheet/user/timesheet/date",
@@ -31,7 +32,6 @@ function loadWeekSheet() {
 		},
 
 		success: function(response) {
-			console.log(response);
 			$('#sun_date').text(response.sunDate);
 			$('#sun_hour').val(response.sunHours);
 			$('#mon_date').text(response.monDate);
@@ -67,6 +67,7 @@ function firstDateOfWeek(date) {
 
 // ajax call to update weeksheet
 function submitWeekSheet() {
+	console.log("ajax submitting weeksheet ...");
 	var json = { 
 			"startDate": dateCurrent, "projectName": $('#project_name').val(),
 			"sunHours": $('#sun_hour').val(),
@@ -91,6 +92,7 @@ function submitWeekSheet() {
 		success: function(response) {
 			$("#ajax_response").removeClass().addClass("alert alert-success");
 			$("#ajax_response").text(response.message);
+			$('#total_hour').text(sumUpHours());
 			controlInputAndBtn(true);
 		}
 	});
@@ -98,6 +100,7 @@ function submitWeekSheet() {
 
 // ajax call to unsubmit weeksheet
 function unsubmitWeekSheet() {
+	console.log("ajax unsubmitting weeksheet ...");
 	var json = { "projectName": $('#project_name').val(), "dateString": dateCurrent};
 	
 	$.ajax({
@@ -135,7 +138,7 @@ function controlInputAndBtn(submitted) {
 		$(".enable-control").prop("disabled", true);
 		$("#submit_btn").removeClass().addClass("btn btn-block btn-danger");
 		$("#submit_btn").text("Unsubmit");
-		$("#submit_btn").click(function(event) {
+		$("#submit_btn").unbind().click(function(event) {
 			unsubmitWeekSheet();
 			event.preventDefault();
 		});
@@ -144,7 +147,7 @@ function controlInputAndBtn(submitted) {
 		$(".enable-control").prop("disabled", false);
 		$("#submit_btn").removeClass().addClass("btn btn-block btn-primary");
 		$("#submit_btn").text("submit");
-		$("#submit_btn").click(function(event) {
+		$("#submit_btn").unbind().click(function(event) {
 			submitWeekSheet();
 			event.preventDefault();
 		});
