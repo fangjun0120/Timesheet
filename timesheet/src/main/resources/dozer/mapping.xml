@@ -17,4 +17,13 @@
 		</field>
 	</mapping>
 
+	<mapping date-format="yyyy/MM/dd">
+		<class-a>jfang.project.timesheet.model.Project</class-a>
+		<class-b>jfang.project.timesheet.web.dto.NewProjectDto</class-b>
+		<field>
+			<a>name</a>
+			<b>projectName</b>
+		</field>
+	</mapping>
+
 </mappings> 

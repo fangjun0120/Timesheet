@@ -15,6 +15,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
         DataAccessConfig.class,
@@ -30,5 +32,11 @@ public class ProjectRepositoryTest {
 	public void testFindByName() {
 		Project project = projectRepository.findByName("bsscores");
 		assertEquals(1l, project.getProjectId());
+	}
+
+	@Test
+	public void testFindByManagerId() {
+		List<Project> projects = projectRepository.findByManagerId(1l);
+		assertEquals(2, projects.size());
 	}
 }

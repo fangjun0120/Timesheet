@@ -57,16 +57,16 @@
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
-							<h4 class="modal-title" id="myModalLabel">New Employee</h4>
+							<h4 id="myModalLabel">New Employee</h4>
 						</div>
 						<div class="modal-body">
 							<form id="new_employee_form" role="form" th:action="@{/admin/employee/new}" method="post">
 								<div class="form-group">
-									<label for="username">Username:</label>
+									<label for="new_employee_username">Username:</label>
 									<input type="text" class="form-control" id="new_employee_username" name="username" autofocus="autofocus" />
 								</div>
 								<div class="form-group">
-									<label for="password">Password:</label>
+									<label for="new_employee_password">Password:</label>
 									<div class="input-group">
 	      								<input type="text" class="form-control" id="new_employee_password" name="password" />
       									<span class="input-group-btn">
@@ -90,7 +90,7 @@
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
-							<h4 id="option_title" class="modal-title">Reset Password</h4>
+							<h4 class="modal-title">Reset Password</h4>
 						</div>
 						<div class="modal-body">
 							<p>Reset password for employees below:</p>
@@ -112,7 +112,7 @@
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
-							<h4 id="option_title" class="modal-title">Lock Employee</h4>
+							<h4 class="modal-title">Lock Employee</h4>
 						</div>
 						<div class="modal-body">
 							<p>Lock accounts for employees below:</p>

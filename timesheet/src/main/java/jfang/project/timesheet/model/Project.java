@@ -105,5 +105,14 @@ public class Project implements Serializable {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Project{" +
+				"projectId=" + projectId +
+				", name='" + name + '\'' +
+				", startDate=" + startDate +
+				", endDate=" + endDate +
+				'}';
+	}
 }
