@@ -40,6 +40,34 @@ $(document).ready(function() {
     });
 });
 
+//ajax call to udpate employee list
+$("#submit_btn").click(function(event) {
+    var nameList = [];
+    $('#multiselect_to').find('option').each(function() {
+        nameList.push($(this).val());
+    });
+    var json = {'projectName': $('#project_title').text().split('(')[0],
+        'employeeNameList': nameList};
+    console.log(json);
+
+    $.ajax({
+        url: "/timesheet/admin/project/update",
+        data: JSON.stringify(json),
+        type: "POST",
+
+        beforeSend: function(xhrObj){
+            xhrObj.setRequestHeader("Content-Type", "application/json");
+            xhrObj.setRequestHeader("Accept", "application/json");
+        },
+
+        success: function(response) {
+            $("#ajax_response").removeClass().addClass("alert alert-success");
+            $("#ajax_response").text(response.message);
+        }
+    });
+    event.preventDefault();
+});
+
 function loadProjectList() {
     console.log("ajax loading project list ...");
     $('#project_list').empty();
@@ -54,12 +82,9 @@ function loadProjectList() {
 
         success: function(response) {
             for (var i = 0; i < response.length; i++) {
-                $('#project_list').append('<li>' + response[i] + '</li>');
+                $('#project_list').append('<li><a href="/timesheet/admin/project/'
+                    + response[i] + '">' + response[i] + '</a></li>');
             }
         }
     });
-}
-
-function loadMembersByName() {
-
 }

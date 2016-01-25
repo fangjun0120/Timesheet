@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 
@@ -30,16 +32,18 @@ public class HumanResourceServiceImpl implements HumanResourceService {
 	 * throw IllegalStateException when the Manager not found since the username is given by spring security
 	 */
 	@Override
-	public Manager getManagerByManagerUsername(String username) {
-		return managerRepository.findByUsername(username);
+	public Manager getCurrentManager() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String name = auth.getName();
+		return managerRepository.findByUsername(name);
 	}
 	
 	@Override
-	public Long registerNewEmployeeFor(Manager manager, User user) {
+	public Long registerNewEmployee(User user) {
 		if (user == null)
             throw new IllegalArgumentException("user is null");
         Employee employee = new Employee();
-        employee.setManager(manager);
+        employee.setManager(getCurrentManager());
         employee.setUser(user);
         try {
 			employee = employeeRepository.save(employee);
@@ -55,4 +59,5 @@ public class HumanResourceServiceImpl implements HumanResourceService {
 	public Employee getEmployeeByEmployeeName(String employeeName) {
 		return employeeRepository.findByUsername(employeeName);
 	}
+
 }

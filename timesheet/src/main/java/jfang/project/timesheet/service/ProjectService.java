@@ -11,5 +11,11 @@ public interface ProjectService {
 
 	Project getProjectByName(String name);
 
+	Project findManagerProject();
+
+	Project findManagerProject(String name);
+
 	Long saveNewProject(Project project);
+
+	boolean updateProjectEmployeeList(String projectName, List<String> names);
 }

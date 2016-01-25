@@ -5,17 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "PROJECT")
@@ -35,7 +25,7 @@ public class Project implements Serializable {
 	@JoinColumn(name="MANAGER_ID")
 	private Manager manager;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	@JoinTable(name = "EMPLOYEE_PROJECT", 
 		joinColumns = @JoinColumn(name = "PROJECT_ID"), 
 		inverseJoinColumns = @JoinColumn(name = "EMPLOYEE_ID"))

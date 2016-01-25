@@ -1,7 +1,9 @@
 package jfang.project.timesheet.web.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -20,13 +22,9 @@ import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
@@ -40,7 +38,7 @@ public class ManagerController {
 
 	@Resource
 	private UserService userService;
-	
+
 	@Resource
 	private HumanResourceService humanResourceService;
 
@@ -56,7 +54,7 @@ public class ManagerController {
     @RequestMapping(value = "/employee/data", produces = "application/json")
     public List<EmployeeResponseDto> getEmployeeData() {
         List<EmployeeResponseDto> list = new ArrayList<EmployeeResponseDto>();
-        Manager manager = getCurrentManager();
+        Manager manager = humanResourceService.getCurrentManager();
         for (Employee employee: manager.getEmployees()) {
         	list.add(mapUserToEmployee(employee.getUser()));
         }
@@ -69,8 +67,7 @@ public class ManagerController {
     	String username = newEmployeeDto.getUsername();
     	String password = newEmployeeDto.getPassword();
     	User user = new User(username, password, Constants.ROLE_EMPLOYEE);
-    	Manager manager = getCurrentManager();
-    	Long id = humanResourceService.registerNewEmployeeFor(manager, user);
+    	Long id = humanResourceService.registerNewEmployee(user);
     	
     	AjaxResponseStatus response = new AjaxResponseStatus();
     	// username already exists
@@ -81,8 +78,7 @@ public class ManagerController {
     	else {
     		response.setStatus(ResponseStatus.SUCCESS.value());
     		response.setMessage("User created successfully. Please write down the credentials: " + username + " / " + password);
-    		logger.info(String.format("New employee added by %s: %s / %s", 
-    				manager.getUser().getUsername(), user.getUsername(), user.getPassword()));
+    		logger.info(String.format("New employee added: %s / %s",  user.getUsername(), user.getPassword()));
     	}
     	
     	return response;
@@ -117,14 +113,20 @@ public class ManagerController {
     }
 
 	@RequestMapping("/project")
-	public String getProjectPage() {
-		return "/admin/project";
+	public ModelAndView getProjectPage() {
+		Project project = projectService.findManagerProject();
+		if (project == null) {
+			ModelAndView mav = new ModelAndView("admin/project");
+			mav.addObject("projectDto", null);
+			return mav;
+		}
+		return loadProject(project);
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/project/list", produces = "application/json")
 	public List<String> getProjectList() {
-		Manager manager = getCurrentManager();
+		Manager manager = humanResourceService.getCurrentManager();
 		List<String> list = projectService.getProjectListByManager(manager);
 		logger.info(list.size() + " projects found.");
 		return list;
@@ -133,10 +135,7 @@ public class ManagerController {
 	@ResponseBody
 	@RequestMapping(value="/project/new", method=RequestMethod.POST)
 	public AjaxResponseStatus addNewProject(@RequestBody NewProjectDto requestDto) {
-		Manager manager = getCurrentManager();
 		Project project = mapper.map(requestDto, Project.class);
-		project.setManager(manager);
-		logger.debug(project.toString());
 		long id = projectService.saveNewProject(project);
 
 		AjaxResponseStatus response = new AjaxResponseStatus();
@@ -152,12 +151,60 @@ public class ManagerController {
 		return response;
 	}
 
-    private Manager getCurrentManager() {
-    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-    	return humanResourceService.getManagerByManagerUsername(name);
-    }
-    
+	@RequestMapping("/project/{name}")
+	public ModelAndView getProjectEmployeeList(@PathVariable String name) {
+		Project project = projectService.findManagerProject(name);
+		return loadProject(project);
+	}
+
+	@ResponseBody
+	@RequestMapping(value="/project/update", method=RequestMethod.POST)
+	public AjaxResponseStatus updateEmployeeList(@RequestBody ProjSelectedEmpDto requestDto) {
+		boolean res = projectService.updateProjectEmployeeList(requestDto.getProjectName(),
+				requestDto.getEmployeeNameList());
+
+		AjaxResponseStatus response = new AjaxResponseStatus();
+		if (!res) {
+			response.setStatus(ResponseStatus.ERROR.value());
+			response.setMessage("Update failed.");
+		}
+		else {
+			response.setStatus(ResponseStatus.SUCCESS.value());
+			response.setMessage("Employee list updated successfully.");
+		}
+		return response;
+	}
+
+	private ModelAndView loadProject(Project project) {
+		ProjectDto projectDto = mapper.map(project, ProjectDto.class);
+
+		// set selected employee names
+		List<String> selectedList = new ArrayList<String>();
+		Set<Long> selectedSet = new HashSet<Long>();
+		for (Employee employee: project.getEmployees()) {
+			String employeeName = employee.getUser().getFirstname()
+					+ " " + employee.getUser().getLastname();
+			selectedList.add(employeeName);
+			selectedSet.add(employee.getEmployeeId());
+		}
+		projectDto.setSelectedList(selectedList);
+
+		// select remaining employee names
+		List<String> nonList = new ArrayList<String>();
+		for (Employee employee: project.getManager().getEmployees()) {
+			if (!selectedSet.contains(employee.getEmployeeId())) {
+				String employeeName = employee.getUser().getFirstname()
+						+ " " + employee.getUser().getLastname();
+				nonList.add(employeeName);
+			}
+		}
+		projectDto.setRemainList(nonList);
+
+		ModelAndView mav = new ModelAndView("admin/project");
+		mav.addObject("projectDto", projectDto);
+		return mav;
+	}
+
     private EmployeeResponseDto mapUserToEmployee(User user) {
     	EmployeeResponseDto dto = new EmployeeResponseDto();
     	dto.setEmail(user.getEmail());

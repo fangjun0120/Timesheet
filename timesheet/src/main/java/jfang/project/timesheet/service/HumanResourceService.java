@@ -6,9 +6,9 @@ import jfang.project.timesheet.model.User;
 
 public interface HumanResourceService {
 
-	Manager getManagerByManagerUsername(String username);
+	Manager getCurrentManager();
 
-	Long registerNewEmployeeFor(Manager manager, User user);
+	Long registerNewEmployee(User user);
 	
 	Employee getEmployeeByEmployeeName(String employeeName);
 }
