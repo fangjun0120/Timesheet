@@ -10,8 +10,10 @@ import jfang.project.timesheet.model.User;
 import jfang.project.timesheet.service.UserService;
 import jfang.project.timesheet.web.dto.UserForm;
 
+import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,7 +31,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class RootController {
 
 	private static final Logger logger = LoggerFactory.getLogger(RootController.class);
-	
+
+	@Autowired
+	private Mapper mapper;
+
 	@Resource
 	private UserService userService;
 	
@@ -41,8 +46,12 @@ public class RootController {
 	
 	@Value("${userform.organization.conflict}")
 	public String orgNameConflict;
-	
-	/** Home page. */
+
+	/**
+	 * GET method to home page.
+	 *
+	 * @return
+     */
     @RequestMapping("/")
     public String index() {
     	SecurityContext context = SecurityContextHolder.getContext();
@@ -53,19 +62,38 @@ public class RootController {
         return "index";
     }
 
-    @RequestMapping(value = "/login", method=RequestMethod.GET)
+	/**
+	 * GET method to login page.
+	 *
+	 * @return
+     */
+    @RequestMapping(value = "/login")
     public String login() {
         return "login";
     }
-    
-    @RequestMapping(value="/register", method=RequestMethod.GET)
+
+    /**
+	 * GET method to get registration page.
+	 *
+	 * @param model
+	 * @return
+     */
+    @RequestMapping(value="/register")
     public String getRegistrationForm(Model model) {
     	model.addAttribute("userForm", new UserForm());
     	return "register";
     }
-    
+
+    /**
+	 * POST method to handle submitted registration form.
+	 *
+	 * @param userForm
+	 * @param result
+	 * @return
+     */
     @RequestMapping(value="/register", method=RequestMethod.POST)
-    public String registrationPost(@Valid @ModelAttribute("userForm") UserForm userForm, BindingResult result) {
+    public String registrationPost(@Valid @ModelAttribute("userForm") UserForm userForm,
+								   BindingResult result) {
     	logger.debug("user registered: " + userForm);
     	
     	// field validation fails
@@ -90,16 +118,31 @@ public class RootController {
     	return "login";
     }
 
+	/**
+	 * GET method to profile page.
+	 *
+	 * @param model
+	 * @return
+     */
     @RequestMapping(value="/profile", method=RequestMethod.GET)
     public String getProfileUpdateForm(Model model) {
     	SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
         String username = authentication.getName();
         User user = userService.getUserByUsername(username);
-    	model.addAttribute("userForm", mapUserToUserForm(user));
+		UserForm userForm = mapper.map(user, UserForm.class);
+		userForm.setPassword(null);
+    	model.addAttribute("userForm", userForm);
     	return "user/profile";
     }
-    
+
+    /**
+	 * POST method to update profile.
+	 *
+	 * @param userForm
+	 * @param result
+	 * @return
+     */
     @RequestMapping(value="/profile", method=RequestMethod.POST)
     public String udpateProfile(@Valid @ModelAttribute("userForm") UserForm userForm, BindingResult result) {
     	// field validation fails
@@ -112,6 +155,7 @@ public class RootController {
     		result.addError(new FieldError("usreForm", "pwdConfirm", pwdConfirmErrorMessage));
     		return "user/profile";
     	}
+
     	userService.updateUser(mapUserFormToUser(userForm, null));
     	
     	return "index";
@@ -130,8 +174,7 @@ public class RootController {
     public void simulateError() {
         throw new RuntimeException("This is a simulated error message");
     }
-    
-    // TODO: use dozer mapping
+
     private User mapUserFormToUser(UserForm form, String role) {
     	User user = new User(form.getUsername(), form.getPassword(), role);
     	user.setEmail(form.getEmail());
@@ -140,15 +183,5 @@ public class RootController {
     	user.setOrganization(form.getOrganization());
     	user.setCreateDate(new Date());
     	return user;
-    }
-    // TODO: use dozer mapping
-    private UserForm mapUserToUserForm(User user) {
-    	UserForm form = new UserForm();
-    	form.setUsername(user.getUsername());
-    	form.setEmail(user.getEmail());
-    	form.setFirstname(user.getFirstname());
-    	form.setLastname(user.getLastname());
-    	form.setOrganization(user.getOrganization());
-    	return form;
     }
 }

@@ -44,12 +44,23 @@ public class ManagerController {
 
 	@Resource
 	private ProjectService projectService;
-	
+
+	/**
+	 * GET method to employee management page.
+	 *
+	 * @return
+     */
     @RequestMapping("/employee")
     public String getEmployees() {
     	return "admin/users";
     }
-    
+
+    /**
+	 * AJAX
+	 * GET method to load all employees to current manager.
+	 *
+	 * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/employee/data", produces = "application/json")
     public List<EmployeeResponseDto> getEmployeeData() {
@@ -60,7 +71,15 @@ public class ManagerController {
         }
     	return list;
     }
-    
+
+    /**
+	 * AJAX
+	 * POST method to add new employee.
+	 * Return failure if the user name is already used.
+	 *
+	 * @param newEmployeeDto
+	 * @return
+     */
     @ResponseBody
     @RequestMapping(value="/employee/new", method=RequestMethod.POST)
     public AjaxResponseStatus addNewEmployee(@RequestBody NewEmployeeDto newEmployeeDto) {
@@ -83,7 +102,14 @@ public class ManagerController {
     	
     	return response;
     }
-    
+
+    /**
+	 * AJAX
+	 * POST method to reset password for selected employee(s)
+	 *
+	 * @param usernames
+	 * @return
+     */
     @ResponseBody
     @RequestMapping(value="/employee/reset-pwd", method=RequestMethod.POST)
     public AjaxResponseStatus resetPassword(@RequestBody List<String> usernames) {
@@ -97,7 +123,14 @@ public class ManagerController {
     	response.setMessage("Password reset for: \n" + buffer.toString());
     	return response;
     }
-    
+
+    /**
+	 * AJAX
+	 * POST method to lock employee(s)
+	 *
+	 * @param usernames
+	 * @return
+     */
     @ResponseBody
     @RequestMapping(value="/employee/lock", method=RequestMethod.POST)
     public AjaxResponseStatus disableUser(@RequestBody List<String> usernames) {
@@ -112,6 +145,12 @@ public class ManagerController {
     	return response;
     }
 
+	/**
+	 * GET method to project management page.
+	 * By default, select the first project if exists and load employee list.
+	 *
+	 * @return
+     */
 	@RequestMapping("/project")
 	public ModelAndView getProjectPage() {
 		Project project = projectService.findManagerProject();
@@ -123,6 +162,12 @@ public class ManagerController {
 		return loadProject(project);
 	}
 
+	/**
+	 * AJAX
+	 * GET method to load project list.
+	 *
+	 * @return
+     */
 	@ResponseBody
 	@RequestMapping(value = "/project/list", produces = "application/json")
 	public List<String> getProjectList() {
@@ -132,6 +177,14 @@ public class ManagerController {
 		return list;
 	}
 
+	/**
+	 * AJAX
+	 * POST method to add new project.
+	 * Return failure if the project name is already used.
+	 *
+	 * @param requestDto
+	 * @return
+     */
 	@ResponseBody
 	@RequestMapping(value="/project/new", method=RequestMethod.POST)
 	public AjaxResponseStatus addNewProject(@RequestBody NewProjectDto requestDto) {
@@ -151,12 +204,26 @@ public class ManagerController {
 		return response;
 	}
 
+	/**
+	 * GET method to project management page.
+	 * Load project by name.
+	 *
+	 * @param name
+	 * @return
+     */
 	@RequestMapping("/project/{name}")
 	public ModelAndView getProjectEmployeeList(@PathVariable String name) {
 		Project project = projectService.findManagerProject(name);
 		return loadProject(project);
 	}
 
+	/**
+	 * AJAX
+	 * POST method to update selected employees for the given project.
+	 *
+	 * @param requestDto
+	 * @return
+     */
 	@ResponseBody
 	@RequestMapping(value="/project/update", method=RequestMethod.POST)
 	public AjaxResponseStatus updateEmployeeList(@RequestBody ProjSelectedEmpDto requestDto) {

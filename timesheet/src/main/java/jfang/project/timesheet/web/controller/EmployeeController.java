@@ -51,17 +51,34 @@ public class EmployeeController {
 	
 	@Resource
 	private TimesheetService timesheetService;
-	
+
+	/**
+	 * GET method to home page.
+	 *
+	 * @return
+     */
 	@RequestMapping("/")
     public String userIndex() {
         return "index";
     }
 
+	/**
+	 * GET method to timesheet page.
+	 *
+	 * @return
+     */
 	@RequestMapping("/timesheet")
 	public String getWeekSheetPage() {
 	    return "user/timesheet";
 	}
-	
+
+	/**
+	 * AJAX
+	 * POST method to query weeksheet by startDate, employee and project name.
+	 *
+	 * @param requestDto
+	 * @return
+     */
 	@ResponseBody
     @RequestMapping(value="/timesheet/date", method=RequestMethod.POST)
     public WeekSheetQueryResDto ajaxGetWeekSheetData(@RequestBody WeekSheetQueryReqDto requestDto) {
@@ -72,7 +89,14 @@ public class EmployeeController {
 		logger.debug("ajax response: " + weekSheetDto.toString());
 		return weekSheetDto;
 	}
-	
+
+	/**
+	 * AJAX
+	 * POST method to upadte weeksheet data.
+	 *
+	 * @param requestDto
+	 * @return
+     */
 	@ResponseBody
     @RequestMapping(value="/timesheet/submit", method=RequestMethod.POST)
     public AjaxResponseStatus ajaxSubmitWeekSheetData(@RequestBody WeekSheetPostDto requestDto) {
@@ -98,7 +122,14 @@ public class EmployeeController {
 		}
 		return response;
 	}
-	
+
+	/**
+	 * AJAX
+	 * POST method to unsubmit weeksheet.
+	 *
+	 * @param requestDto
+	 * @return
+     */
 	@ResponseBody
     @RequestMapping(value="/timesheet/unsubmit", method=RequestMethod.POST)
     public AjaxResponseStatus ajaxUnsubmitWeekSheetData(@RequestBody WeekSheetQueryReqDto requestDto) {
