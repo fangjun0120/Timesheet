@@ -37,18 +37,22 @@
                     data-toggle="modal" data-target="#new_proj">New Project</button>
         </div>
 
-        <h3 id="project_title" th:if="${projectDto} != null"
-            th:text="${projectDto.name}+'('+${projectDto.startDate}+'--'+${projectDto.endDate}+')'">
-            Project name(start--end)</h3>
+        <div th:if="${projectDto} != null">
+            <h3 id="project_title"
+                th:text="${projectDto.name}+'('+${projectDto.startDate}+'--'+${projectDto.endDate}+')'">
+                Project name(start--end)</h3>
+        </div>
+
         <!-- employee multi-select -->
         <div>
             <div class="row">
                 <div class="col-xs-5">
                     <b>Employee name list</b>
-                    <select name="from[]" id="multiselect" class="form-control" multiple="multiple">
-                        <option th:if="${projectDto} != null"
-                                th:each="name : ${projectDto.remainList}" th:text="${name}"></option>
-                    </select>
+                    <div th:if="${projectDto} != null">
+                        <select name="from[]" id="multiselect" class="form-control" multiple="multiple">
+                            <option th:each="name : ${projectDto.remainList}" th:text="${name}"></option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="col-xs-2">
@@ -60,10 +64,11 @@
 
                 <div class="col-xs-5">
                     <b>Employees selected:</b>
-                    <select name="to[]" id="multiselect_to" class="form-control" multiple="multiple">
-                        <option th:if="${projectDto} != null"
-                                th:each="name : ${projectDto.selectedList}" th:text="${name}"></option>
-                    </select>
+                    <div th:if="${projectDto} != null">
+                        <select name="to[]" id="multiselect_to" class="form-control" multiple="multiple">
+                            <option th:each="name : ${projectDto.selectedList}" th:text="${name}"></option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <button id="submit_btn" type="submit" class="btn btn-primary">Submit</button>

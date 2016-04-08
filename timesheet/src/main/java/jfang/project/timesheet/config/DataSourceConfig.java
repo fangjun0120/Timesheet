@@ -64,6 +64,8 @@ public class DataSourceConfig {
         EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
         EmbeddedDatabase db = builder
                 .setType(EmbeddedDatabaseType.H2)
+                .addScript("classpath:sql/create_table.sql")
+                .addScript("classpath:sql/insert_data.sql")
                 .build();
         return db;
     }
