@@ -65,10 +65,11 @@ dependencies {
 			"net.sf.dozer:dozer-spring:5.5.1",
 			"net.sf.dozer:dozer:5.5.1",
 			
-            "net.sf.ehcache:ehcache:2.10.0"
+            "net.sf.ehcache:ehcache:2.10.0",
+
+            "com.h2database:h2:1.4.187"
 
     testCompile "junit:junit:$junitVersion",
-            "com.h2database:h2:1.4.187",
             "org.springframework:spring-test:$springVersion",
             "org.mockito:mockito-all:1.9.5"
 }

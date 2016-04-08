@@ -26,6 +26,7 @@ public class WebInitializer implements WebApplicationInitializer {
 
         // Manage the lifecycle of the root application context
         servletContext.addListener(new ContextLoaderListener(rootContext));
+        servletContext.setInitParameter("spring.profiles.active", "demo");
 
         // Create the dispatcher servlet's Spring application context
         AnnotationConfigWebApplicationContext dispatcherContext =

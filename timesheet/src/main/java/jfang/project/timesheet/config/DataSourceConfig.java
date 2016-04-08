@@ -44,7 +44,7 @@ public class DataSourceConfig {
     
     @Bean
     @Profile("test")
-    public DataSource embeddedDataSource() {
+    public DataSource embeddedTestDataSource() {
     	logger.info("Using embedded dataSource.");
     	
     	EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
@@ -54,5 +54,17 @@ public class DataSourceConfig {
 			.addScript("classpath:sql/insert_data.sql")
 			.build();
 		return db;
+    }
+
+    @Bean
+    @Profile("demo")
+    public DataSource embeddedDataSource() {
+        logger.info("Using demo embedded dataSource.");
+
+        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+        EmbeddedDatabase db = builder
+                .setType(EmbeddedDatabaseType.H2)
+                .build();
+        return db;
     }
 }
