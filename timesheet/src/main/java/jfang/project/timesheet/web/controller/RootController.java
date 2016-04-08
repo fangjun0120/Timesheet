@@ -42,10 +42,10 @@ public class RootController {
 	public String pwdConfirmErrorMessage;
 	
 	@Value("${userform.username.conflict}")
-	public String usernameConflict;
-	
+	public String usernameConflictMessage;
+
 	@Value("${userform.organization.conflict}")
-	public String orgNameConflict;
+	public String orgNameConflictMessage;
 
 	/**
 	 * GET method to home page.
@@ -54,6 +54,7 @@ public class RootController {
      */
     @RequestMapping("/")
     public String index() {
+		// TODO: implement home page
     	SecurityContext context = SecurityContextHolder.getContext();
         Authentication authentication = context.getAuthentication();
         for (GrantedAuthority auth : authentication.getAuthorities()) {
@@ -74,6 +75,7 @@ public class RootController {
 
     /**
 	 * GET method to get registration page.
+	 * Pass in an empty UserForm instance.
 	 *
 	 * @param model
 	 * @return
@@ -86,6 +88,7 @@ public class RootController {
 
     /**
 	 * POST method to handle submitted registration form.
+	 * Use @valid annotation to validate UserForm. Manually validate password.
 	 *
 	 * @param userForm
 	 * @param result
@@ -111,7 +114,7 @@ public class RootController {
     	// username already exists
     	if (id == 0) {
     		logger.debug("Username already exists.");
-    		result.addError(new FieldError("usreForm", "username", usernameConflict));
+    		result.addError(new FieldError("usreForm", "username", usernameConflictMessage));
     		return "register";
     	}
     	
@@ -120,6 +123,7 @@ public class RootController {
 
 	/**
 	 * GET method to profile page.
+	 * fill in data with current user info.
 	 *
 	 * @param model
 	 * @return
@@ -138,6 +142,7 @@ public class RootController {
 
     /**
 	 * POST method to update profile.
+	 * Validate userForm with @Valid and manually validate password.
 	 *
 	 * @param userForm
 	 * @param result
@@ -160,7 +165,8 @@ public class RootController {
     	
     	return "index";
     }
-    
+
+	// TODO: error page
     /** Permission deny page */
     @RequestMapping("/permission-deny")
     public String PermissionDeny(Model model) {
@@ -169,6 +175,7 @@ public class RootController {
         return "error";
     }
 
+	// TODO: map exception page
     /** Simulation of an exception. */
     @RequestMapping("/simulateError")
     public void simulateError() {

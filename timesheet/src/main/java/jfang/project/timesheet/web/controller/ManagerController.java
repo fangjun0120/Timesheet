@@ -131,6 +131,7 @@ public class ManagerController {
 	 * @param usernames
 	 * @return
      */
+	// TODO: handle request to lock a locked user
     @ResponseBody
     @RequestMapping(value="/employee/lock", method=RequestMethod.POST)
     public AjaxResponseStatus disableUser(@RequestBody List<String> usernames) {

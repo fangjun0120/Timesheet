@@ -37,7 +37,8 @@ public class HumanResourceServiceImpl implements HumanResourceService {
 		String name = auth.getName();
 		return managerRepository.findByUsername(name);
 	}
-	
+
+	// TODO: validate user, should not accept empty username
 	@Override
 	public Long registerNewEmployee(User user) {
 		if (user == null)
@@ -46,7 +47,7 @@ public class HumanResourceServiceImpl implements HumanResourceService {
         employee.setManager(getCurrentManager());
         employee.setUser(user);
         try {
-			employee = employeeRepository.save(employee);
+			employeeRepository.save(employee);
 		} catch (DataIntegrityViolationException e) {
 			logger.error("Username exists.", e.getMessage());
 			return 0l;

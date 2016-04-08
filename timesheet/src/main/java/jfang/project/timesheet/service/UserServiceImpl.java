@@ -46,6 +46,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     
     /**
      * return the primary key for the user entity. return 0 if the user name already exists.
+	 * Save entity manager. User will be saved as well, due to cascade type ALL.
+	 *
      */
     @Override
     public Long registerNewManager(User user) {
@@ -54,7 +56,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Manager manager = new Manager();
         manager.setUser(user);
         try {
-			manager = managerRepository.save(manager);
+			managerRepository.save(manager);
 		} catch (DataIntegrityViolationException e) {
 			logger.error("Username exists.", e.getMessage());
 			return 0l;

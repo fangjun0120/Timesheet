@@ -42,7 +42,6 @@
 								<label for="orgnization">Organization (optional):</label>
 								<input type="text" class="form-control" id="orgnization" 
 									name="orgnization" th:field="*{organization}"/>
-								<p th:if="${#fields.hasErrors('organization')}" th:errors="*{organization}">Incorrect date</p>
 							</div>
 							<div class="form-group">
 								<label for="email">E-mail (optional):</label>

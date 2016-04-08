@@ -21,7 +21,6 @@ public class UserForm implements Serializable {
     @NotEmpty(message = "{userform.pwdconfirm.notempty}")
 	private String pwdConfirm;
 	
-    @NotEmpty(message = "{userform.organization.notempty}")
     private String organization;
     
     @Pattern(regexp = "^$|.+@.+\\..+", message = "{userform.email.pattern}")

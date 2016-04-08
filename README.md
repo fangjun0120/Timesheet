@@ -15,6 +15,7 @@ A personal toy project, a Java web application
 - Thymeleaf template
   - reusable header fragment
   - navi bar
+  - map exceptions
 - Manager module
   - display all employees
     - bootstrap table
@@ -27,6 +28,7 @@ A personal toy project, a Java web application
   - modify user profile
 - *Project module
 - *timesheet module
+- *home page summary
 
 
 ### Frameworks & Tools

@@ -85,6 +85,7 @@ $("#reset_pwd_btn").click(function(event) {
 			$("#ajax_response").removeClass().addClass("alert alert-success");
 			$("#ajax_response").text(response.message);
 			$('#reset_pwd').modal("hide");
+			$remove.prop('disabled', true);
 		}
 	});
 	event.preventDefault();
@@ -107,6 +108,7 @@ $("#lock_emp_btn").click(function(event) {
 			$("#ajax_response").text(response.message);
 			$table.bootstrapTable('refresh');
 			$('#lock_employee').modal("hide");
+			$remove.prop('disabled', true);
 		}
 	});
 	event.preventDefault();

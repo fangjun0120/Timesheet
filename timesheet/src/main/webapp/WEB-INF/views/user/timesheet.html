@@ -23,26 +23,38 @@
 			<div class="row">
 				<!-- left column, date picker -->
 				<div class="col-lg-4">
-				<div class="row">
-					<div class="col-md-6">
-						<!-- top dropdown, project selector -->
-						<div class="dropdown">
-							<button class="btn btn-primary dropdown-toggle" type="button"
-								id="project_dropdown" data-toggle="dropdown"
-								aria-haspopup="true" aria-expanded="true">
-								Projects<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" aria-labelledby="project list"
-								id="project_list"></ul>
+					<div class="row">
+						<div class="col-md-6">
+							<!-- top dropdown, project selector -->
+							<div class="dropdown">
+								<button class="btn btn-block dropdown-toggle" type="button"
+									id="project_dropdown" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="true">
+									Projects<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" aria-labelledby="project list"
+									id="project_list"></ul>
+							</div>
+
+							<!-- top dropdown, employee selector -->
+							<div class="dropdown" th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
+								<button class="btn btn-block dropdown-toggle" type="button"
+										id="employee_dropdown" data-toggle="dropdown"
+										aria-haspopup="true" aria-expanded="true">
+									Employees<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" aria-labelledby="project list"
+									id="employee_list"></ul>
+							</div>
 						</div>
+						<div class="class-md-6">
+							<p id="project_name">Project X</p>
+							<p th:if="${#authorization.expression('hasRole(''MANAGER'')')}"
+							   id="employee_name">Employee X</p>
+						</div>
+						<!-- date picker -->
+						<div id="datepicker"></div>
 					</div>
-					<div class="class-md-6">
-						<p id="project_name">Project X</p>
-					</div>
-					
-					<!-- date picker -->
-					<div id="datepicker"></div>
-				</div>
 				</div>
 				<!-- left column end -->
 				
