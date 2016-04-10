@@ -30,6 +30,12 @@ A personal toy project, a Java web application
 - *timesheet module
 - *home page summary
 
+### Demo mode
+To run without mysql config, use h2 embedded database for simpel demo.
+DataSource is configured with profile "demo". Disable it in config.WebInitializer:
+```java
+servletContext.setInitParameter("spring.profiles.active", "demo");
+```
 
 ### Frameworks & Tools
 Front end
