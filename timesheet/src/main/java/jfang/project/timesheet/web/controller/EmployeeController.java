@@ -1,6 +1,7 @@
 package jfang.project.timesheet.web.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -18,6 +19,7 @@ import jfang.project.timesheet.web.dto.WeekSheetPostDto;
 import jfang.project.timesheet.web.dto.WeekSheetQueryReqDto;
 import jfang.project.timesheet.web.dto.WeekSheetQueryResDto;
 
+import jfang.project.timesheet.web.exception.ResourceNotFoundException;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -68,7 +71,13 @@ public class EmployeeController {
 	 * @return
      */
 	@RequestMapping("/timesheet")
-	public String getWeekSheetPage() {
+	public String getWeekSheetPage(Model model) {
+		Employee employee = getCurrentEmployee();
+		List<String> list = projectService.getProjectListByEmployee(employee);
+		if (list == null || list.size() == 0) {
+			throw new IllegalArgumentException("No project found.");
+		}
+		model.addAttribute("projectList", list);
 	    return "user/timesheet";
 	}
 
@@ -84,7 +93,7 @@ public class EmployeeController {
     public WeekSheetQueryResDto ajaxGetWeekSheetData(@RequestBody WeekSheetQueryReqDto requestDto) {
 		logger.debug("ajax request start date: " + requestDto.getDateString());
 		WeekSheet weekSheet = timesheetService.getWeekSheetByDate(
-				requestDto.getDateString(), getCurrentEmployee(), "proj1");//requestDto.getProjectName());
+				requestDto.getDateString(), getCurrentEmployee(), "proj1");
 		WeekSheetQueryResDto weekSheetDto = mapWeekSheetToDTO(weekSheet);
 		logger.debug("ajax response: " + weekSheetDto.toString());
 		return weekSheetDto;

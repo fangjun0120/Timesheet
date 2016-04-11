@@ -28,6 +28,20 @@ public class ProjectServiceImpl implements ProjectService {
 	private HumanResourceService humanResourceService;
 
 	@Override
+	public List<String> getProjectListByEmployee(Employee employee) {
+		if (employee == null) {
+			throw new IllegalArgumentException("employee is null.");
+		}
+		List<Project> projects = projectRepository.findByEmployeeId(employee.getEmployeeId());
+		List<String> projectList = new ArrayList<String>();
+		for (Project project: projects) {
+			projectList.add(project.getName());
+			logger.info(project.getName());
+		}
+		return projectList;
+	}
+
+	@Override
 	public List<String> getProjectListByManager(Manager manager) {
 		if (manager == null) {
 			throw new IllegalStateException("manager is null.");

@@ -1,11 +1,14 @@
 package jfang.project.timesheet.service;
 
+import jfang.project.timesheet.model.Employee;
 import jfang.project.timesheet.model.Manager;
 import jfang.project.timesheet.model.Project;
 
 import java.util.List;
 
 public interface ProjectService {
+
+	List<String> getProjectListByEmployee(Employee employee);
 
 	List<String> getProjectListByManager(Manager manager);
 

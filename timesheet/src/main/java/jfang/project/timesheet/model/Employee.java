@@ -35,7 +35,7 @@ public class Employee implements Serializable {
 	private Manager manager;
 	
 	@ManyToMany(mappedBy="employees")
-	private List<Project> projcets = new ArrayList<Project>();
+	private List<Project> projects = new ArrayList<Project>();
 
 	public long getEmployeeId() {
 		return employeeId;
@@ -61,12 +61,12 @@ public class Employee implements Serializable {
 		this.manager = manager;
 	}
 
-	public List<Project> getProjcets() {
-		return projcets;
+	public List<Project> getProjects() {
+		return projects;
 	}
 
-	public void setProjcets(List<Project> projcets) {
-		this.projcets = projcets;
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
 	}
 	
 }

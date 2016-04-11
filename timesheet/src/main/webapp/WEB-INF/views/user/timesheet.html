@@ -33,7 +33,11 @@
 									Projects<span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu" aria-labelledby="project list"
-									id="project_list"></ul>
+									id="project_list">
+									<li th:each="name: ${projectList}">
+										<label th:text="${name}">name</label>
+									</li>
+								</ul>
 							</div>
 
 							<!-- top dropdown, employee selector -->

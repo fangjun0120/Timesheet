@@ -35,6 +35,12 @@ public class ProjectRepositoryTest {
 	}
 
 	@Test
+	public void testFindByEmployeeId() {
+		List<Project> nameList = projectRepository.findByEmployeeId(1l);
+		assertEquals(2, nameList.size());
+	}
+
+	@Test
 	public void testFindByManagerId() {
 		List<Project> projects = projectRepository.findByManagerId(1l);
 		assertEquals(2, projects.size());
