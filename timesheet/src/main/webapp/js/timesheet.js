@@ -1,15 +1,17 @@
-var dateCurrent = firstDateOfWeek(new Date());
+var dateCurrent;
 
 $('#datepicker').datepicker({
 	todayHighlight: true
 });
 
 $(document).ready(function() {
+    dateCurrent = firstDateOfWeek(new Date());
 	var first = $("#project_menu > li > a").first().text();
 	$("#project_name").text(first);
 
 	$(".project_item").click(function() {
 		$("#project_name").text($(this).text());
+		loadWeekSheet();
 	});
 
 	loadWeekSheet();
@@ -27,7 +29,7 @@ $(document).ready(function() {
 //ajax call to refresh sheet
 function loadWeekSheet() {
 	console.log("ajax loading weeksheet ...");
-	var json = { "projectName": $('#project_name').val(), "dateString": dateCurrent};
+	var json = { "projectName": $('#project_name').text(), "dateString": dateCurrent};
 	$.ajax({
 		url: "/timesheet/user/timesheet/date",
 		data: JSON.stringify(json),
@@ -55,6 +57,10 @@ function loadWeekSheet() {
 			$('#sat_hour').val(response.satHours);
 			$('#total_hour').text(response.totalHours);
 			controlInputAndBtn(response.submitted);
+		},
+
+		error: function(jqXHR, exception) {
+            $(location).attr("href", "/timesheet/ajax-error?status=" + jqXHR.status + "&exception=" + exception);
 		}
 	});
 }
@@ -76,7 +82,7 @@ function firstDateOfWeek(date) {
 function submitWeekSheet() {
 	console.log("ajax submitting weeksheet ...");
 	var json = { 
-			"startDate": dateCurrent, "projectName": $('#project_name').val(),
+			"startDate": dateCurrent, "projectName": $('#project_name').text(),
 			"sunHours": $('#sun_hour').val(),
 			"monHours": $('#mon_hour').val(),
 			"tueHours": $('#tue_hour').val(),
@@ -108,7 +114,7 @@ function submitWeekSheet() {
 // ajax call to unsubmit weeksheet
 function unsubmitWeekSheet() {
 	console.log("ajax unsubmitting weeksheet ...");
-	var json = { "projectName": $('#project_name').val(), "dateString": dateCurrent};
+	var json = { "projectName": $('#project_name').text(), "dateString": dateCurrent};
 	
 	$.ajax({
 		url: "/timesheet/user/timesheet/unsubmit",

@@ -10,6 +10,7 @@ import jfang.project.timesheet.model.User;
 import jfang.project.timesheet.service.UserService;
 import jfang.project.timesheet.web.dto.UserForm;
 
+import jfang.project.timesheet.web.exception.AjaxException;
 import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class RootController {
@@ -181,6 +183,11 @@ public class RootController {
     public void simulateError() {
         throw new RuntimeException("This is a simulated error message");
     }
+
+	@RequestMapping("/ajax-error")
+	public void ajaxError(@RequestParam("status") int status, @RequestParam("exception") String exception) {
+		throw new AjaxException(status, exception);
+	}
 
     private User mapUserFormToUser(UserForm form, String role) {
     	User user = new User(form.getUsername(), form.getPassword(), role);

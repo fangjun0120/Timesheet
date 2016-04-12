@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(Exception.class)
     public ModelAndView handleError(HttpServletRequest req, Exception exception) {
-        logger.error("Request: " + req.getRequestURL() + " raised " + exception);
+        logger.error("Request: " + req.getRequestURL(), exception);
 
         ModelAndView modelAndView = new ModelAndView("error");
         modelAndView.addObject("errorCode", "500");
