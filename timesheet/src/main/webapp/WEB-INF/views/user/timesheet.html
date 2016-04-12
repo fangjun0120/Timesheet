@@ -32,26 +32,23 @@
                                     aria-haspopup="true" aria-expanded="false">
                                     Projects<span class="caret"></span>
                                 </button>
-                                <ul class="dropdown-menu" id="project_menu">
-                                    <li th:each="name: ${projectList}"><a class="project_item" th:text="${name}" href="#">name</a></li>
-                                </ul>
+                                <ul class="dropdown-menu" aria-labelledby="project list" id="project_menu"></ul>
                             </div>
 
                             <!-- top dropdown, employee selector -->
                             <div class="dropdown" th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
-                                <button class="btn btn-block btn-primary dropdown-toggle" type="button"
+                                <button class="btn btn-primary dropdown-toggle" type="button"
                                         id="employee_dropdown" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="true">
+                                        aria-haspopup="true" aria-expanded="false">
                                     Employees<span class="caret"></span>
                                 </button>
-                                <ul class="dropdown-menu" aria-labelledby="project list"
-                                    id="employee_list"></ul>
+                                <ul class="dropdown-menu" aria-labelledby="employee list" id="employee_menu"></ul>
                             </div>
                         </div>
                         <div class="class-md-6">
                             <strong id="project_name">Project X</strong>
-                            <p th:if="${#authorization.expression('hasRole(''MANAGER'')')}"
-                               id="employee_name">Employee X</p>
+                            <strong th:if="${#authorization.expression('hasRole(''MANAGER'')')}"
+                               id="employee_name">Employee X</strong>
                         </div>
                         <!-- date picker -->
                         <div id="datepicker"></div>

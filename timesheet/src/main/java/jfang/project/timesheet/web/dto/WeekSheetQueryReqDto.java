@@ -6,9 +6,16 @@ public class WeekSheetQueryReqDto implements Serializable {
 
     private static final long serialVersionUID = 8652554695060368609L;
 
+    private String employeeName;
     private String projectName;
     private String dateString;
 
+    public String getEmployeeName() {
+        return employeeName;
+    }
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
     public String getProjectName() {
         return projectName;
     }
@@ -24,8 +31,10 @@ public class WeekSheetQueryReqDto implements Serializable {
 
     @Override
     public String toString() {
-        return "WeekSheetRequestDto [projectName=" + projectName
-                + ", dateString=" + dateString + "]";
+        return "WeekSheetQueryReqDto{" +
+                "employeeName='" + employeeName + '\'' +
+                ", projectName='" + projectName + '\'' +
+                ", dateString='" + dateString + '\'' +
+                '}';
     }
-
 }

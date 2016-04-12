@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import jfang.project.timesheet.constant.Constants;
 import jfang.project.timesheet.constant.ResponseStatus;
 import jfang.project.timesheet.model.Employee;
+import jfang.project.timesheet.model.Manager;
 import jfang.project.timesheet.model.WeekSheet;
 import jfang.project.timesheet.service.HumanResourceService;
 import jfang.project.timesheet.service.ProjectService;
@@ -70,13 +71,36 @@ public class EmployeeController {
      */
     @RequestMapping("/timesheet")
     public String getWeekSheetPage(Model model) {
-        Employee employee = getCurrentEmployee();
-        List<String> list = projectService.getProjectListByEmployee(employee);
-        if (list == null || list.size() == 0) {
-            throw new IllegalArgumentException("No project found.");
-        }
-        model.addAttribute("projectList", list);
         return "user/timesheet";
+    }
+
+    /**
+     * AJAX
+     * GET method to get project name list. Apply to both manager and employee.
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value="/timesheet/project")
+    public List<String> ajaxProjectList() {
+        logger.debug("ajax request to get project list.");
+        List<String> projectList;
+        String username;
+        if (isUserManager()) {
+            Manager manager = humanResourceService.getCurrentManager();
+            projectList = projectService.getProjectListByManager(manager);
+            username = manager.getUser().getUsername();
+        }
+        else {
+            Employee  employee = humanResourceService.getEmployeeByUsername(getCurrentUserName());
+            projectList = projectService.getProjectListByEmployee(employee);
+            username = employee.getUser().getUsername();
+        }
+        if (projectList == null || projectList.size() == 0) {
+            logger.error("not project found for user: " + username);
+            return new ArrayList<String>();
+        }
+        return projectList;
     }
 
     /**
@@ -90,8 +114,17 @@ public class EmployeeController {
     @RequestMapping(value="/timesheet/date", method=RequestMethod.POST)
     public WeekSheetQueryRespDto ajaxGetWeekSheetData(@RequestBody WeekSheetQueryReqDto requestDto) {
         logger.debug("ajax request start date: " + requestDto.getDateString());
+        Employee employee;
+        if (requestDto.getEmployeeName() != "") {
+            employee = humanResourceService.getEmployeeByRealName(requestDto.getEmployeeName());
+        }
+        else {
+            employee = getCurrentEmployee();
+        }
+        logger.debug(String.format("request weeksheet query: %s, %s, %s",
+                requestDto.getDateString(), employee, requestDto.getProjectName()));
         WeekSheet weekSheet = timesheetService.getWeekSheetByDate(
-                requestDto.getDateString(), getCurrentEmployee(), requestDto.getProjectName());
+                requestDto.getDateString(), employee, requestDto.getProjectName());
         WeekSheetQueryRespDto weekSheetDto = mapWeekSheetToDTO(weekSheet);
         logger.debug("ajax response: " + weekSheetDto.toString());
         return weekSheetDto;
@@ -156,23 +189,24 @@ public class EmployeeController {
         return response;
     }
 
-    private Employee getCurrentEmployee() {
+    private String getCurrentUserName() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
+        return auth.getName();
+    }
+
+    private boolean isUserManager() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         boolean isManager = false;
         for (GrantedAuthority role : auth.getAuthorities()) {
             logger.debug("login as " + role.getAuthority());
             if (role.getAuthority().equals(Constants.ROLE_MANAGER))
                 isManager = true;
         }
-        Employee employee = null;
-        if (isManager) {
-            // get employee name from model
-        }
-        else {
-            employee = humanResourceService.getEmployeeByEmployeeName(name);
-        }
-        return employee;
+        return isManager;
+    }
+
+    private Employee getCurrentEmployee() {
+        return humanResourceService.getEmployeeByUsername(getCurrentUserName());
     }
     
     private WeekSheetQueryRespDto mapWeekSheetToDTO(WeekSheet weekSheet) {

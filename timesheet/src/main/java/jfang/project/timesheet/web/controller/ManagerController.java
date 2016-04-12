@@ -57,6 +57,19 @@ public class ManagerController {
 
     /**
      * AJAX
+     * GET method to load employee name list for a given project.
+     *
+     * @param projectName
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/timesheet/employee", produces = "application/json")
+    public List<String> getEmployeeNameListByProject(@RequestParam("project") String projectName) {
+        return humanResourceService.getEmployeeNameListByProjectName(projectName);
+    }
+
+    /**
+     * AJAX
      * GET method to load all employees to current manager.
      *
      * @return

@@ -16,6 +16,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class HumanResourceServiceImpl implements HumanResourceService {
@@ -57,8 +60,23 @@ public class HumanResourceServiceImpl implements HumanResourceService {
 
     @Override
     @Cacheable(value = "employeeCache")
-    public Employee getEmployeeByEmployeeName(String employeeName) {
+    public Employee getEmployeeByUsername(String employeeName) {
         return employeeRepository.findByUsername(employeeName);
     }
 
+    @Override
+    public Employee getEmployeeByRealName(String name) {
+        String[] tokens = name.split(" ");
+        return employeeRepository.findByFirstAndLastName(tokens[0], tokens[1]);
+    }
+
+    @Override
+    public List<String> getEmployeeNameListByProjectName(String projectName) {
+        List<Employee> employeeList = employeeRepository.findEmployeeListByProject(projectName);
+        List<String> nameList = new ArrayList<String>();
+        for (Employee employee: employeeList) {
+            nameList.add(employee.getUser().getFirstname() + " " + employee.getUser().getLastname());
+        }
+        return nameList;
+    }
 }

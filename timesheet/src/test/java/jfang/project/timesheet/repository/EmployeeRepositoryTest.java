@@ -15,6 +15,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
         DataAccessConfig.class,
@@ -30,5 +32,17 @@ public class EmployeeRepositoryTest {
     public void testFindByUsername() {
         Employee employee = employeeRepository.findByUsername("emp1");
         assertEquals(1l, employee.getEmployeeId());
+    }
+
+    @Test
+    public void testFindEmployeeListByProject() {
+        List<Employee> list = employeeRepository.findEmployeeListByProject("bsscores");
+        assertEquals(2, list.size());
+    }
+
+    @Test
+    public void testFindEmployeeByFirstAndLastName() {
+        Employee employee = employeeRepository.findByFirstAndLastName("Mike", "Young");
+        assertEquals(Long.valueOf(2l), employee.getUser().getUserId());
     }
 }

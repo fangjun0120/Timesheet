@@ -6,32 +6,99 @@ $('#datepicker').datepicker({
 
 $(document).ready(function() {
     dateCurrent = firstDateOfWeek(new Date());
-    var first = $("#project_menu > li > a").first().text();
-    $("#project_name").text(first);
+    loadProjectNameList(false);
 
-    $(".project_item").click(function() {
-        $("#project_name").text($(this).text());
-        loadWeekSheet();
-    });
+    // admin mode
+    if ($("#employee_dropdown").length !== 0) {
+        loadEmployeeNameList(false);
+    }
 
-    loadWeekSheet();
+    loadWeekSheet(false);
+
     $('#datepicker').on("changeDate", function() {
         var datePicked = $('#datepicker').datepicker('getDate');
         var firstDate = firstDateOfWeek(datePicked);
         if (dateCurrent != firstDate) {
             dateCurrent = firstDate;
             console.log("Date select: Week sheet starting from " + firstDate);
-            loadWeekSheet();
+            loadWeekSheet(true);
         }
     });
 });
 
+// ajax call to get employee name list
+function loadEmployeeNameList(isAsync) {
+    console.log("ajax loading employee name list ...");
+    $.ajax({
+        url: "/timesheet/admin/timesheet/employee?project=" + $('#project_name').text(),
+        async: isAsync,
+        type: "GET",
+
+        beforeSend: function(xhrObj) {
+            xhrObj.setRequestHeader("Accept", "application/json");
+        },
+
+        success: function(response) {
+            $("#employee_menu").empty();
+            if (response.length == 0) {
+                $(location).attr("href", "/timesheet/ajax-error?status=500&exception=no_employee_found");
+            }
+            for (var i = 0; i < response.length; i++) {
+                $("#employee_menu").append("<li><a class='employee_item' href='#'>" + response[i] + "</a></li>");
+            }
+            $("#employee_name").text(response[0]);
+            $(".employee_item").unbind().click(function() {
+                $("#employee_name").text($(this).text());
+                loadWeekSheet();
+            });
+        }
+    });
+}
+
+// ajax call to get project name list
+function loadProjectNameList(isAsync) {
+    console.log("ajax loading project name list ...");
+    $.ajax({
+        url: "/timesheet/user/timesheet/project",
+        async: isAsync,
+        type: "GET",
+
+        beforeSend: function(xhrObj) {
+            xhrObj.setRequestHeader("Accept", "application/json");
+        },
+
+        success: function(response) {
+            $("#project_menu").empty();
+            if (response.length == 0) {
+                $(location).attr("href", "/timesheet/ajax-error?status=500&exception=no_project_found");
+            }
+            for (var i = 0; i < response.length; i++) {
+                $("#project_menu").append("<li><a class='project_item' href='#'>" + response[i] + "</a></li>");
+            }
+            $("#project_name").text(response[0]);
+            $(".project_item").unbind().click(function() {
+                $("#project_name").text($(this).text());
+                if ($("#employee_dropdown").length !== 0) {
+                    loadEmployeeNameList(false);
+                }
+                loadWeekSheet();
+            });
+        }
+    });
+}
+
 //ajax call to refresh sheet
-function loadWeekSheet() {
+function loadWeekSheet(isAsync) {
     console.log("ajax loading weeksheet ...");
-    var json = { "projectName": $('#project_name').text(), "dateString": dateCurrent};
+    var employeeName = "";
+    if ($("#employee_dropdown").length !== 0) {
+        employeeName = $('#employee_name').text();
+    }
+    var json = { "employeeName": employeeName, "projectName": $('#project_name').text(),
+            "dateString": dateCurrent};
     $.ajax({
         url: "/timesheet/user/timesheet/date",
+        async: isAsync,
         data: JSON.stringify(json),
         type: "POST",
 

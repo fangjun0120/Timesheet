@@ -1,6 +1,6 @@
 INSERT INTO `USER` (`USER_ID`, `CREATED_AT`, `EMAIL`, `ENABLE`, `EXPIRED`, `FIRST_NAME`, `LAST_NAME`, `ORGANIZATION`, `PASSWORD`, `ROLE`, `USERNAME`) VALUES ('1', '2015-01-01', 'manager@gmail.com', 'Y', 'N', 'MM', 'AA', 'CollegeBoard', 'manager', 'manager', 'manager');
-INSERT INTO `USER` (`USER_ID`, `CREATED_AT`, `EMAIL`, `ENABLE`, `EXPIRED`, `FIRST_NAME`, `LAST_NAME`, `ORGANIZATION`, `PASSWORD`, `ROLE`, `USERNAME`) VALUES ('2', '2015-10-01', 'emp1@gmail.com', 'Y', 'N', 'X', 'Y', 'CollegeBoard', 'emp1', 'employee', 'emp1');
-INSERT INTO `USER` (`USER_ID`, `CREATED_AT`, `EMAIL`, `ENABLE`, `EXPIRED`, `FIRST_NAME`, `LAST_NAME`, `ORGANIZATION`, `PASSWORD`, `ROLE`, `USERNAME`) VALUES ('3', '2015-11-01', 'emp2@gmail.com', 'Y', 'N', 'S', 'K', 'CollegeBoard', 'emp2', 'employee', 'emp2');
+INSERT INTO `USER` (`USER_ID`, `CREATED_AT`, `EMAIL`, `ENABLE`, `EXPIRED`, `FIRST_NAME`, `LAST_NAME`, `ORGANIZATION`, `PASSWORD`, `ROLE`, `USERNAME`) VALUES ('2', '2015-10-01', 'emp1@gmail.com', 'Y', 'N', 'Mike', 'Young', 'CollegeBoard', 'emp1', 'employee', 'emp1');
+INSERT INTO `USER` (`USER_ID`, `CREATED_AT`, `EMAIL`, `ENABLE`, `EXPIRED`, `FIRST_NAME`, `LAST_NAME`, `ORGANIZATION`, `PASSWORD`, `ROLE`, `USERNAME`) VALUES ('3', '2015-11-01', 'emp2@gmail.com', 'Y', 'N', 'Sonic', 'King', 'CollegeBoard', 'emp2', 'employee', 'emp2');
 
 INSERT INTO `MANAGER` (`MANAGER_ID`, `USER_ID`) VALUES ('1', '1');
 
