@@ -10,13 +10,13 @@ import java.util.List;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
-	@Query("select e.projects from Employee e where e.employeeId = :employeeId")
-	List<Project> findByEmployeeId(@Param("employeeId") Long id);
+    @Query("select e.projects from Employee e where e.employeeId = :employeeId")
+    List<Project> findByEmployeeId(@Param("employeeId") Long id);
 
-	@Query("select p from Project p where p.manager.managerId = :managerId")
-	List<Project> findByManagerId(@Param("managerId") Long id);
+    @Query("select p from Project p where p.manager.managerId = :managerId")
+    List<Project> findByManagerId(@Param("managerId") Long id);
 
-	Project findByName(String name);
+    Project findByName(String name);
 
-	Project save(Project project);
+    Project save(Project project);
 }

@@ -2,137 +2,137 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
     <head>
-		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-		<title>Human Resource</title>
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-		<link rel="stylesheet" href="/timesheet/css/bootstrap-table.min.css" />
-	</head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Human Resource</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/timesheet/css/bootstrap-table.min.css" />
+    </head>
     <body>
-		<div th:replace="fragments/header :: header"></div>
+        <div th:replace="fragments/header :: header"></div>
         
         <div class="container">
-        	<h1>Employee Management</h1>
-        	<div id="ajax_response" role="alert">
-        		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        			<span aria-hidden="true">&times;</span>
-        		</button>
-        	</div>
-        	
-        	<table id="table"
-               	data-toggle="table"
-               	data-height="600"
-               	data-click-to-select="true"
-              	data-pagination="true"
-              	data-page-size="10"
-           		data-page-list="[5,8,10,20,ALL]"
-               	data-search="true"
-               	data-url="/timesheet/admin/employee/data">
-            	<thead>
-	            	<tr>
-	            		<th data-field="state" data-checkbox="true"></th>
-	               		<th data-field="username">User name</th>
-	                	<th data-field="firstname">First name</th>
-	                	<th data-field="lastname">Last name</th>
-	                	<th data-field="email">Email</th>
-	                	<th data-field="enabled">Enabled</th>
-	            	</tr>
-            	</thead>
-        	</table>
-        	
-			<div class="btn-group">
-	        	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new_employee">Add Employee</button>
-				<button type="button" class="btn btn-primary table-select" data-toggle="modal" data-target="#reset_pwd">Reset Password</button>
-				<button type="button" class="btn btn-primary table-select" data-toggle="modal" data-target="#lock_employee">Lock Employee</button>
-			</div>
-	
-			<!-- add employee panel -->
-			<div class="modal fade" id="new_employee" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-							<h4 id="myModalLabel">New Employee</h4>
-						</div>
-						<div class="modal-body">
-							<form id="new_employee_form" role="form" th:action="@{/admin/employee/new}" method="post">
-								<div class="form-group">
-									<label for="new_employee_username">Username:</label>
-									<input type="text" class="form-control" id="new_employee_username" name="username" autofocus="autofocus" />
-								</div>
-								<div class="form-group">
-									<label for="new_employee_password">Password:</label>
-									<div class="input-group">
-	      								<input type="text" class="form-control" id="new_employee_password" name="password" />
-      									<span class="input-group-btn">
-							        		<button class="btn btn-default" type="button" id="pwd_btn">Generate</button>
-							      		</span>
-							      	</div>
-							    </div>
-								<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-								<button type="submit" class="btn btn-primary">Save</button>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<!-- reset password panel -->
-			<div class="modal fade comfirm_win" id="reset_pwd" tabindex="-1" role="dialog">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-							<h4 class="modal-title">Reset Password</h4>
-						</div>
-						<div class="modal-body">
-							<p>Reset password for employees below:</p>
-							<ul class="list-group emp_list"></ul>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-							<button type="button" class="btn btn-primary" id="reset_pwd_btn">Confirm</button>
-						</div>
-					</div>
-				</div>
-			</div>
-	
-			<!-- lock employee panel -->
-			<div class="modal fade comfirm_win" id="lock_employee" tabindex="-1" role="dialog">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-							<h4 class="modal-title">Lock Employee</h4>
-						</div>
-						<div class="modal-body">
-							<p>Lock accounts for employees below:</p>
-							<ul class="list-group emp_list"></ul>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-							<button type="button" class="btn btn-primary" id="lock_emp_btn">Confirm</button>
-						</div>
-					</div>
-				</div>
-			</div>
-	
-		</div>
+            <h1>Employee Management</h1>
+            <div id="ajax_response" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <table id="table"
+                data-toggle="table"
+                data-height="600"
+                data-click-to-select="true"
+                data-pagination="true"
+                data-page-size="10"
+                data-page-list="[5,8,10,20,ALL]"
+                data-search="true"
+                data-url="/timesheet/admin/employee/data">
+                <thead>
+                    <tr>
+                        <th data-field="state" data-checkbox="true"></th>
+                        <th data-field="username">User name</th>
+                        <th data-field="firstname">First name</th>
+                        <th data-field="lastname">Last name</th>
+                        <th data-field="email">Email</th>
+                        <th data-field="enabled">Enabled</th>
+                    </tr>
+                </thead>
+            </table>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#new_employee">Add Employee</button>
+                <button type="button" class="btn btn-primary table-select" data-toggle="modal" data-target="#reset_pwd">Reset Password</button>
+                <button type="button" class="btn btn-primary table-select" data-toggle="modal" data-target="#lock_employee">Lock Employee</button>
+            </div>
+
+            <!-- add employee panel -->
+            <div class="modal fade" id="new_employee" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 id="myModalLabel">New Employee</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="new_employee_form" role="form" th:action="@{/admin/employee/new}" method="post">
+                                <div class="form-group">
+                                    <label for="new_employee_username">Username:</label>
+                                    <input type="text" class="form-control" id="new_employee_username" name="username" autofocus="autofocus" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="new_employee_password">Password:</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="new_employee_password" name="password" />
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" id="pwd_btn">Generate</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- reset password panel -->
+            <div class="modal fade comfirm_win" id="reset_pwd" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title">Reset Password</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Reset password for employees below:</p>
+                            <ul class="list-group emp_list"></ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="reset_pwd_btn">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- lock employee panel -->
+            <div class="modal fade comfirm_win" id="lock_employee" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title">Lock Employee</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Lock accounts for employees below:</p>
+                            <ul class="list-group emp_list"></ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="lock_emp_btn">Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
         
-		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         
         <script src="/timesheet/js/bootstrap-table.min.js"></script>
         <script src="/timesheet/js/admin.js"></script>

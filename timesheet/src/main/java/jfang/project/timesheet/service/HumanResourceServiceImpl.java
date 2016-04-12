@@ -20,45 +20,45 @@ import org.springframework.stereotype.Service;
 @Service
 public class HumanResourceServiceImpl implements HumanResourceService {
 
-	private final Logger logger = LoggerFactory.getLogger(HumanResourceServiceImpl.class);
-	
-	@Resource
-	private ManagerRepository managerRepository;
-	
-	@Resource
-	private EmployeeRepository employeeRepository;
+    private final Logger logger = LoggerFactory.getLogger(HumanResourceServiceImpl.class);
 
-	/**
-	 * throw IllegalStateException when the Manager not found since the username is given by spring security
-	 */
-	@Override
-	public Manager getCurrentManager() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String name = auth.getName();
-		return managerRepository.findByUsername(name);
-	}
+    @Resource
+    private ManagerRepository managerRepository;
 
-	// TODO: validate user, should not accept empty username
-	@Override
-	public Long registerNewEmployee(User user) {
-		if (user == null)
+    @Resource
+    private EmployeeRepository employeeRepository;
+
+    /**
+     * throw IllegalStateException when the Manager not found since the username is given by spring security
+     */
+    @Override
+    public Manager getCurrentManager() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        return managerRepository.findByUsername(name);
+    }
+
+    // TODO: validate user, should not accept empty username
+    @Override
+    public Long registerNewEmployee(User user) {
+        if (user == null)
             throw new IllegalArgumentException("user is null");
         Employee employee = new Employee();
         employee.setManager(getCurrentManager());
         employee.setUser(user);
         try {
-			employeeRepository.save(employee);
-		} catch (DataIntegrityViolationException e) {
-			logger.error("Username exists.", e.getMessage());
-			return 0l;
-		}
+            employeeRepository.save(employee);
+        } catch (DataIntegrityViolationException e) {
+            logger.error("Username exists.", e.getMessage());
+            return 0l;
+        }
         return user.getUserId();
-	}
-	
-	@Override
-	@Cacheable(value = "employeeCache")
-	public Employee getEmployeeByEmployeeName(String employeeName) {
-		return employeeRepository.findByUsername(employeeName);
-	}
+    }
+
+    @Override
+    @Cacheable(value = "employeeCache")
+    public Employee getEmployeeByEmployeeName(String employeeName) {
+        return employeeRepository.findByUsername(employeeName);
+    }
 
 }

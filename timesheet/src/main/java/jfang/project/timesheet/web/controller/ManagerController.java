@@ -31,35 +31,35 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("admin")
 public class ManagerController {
 
-	private static final Logger logger = LoggerFactory.getLogger(ManagerController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ManagerController.class);
 
-	@Autowired
-	private Mapper mapper;
+    @Autowired
+    private Mapper mapper;
 
-	@Resource
-	private UserService userService;
+    @Resource
+    private UserService userService;
 
-	@Resource
-	private HumanResourceService humanResourceService;
+    @Resource
+    private HumanResourceService humanResourceService;
 
-	@Resource
-	private ProjectService projectService;
+    @Resource
+    private ProjectService projectService;
 
-	/**
-	 * GET method to employee management page.
-	 *
-	 * @return
+    /**
+     * GET method to employee management page.
+     *
+     * @return
      */
     @RequestMapping("/employee")
     public String getEmployees() {
-    	return "admin/users";
+        return "admin/users";
     }
 
     /**
-	 * AJAX
-	 * GET method to load all employees to current manager.
-	 *
-	 * @return
+     * AJAX
+     * GET method to load all employees to current manager.
+     *
+     * @return
      */
     @ResponseBody
     @RequestMapping(value = "/employee/data", produces = "application/json")
@@ -67,219 +67,219 @@ public class ManagerController {
         List<EmployeeResponseDto> list = new ArrayList<EmployeeResponseDto>();
         Manager manager = humanResourceService.getCurrentManager();
         for (Employee employee: manager.getEmployees()) {
-        	list.add(mapUserToEmployee(employee.getUser()));
+            list.add(mapUserToEmployee(employee.getUser()));
         }
-    	return list;
+        return list;
     }
 
     /**
-	 * AJAX
-	 * POST method to add new employee.
-	 * Return failure if the user name is already used.
-	 *
-	 * @param newEmployeeDto
-	 * @return
+     * AJAX
+     * POST method to add new employee.
+     * Return failure if the user name is already used.
+     *
+     * @param newEmployeeDto
+     * @return
      */
     @ResponseBody
     @RequestMapping(value="/employee/new", method=RequestMethod.POST)
     public AjaxResponseStatus addNewEmployee(@RequestBody NewEmployeeDto newEmployeeDto) {
-    	String username = newEmployeeDto.getUsername();
-    	String password = newEmployeeDto.getPassword();
-    	User user = new User(username, password, Constants.ROLE_EMPLOYEE);
-    	Long id = humanResourceService.registerNewEmployee(user);
-    	
-    	AjaxResponseStatus response = new AjaxResponseStatus();
-    	// username already exists
-    	if (id == 0) {
-    		response.setStatus(ResponseStatus.ERROR.value());
-    		response.setMessage("The user name is already used.");
-    	}
-    	else {
-    		response.setStatus(ResponseStatus.SUCCESS.value());
-    		response.setMessage("User created successfully. Please write down the credentials: " + username + " / " + password);
-    		logger.info(String.format("New employee added: %s / %s",  user.getUsername(), user.getPassword()));
-    	}
-    	
-    	return response;
+        String username = newEmployeeDto.getUsername();
+        String password = newEmployeeDto.getPassword();
+        User user = new User(username, password, Constants.ROLE_EMPLOYEE);
+        Long id = humanResourceService.registerNewEmployee(user);
+
+        AjaxResponseStatus response = new AjaxResponseStatus();
+        // username already exists
+        if (id == 0) {
+            response.setStatus(ResponseStatus.ERROR.value());
+            response.setMessage("The user name is already used.");
+        }
+        else {
+            response.setStatus(ResponseStatus.SUCCESS.value());
+            response.setMessage("User created successfully. Please write down the credentials: " + username + " / " + password);
+            logger.info(String.format("New employee added: %s / %s",  user.getUsername(), user.getPassword()));
+        }
+
+        return response;
     }
 
     /**
-	 * AJAX
-	 * POST method to reset password for selected employee(s)
-	 *
-	 * @param usernames
-	 * @return
+     * AJAX
+     * POST method to reset password for selected employee(s)
+     *
+     * @param usernames
+     * @return
      */
     @ResponseBody
     @RequestMapping(value="/employee/reset-pwd", method=RequestMethod.POST)
     public AjaxResponseStatus resetPassword(@RequestBody List<String> usernames) {
-    	StringBuilder buffer = new StringBuilder();
-    	AjaxResponseStatus response = new AjaxResponseStatus();
-    	for (String username: usernames) {
-    		String pwd = userService.resetPasswordFor(username);
-    		buffer.append(username + " / " + pwd + "\n");
-    	}
-    	response.setStatus(ResponseStatus.SUCCESS.value());
-    	response.setMessage("Password reset for: \n" + buffer.toString());
-    	return response;
+        StringBuilder buffer = new StringBuilder();
+        AjaxResponseStatus response = new AjaxResponseStatus();
+        for (String username: usernames) {
+            String pwd = userService.resetPasswordFor(username);
+            buffer.append(username + " / " + pwd + "\n");
+        }
+        response.setStatus(ResponseStatus.SUCCESS.value());
+        response.setMessage("Password reset for: \n" + buffer.toString());
+        return response;
     }
 
     /**
-	 * AJAX
-	 * POST method to lock employee(s)
-	 *
-	 * @param usernames
-	 * @return
+     * AJAX
+     * POST method to lock employee(s)
+     *
+     * @param usernames
+     * @return
      */
-	// TODO: handle request to lock a locked user
+    // TODO: handle request to lock a locked user
     @ResponseBody
     @RequestMapping(value="/employee/lock", method=RequestMethod.POST)
     public AjaxResponseStatus disableUser(@RequestBody List<String> usernames) {
-    	StringBuilder buffer = new StringBuilder();
-    	AjaxResponseStatus response = new AjaxResponseStatus();
-    	for (String username: usernames) {
-    		userService.disableUser(username);
-    		buffer.append(username + "\n");
-    	}
-    	response.setStatus(ResponseStatus.SUCCESS.value());
-    	response.setMessage("User locked for: \n" + buffer.toString());
-    	return response;
+        StringBuilder buffer = new StringBuilder();
+        AjaxResponseStatus response = new AjaxResponseStatus();
+        for (String username: usernames) {
+            userService.disableUser(username);
+            buffer.append(username + "\n");
+        }
+        response.setStatus(ResponseStatus.SUCCESS.value());
+        response.setMessage("User locked for: \n" + buffer.toString());
+        return response;
     }
 
-	/**
-	 * GET method to project management page.
-	 * By default, select the first project if exists and load employee list.
-	 *
-	 * @return
+    /**
+     * GET method to project management page.
+     * By default, select the first project if exists and load employee list.
+     *
+     * @return
      */
-	@RequestMapping("/project")
-	public ModelAndView getProjectPage() {
-		Project project = projectService.findManagerProject();
-		if (project == null) {
-			ModelAndView mav = new ModelAndView("admin/project");
-			mav.addObject("projectDto", null);
-			return mav;
-		}
-		return loadProject(project);
-	}
+    @RequestMapping("/project")
+    public ModelAndView getProjectPage() {
+        Project project = projectService.findManagerProject();
+        if (project == null) {
+            ModelAndView mav = new ModelAndView("admin/project");
+            mav.addObject("projectDto", null);
+            return mav;
+        }
+        return loadProject(project);
+    }
 
-	/**
-	 * AJAX
-	 * GET method to load project list.
-	 *
-	 * @return
+    /**
+     * AJAX
+     * GET method to load project list.
+     *
+     * @return
      */
-	@ResponseBody
-	@RequestMapping(value = "/project/list", produces = "application/json")
-	public List<String> getProjectList() {
-		Manager manager = humanResourceService.getCurrentManager();
-		List<String> list = projectService.getProjectListByManager(manager);
-		logger.info(list.size() + " projects found.");
-		return list;
-	}
+    @ResponseBody
+    @RequestMapping(value = "/project/list", produces = "application/json")
+    public List<String> getProjectList() {
+        Manager manager = humanResourceService.getCurrentManager();
+        List<String> list = projectService.getProjectListByManager(manager);
+        logger.info(list.size() + " projects found.");
+        return list;
+    }
 
-	/**
-	 * AJAX
-	 * POST method to add new project.
-	 * Return failure if the project name is already used.
-	 *
-	 * @param requestDto
-	 * @return
+    /**
+     * AJAX
+     * POST method to add new project.
+     * Return failure if the project name is already used.
+     *
+     * @param requestDto
+     * @return
      */
-	@ResponseBody
-	@RequestMapping(value="/project/new", method=RequestMethod.POST)
-	public AjaxResponseStatus addNewProject(@RequestBody NewProjectDto requestDto) {
-		Project project = mapper.map(requestDto, Project.class);
-		long id = projectService.saveNewProject(project);
+    @ResponseBody
+    @RequestMapping(value="/project/new", method=RequestMethod.POST)
+    public AjaxResponseStatus addNewProject(@RequestBody NewProjectDto requestDto) {
+        Project project = mapper.map(requestDto, Project.class);
+        long id = projectService.saveNewProject(project);
 
-		AjaxResponseStatus response = new AjaxResponseStatus();
-		// project name already exists
-		if (id == 0) {
-			response.setStatus(ResponseStatus.ERROR.value());
-			response.setMessage("The project name is already used.");
-		}
-		else {
-			response.setStatus(ResponseStatus.SUCCESS.value());
-			response.setMessage("Project created successfully.");
-		}
-		return response;
-	}
+        AjaxResponseStatus response = new AjaxResponseStatus();
+        // project name already exists
+        if (id == 0) {
+            response.setStatus(ResponseStatus.ERROR.value());
+            response.setMessage("The project name is already used.");
+        }
+        else {
+            response.setStatus(ResponseStatus.SUCCESS.value());
+            response.setMessage("Project created successfully.");
+        }
+        return response;
+    }
 
-	/**
-	 * GET method to project management page.
-	 * Load project by name.
-	 *
-	 * @param name
-	 * @return
+    /**
+     * GET method to project management page.
+     * Load project by name.
+     *
+     * @param name
+     * @return
      */
-	@RequestMapping("/project/{name}")
-	public ModelAndView getProjectEmployeeList(@PathVariable String name) {
-		Project project = projectService.findManagerProject(name);
-		return loadProject(project);
-	}
+    @RequestMapping("/project/{name}")
+    public ModelAndView getProjectEmployeeList(@PathVariable String name) {
+        Project project = projectService.findManagerProject(name);
+        return loadProject(project);
+    }
 
-	/**
-	 * AJAX
-	 * POST method to update selected employees for the given project.
-	 *
-	 * @param requestDto
-	 * @return
+    /**
+     * AJAX
+     * POST method to update selected employees for the given project.
+     *
+     * @param requestDto
+     * @return
      */
-	@ResponseBody
-	@RequestMapping(value="/project/update", method=RequestMethod.POST)
-	public AjaxResponseStatus updateEmployeeList(@RequestBody ProjSelectedEmpDto requestDto) {
-		boolean res = projectService.updateProjectEmployeeList(requestDto.getProjectName(),
-				requestDto.getEmployeeNameList());
+    @ResponseBody
+    @RequestMapping(value="/project/update", method=RequestMethod.POST)
+    public AjaxResponseStatus updateEmployeeList(@RequestBody ProjSelectedEmpDto requestDto) {
+        boolean res = projectService.updateProjectEmployeeList(requestDto.getProjectName(),
+                requestDto.getEmployeeNameList());
 
-		AjaxResponseStatus response = new AjaxResponseStatus();
-		if (!res) {
-			response.setStatus(ResponseStatus.ERROR.value());
-			response.setMessage("Update failed.");
-		}
-		else {
-			response.setStatus(ResponseStatus.SUCCESS.value());
-			response.setMessage("Employee list updated successfully.");
-		}
-		return response;
-	}
+        AjaxResponseStatus response = new AjaxResponseStatus();
+        if (!res) {
+            response.setStatus(ResponseStatus.ERROR.value());
+            response.setMessage("Update failed.");
+        }
+        else {
+            response.setStatus(ResponseStatus.SUCCESS.value());
+            response.setMessage("Employee list updated successfully.");
+        }
+        return response;
+    }
 
-	private ModelAndView loadProject(Project project) {
-		ProjectDto projectDto = mapper.map(project, ProjectDto.class);
+    private ModelAndView loadProject(Project project) {
+        ProjectDto projectDto = mapper.map(project, ProjectDto.class);
 
-		// set selected employee names
-		List<String> selectedList = new ArrayList<String>();
-		Set<Long> selectedSet = new HashSet<Long>();
-		for (Employee employee: project.getEmployees()) {
-			String employeeName = employee.getUser().getFirstname()
-					+ " " + employee.getUser().getLastname();
-			selectedList.add(employeeName);
-			selectedSet.add(employee.getEmployeeId());
-		}
-		projectDto.setSelectedList(selectedList);
+        // set selected employee names
+        List<String> selectedList = new ArrayList<String>();
+        Set<Long> selectedSet = new HashSet<Long>();
+        for (Employee employee: project.getEmployees()) {
+            String employeeName = employee.getUser().getFirstname()
+                    + " " + employee.getUser().getLastname();
+            selectedList.add(employeeName);
+            selectedSet.add(employee.getEmployeeId());
+        }
+        projectDto.setSelectedList(selectedList);
 
-		// select remaining employee names
-		List<String> nonList = new ArrayList<String>();
-		for (Employee employee: project.getManager().getEmployees()) {
-			if (!selectedSet.contains(employee.getEmployeeId())) {
-				String employeeName = employee.getUser().getFirstname()
-						+ " " + employee.getUser().getLastname();
-				nonList.add(employeeName);
-			}
-		}
-		projectDto.setRemainList(nonList);
+        // select remaining employee names
+        List<String> nonList = new ArrayList<String>();
+        for (Employee employee: project.getManager().getEmployees()) {
+            if (!selectedSet.contains(employee.getEmployeeId())) {
+                String employeeName = employee.getUser().getFirstname()
+                        + " " + employee.getUser().getLastname();
+                nonList.add(employeeName);
+            }
+        }
+        projectDto.setRemainList(nonList);
 
-		ModelAndView mav = new ModelAndView("admin/project");
-		mav.addObject("projectDto", projectDto);
-		return mav;
-	}
+        ModelAndView mav = new ModelAndView("admin/project");
+        mav.addObject("projectDto", projectDto);
+        return mav;
+    }
 
     private EmployeeResponseDto mapUserToEmployee(User user) {
-    	EmployeeResponseDto dto = new EmployeeResponseDto();
-    	dto.setEmail(user.getEmail());
-    	dto.setEnabled(user.getEnabled()?"Y":"N");
-    	dto.setFirstname(user.getFirstname());
-    	dto.setLastname(user.getLastname());
-    	dto.setUsername(user.getUsername());
-    	return dto;
+        EmployeeResponseDto dto = new EmployeeResponseDto();
+        dto.setEmail(user.getEmail());
+        dto.setEnabled(user.getEnabled()?"Y":"N");
+        dto.setFirstname(user.getFirstname());
+        dto.setLastname(user.getLastname());
+        dto.setUsername(user.getUsername());
+        return dto;
     }
 }

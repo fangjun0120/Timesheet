@@ -1,33 +1,33 @@
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="ehcache.xsd" 
-	updateCheck="false"
-	dynamicConfig="true">
+    xsi:noNamespaceSchemaLocation="ehcache.xsd"
+    updateCheck="false"
+    dynamicConfig="true">
 
-	<!-- User's current working directory -->
-	<diskStore path="user.dir" />
-	
-	<!-- use maxEntriesLocalHeap & maxEntriesLocalDisk -->
-	<!-- or maxBytesLocalHeap & maxBytesLocalDisk -->
-	<!-- Least Recently Used (LRU) bu default -->
-	<cache name="weekSheetCache" 
-		maxEntriesLocalHeap="100"
-		maxEntriesLocalDisk="1000" 
-		eternal="false" 
-		diskSpoolBufferSizeMB="20"
-		timeToIdleSeconds="300" timeToLiveSeconds="600"
-		memoryStoreEvictionPolicy="LFU" 
-		transactionalMode="off">
-		<persistence strategy="localTempSwap" />
-	</cache>
+    <!-- User's current working directory -->
+    <diskStore path="user.dir" />
 
-	<cache name="employeeCache" 
-		maxEntriesLocalHeap="10"
-		maxEntriesLocalDisk="100" 
-		eternal="false" 
-		diskSpoolBufferSizeMB="20"
-		timeToIdleSeconds="600" timeToLiveSeconds="1200"
-		memoryStoreEvictionPolicy="LFU" 
-		transactionalMode="off">
-		<persistence strategy="localTempSwap" />
-	</cache>
+    <!-- use maxEntriesLocalHeap & maxEntriesLocalDisk -->
+    <!-- or maxBytesLocalHeap & maxBytesLocalDisk -->
+    <!-- Least Recently Used (LRU) bu default -->
+    <cache name="weekSheetCache"
+        maxEntriesLocalHeap="100"
+        maxEntriesLocalDisk="1000"
+        eternal="false"
+        diskSpoolBufferSizeMB="20"
+        timeToIdleSeconds="300" timeToLiveSeconds="600"
+        memoryStoreEvictionPolicy="LFU"
+        transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
+
+    <cache name="employeeCache"
+        maxEntriesLocalHeap="10"
+        maxEntriesLocalDisk="100"
+        eternal="false"
+        diskSpoolBufferSizeMB="20"
+        timeToIdleSeconds="600" timeToLiveSeconds="1200"
+        memoryStoreEvictionPolicy="LFU"
+        transactionalMode="off">
+        <persistence strategy="localTempSwap" />
+    </cache>
 </ehcache>

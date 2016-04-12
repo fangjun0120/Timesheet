@@ -19,16 +19,16 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 public class DataSourceConfig {
 
-	private static final Logger logger = LoggerFactory.getLogger(DataSourceConfig.class);
-	
-	@Autowired
+    private static final Logger logger = LoggerFactory.getLogger(DataSourceConfig.class);
+
+    @Autowired
     private Environment env;
 
     @Bean
     @Profile("default")
     public DataSource dataSource() {
-    	logger.info("Using product dataSource.");
-    	
+        logger.info("Using product dataSource.");
+
         HikariConfig dataSourceConfig = new HikariConfig();
         dataSourceConfig.setJdbcUrl(env.getRequiredProperty("db.url"));
         dataSourceConfig.setUsername(env.getRequiredProperty("db.username"));
@@ -45,15 +45,15 @@ public class DataSourceConfig {
     @Bean
     @Profile("test")
     public DataSource embeddedTestDataSource() {
-    	logger.info("Using embedded dataSource.");
-    	
-    	EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-		EmbeddedDatabase db = builder
-			.setType(EmbeddedDatabaseType.H2)
-			.addScript("classpath:sql/create_table.sql")
-			.addScript("classpath:sql/insert_data.sql")
-			.build();
-		return db;
+        logger.info("Using embedded dataSource.");
+
+        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+        EmbeddedDatabase db = builder
+            .setType(EmbeddedDatabaseType.H2)
+            .addScript("classpath:sql/create_table.sql")
+            .addScript("classpath:sql/insert_data.sql")
+            .build();
+        return db;
     }
 
     @Bean

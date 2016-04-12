@@ -26,47 +26,47 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @TestPropertySource("classpath:application-test.properties")
 public class UserRepositoryTest {
 
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Test
-	public void testFindById() {
-		User user = userRepository.findByUserId(1l);
-		assertEquals("manager", user.getUsername());
-	}
-	
-	@Test
-	public void testFindByUsername() {
-		User user = userRepository.findByUsername("manager");
-		assertEquals(Long.valueOf(1l), user.getUserId());
-		user = userRepository.findByUsername("xxx");
-		assertNull(user);
-	}
-	
-	@Test
-	public void testInsertDuplicateUser() {
-		User user = new User("manager", "password", Constants.ROLE_EMPLOYEE);
-		boolean raised = false;
-		try {
-			userRepository.save(user);
-		} catch (DataIntegrityViolationException e) {
-			raised = true;
-		}
-		assertTrue(raised);
-	}
-	
-	@Test
-	public void testInsertNewUser() {
-		User user = new User("newUser", "password", Constants.ROLE_EMPLOYEE);
-		user = userRepository.save(user);
-		assertNotNull(user.getUserId());
-	}
-	
-	@Test
-	public void testUpdateUser() {
-		User user = userRepository.findByUsername("manager");
-		user.setFirstname("new first name");
-		user = userRepository.save(user);
-		assertEquals("new first name", user.getFirstname());
-	}
+    @Autowired
+    private UserRepository userRepository;
+
+    @Test
+    public void testFindById() {
+        User user = userRepository.findByUserId(1l);
+        assertEquals("manager", user.getUsername());
+    }
+
+    @Test
+    public void testFindByUsername() {
+        User user = userRepository.findByUsername("manager");
+        assertEquals(Long.valueOf(1l), user.getUserId());
+        user = userRepository.findByUsername("xxx");
+        assertNull(user);
+    }
+
+    @Test
+    public void testInsertDuplicateUser() {
+        User user = new User("manager", "password", Constants.ROLE_EMPLOYEE);
+        boolean raised = false;
+        try {
+            userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            raised = true;
+        }
+        assertTrue(raised);
+    }
+
+    @Test
+    public void testInsertNewUser() {
+        User user = new User("newUser", "password", Constants.ROLE_EMPLOYEE);
+        user = userRepository.save(user);
+        assertNotNull(user.getUserId());
+    }
+
+    @Test
+    public void testUpdateUser() {
+        User user = userRepository.findByUsername("manager");
+        user.setFirstname("new first name");
+        user = userRepository.save(user);
+        assertEquals("new first name", user.getFirstname());
+    }
 }

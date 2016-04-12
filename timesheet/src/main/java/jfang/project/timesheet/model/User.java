@@ -68,101 +68,101 @@ public class User implements Serializable {
         this.expired = false;
     }
 
-	public Long getUserId() {
-		return userId;
-	}
+    public Long getUserId() {
+        return userId;
+    }
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public String getOrganization() {
-		return organization;
-	}
+    public String getOrganization() {
+        return organization;
+    }
 
-	public void setOrganization(String organization) {
-		this.organization = organization;
-	}
+    public void setOrganization(String organization) {
+        this.organization = organization;
+    }
 
-	public String getFirstname() {
-		return firstname;
-	}
+    public String getFirstname() {
+        return firstname;
+    }
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
 
-	public String getLastname() {
-		return lastname;
-	}
+    public String getLastname() {
+        return lastname;
+    }
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 
-	public Date getCreateDate() {
-		return createDate;
-	}
+    public Date getCreateDate() {
+        return createDate;
+    }
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
 
-	public String getRole() {
-		return role;
-	}
+    public String getRole() {
+        return role;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public void setRole(String role) {
+        this.role = role;
+    }
 
-	public boolean getEnabled() {
-		return enabled;
-	}
+    public boolean getEnabled() {
+        return enabled;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	public boolean getExpired() {
-		return expired;
-	}
+    public boolean getExpired() {
+        return expired;
+    }
 
-	public void setExpired(boolean expired) {
-		this.expired = expired;
-	}
+    public void setExpired(boolean expired) {
+        this.expired = expired;
+    }
 
-	@Override
-	public String toString() {
-		return "User [id=" + userId + ", username=" + username + ", email=" + email
-				+ ", password=" + password + ", organization=" + organization
-				+ ", firstname=" + firstname + ", lastname=" + lastname
-				+ ", createDate=" + createDate + ", role=" + role
-				+ ", enabled=" + enabled + ", expired=" + expired + "]";
-	}
+    @Override
+    public String toString() {
+        return "User [id=" + userId + ", username=" + username + ", email=" + email
+                + ", password=" + password + ", organization=" + organization
+                + ", firstname=" + firstname + ", lastname=" + lastname
+                + ", createDate=" + createDate + ", role=" + role
+                + ", enabled=" + enabled + ", expired=" + expired + "]";
+    }
 
 }

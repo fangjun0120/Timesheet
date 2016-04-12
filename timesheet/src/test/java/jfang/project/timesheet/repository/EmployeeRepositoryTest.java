@@ -23,12 +23,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @TestPropertySource("classpath:application-test.properties")
 public class EmployeeRepositoryTest {
 
-	@Resource
-	private EmployeeRepository employeeRepository;
-	
-	@Test
-	public void testFindByUsername() {
-		Employee employee = employeeRepository.findByUsername("emp1");
-		assertEquals(1l, employee.getEmployeeId());
-	}
+    @Resource
+    private EmployeeRepository employeeRepository;
+
+    @Test
+    public void testFindByUsername() {
+        Employee employee = employeeRepository.findByUsername("emp1");
+        assertEquals(1l, employee.getEmployeeId());
+    }
 }

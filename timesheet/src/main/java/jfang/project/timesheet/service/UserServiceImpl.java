@@ -38,16 +38,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public Manager getManagerByUsername(String username) {
-    	Manager manager = managerRepository.findByUsername(username);
-    	if (manager == null)
-    		throw new IllegalStateException("Manager entity not found for username: " + username);
-    	return manager;
+        Manager manager = managerRepository.findByUsername(username);
+        if (manager == null)
+            throw new IllegalStateException("Manager entity not found for username: " + username);
+        return manager;
     }
     
     /**
      * return the primary key for the user entity. return 0 if the user name already exists.
-	 * Save entity manager. User will be saved as well, due to cascade type ALL.
-	 *
+     * Save entity manager. User will be saved as well, due to cascade type ALL.
+     *
      */
     @Override
     public Long registerNewManager(User user) {
@@ -56,69 +56,69 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Manager manager = new Manager();
         manager.setUser(user);
         try {
-			managerRepository.save(manager);
-		} catch (DataIntegrityViolationException e) {
-			logger.error("Username exists.", e.getMessage());
-			return 0l;
-		}
+            managerRepository.save(manager);
+        } catch (DataIntegrityViolationException e) {
+            logger.error("Username exists.", e.getMessage());
+            return 0l;
+        }
         return user.getUserId();
     }
 
     @Override
     public Long updateUser(User userNew) {
-    	if (userNew == null)
+        if (userNew == null)
             throw new IllegalArgumentException("user is null");
-    	
-    	User user = getUserByUsername(userNew.getUsername());
-    	user.setEmail(userNew.getEmail());
-    	user.setFirstname(userNew.getFirstname());
-    	user.setLastname(userNew.getLastname());
-    	user.setOrganization(userNew.getOrganization());
-    	user.setPassword(userNew.getPassword());
-    	user = userRepository.save(user);
-    	
-    	return user.getUserId();
+
+        User user = getUserByUsername(userNew.getUsername());
+        user.setEmail(userNew.getEmail());
+        user.setFirstname(userNew.getFirstname());
+        user.setLastname(userNew.getLastname());
+        user.setOrganization(userNew.getOrganization());
+        user.setPassword(userNew.getPassword());
+        user = userRepository.save(user);
+
+        return user.getUserId();
     }
     
     @Override
     public String resetPasswordFor(String username) {
-    	User user = getUserByUsername(username);
-    	String password = StringProecessUtil.randomString(8);
-    	user.setPassword(password);
-    	userRepository.save(user);
-    	return password;
+        User user = getUserByUsername(username);
+        String password = StringProecessUtil.randomString(8);
+        user.setPassword(password);
+        userRepository.save(user);
+        return password;
     }
     
     @Override
     public void disableUser(String username) {
-    	User user = getUserByUsername(username);
-    	user.setEnabled(false);
-    	userRepository.save(user);
+        User user = getUserByUsername(username);
+        user.setEnabled(false);
+        userRepository.save(user);
     }
     
     /**
      * Spring security method.
      * Check user password, enable indicator, expired indicator and roles.
      */
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = getUserByUsername(username);
-		
-		List<GrantedAuthority> authorityList = new ArrayList<GrantedAuthority>();
-		if (user.getRole().equals(Constants.ROLE_EMPLOYEE))
-			authorityList.add(new SimpleGrantedAuthority(Constants.ROLE_EMPLOYEE));
-		if (user.getRole().equals(Constants.ROLE_MANAGER))
-			authorityList.add(new SimpleGrantedAuthority(Constants.ROLE_MANAGER));
-		
-		return new org.springframework.security.core.userdetails.User(
-				username, user.getPassword(), user.getEnabled(), !user.getExpired(), true, true, authorityList);
-	}
-	
-	@Override
-	public User getUserByUsername(String username) {
-		User user =userRepository.findByUsername(username);
-		if (user == null)
-			throw new UsernameNotFoundException("User not found.");
-		return user;
-	}
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = getUserByUsername(username);
+
+        List<GrantedAuthority> authorityList = new ArrayList<GrantedAuthority>();
+        if (user.getRole().equals(Constants.ROLE_EMPLOYEE))
+            authorityList.add(new SimpleGrantedAuthority(Constants.ROLE_EMPLOYEE));
+        if (user.getRole().equals(Constants.ROLE_MANAGER))
+            authorityList.add(new SimpleGrantedAuthority(Constants.ROLE_MANAGER));
+
+        return new org.springframework.security.core.userdetails.User(
+                username, user.getPassword(), user.getEnabled(), !user.getExpired(), true, true, authorityList);
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        User user =userRepository.findByUsername(username);
+        if (user == null)
+            throw new UsernameNotFoundException("User not found.");
+        return user;
+    }
 }

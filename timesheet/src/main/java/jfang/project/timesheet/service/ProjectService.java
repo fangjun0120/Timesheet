@@ -8,17 +8,17 @@ import java.util.List;
 
 public interface ProjectService {
 
-	List<String> getProjectListByEmployee(Employee employee);
+    List<String> getProjectListByEmployee(Employee employee);
 
-	List<String> getProjectListByManager(Manager manager);
+    List<String> getProjectListByManager(Manager manager);
 
-	Project getProjectByName(String name);
+    Project getProjectByName(String name);
 
-	Project findManagerProject();
+    Project findManagerProject();
 
-	Project findManagerProject(String name);
+    Project findManagerProject(String name);
 
-	Long saveNewProject(Project project);
+    Long saveNewProject(Project project);
 
-	boolean updateProjectEmployeeList(String projectName, List<String> names);
+    boolean updateProjectEmployeeList(String projectName, List<String> names);
 }

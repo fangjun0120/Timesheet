@@ -13,15 +13,15 @@ import org.junit.Test;
 
 public class TimesheetServiceImplTest {
 
-	private TimesheetServiceImpl service = new TimesheetServiceImpl();
-	
-	@SuppressWarnings("deprecation")
-	@Test
-	public void testGetBlankWeekSheet() throws ParseException {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-		Date date = formatter.parse("2015/12/29");
-		WeekSheet weekSheet = service.getBlankWeekSheet(date, null, null);
-		DaySheet first = weekSheet.getSheets().get(0);
-		assertEquals(first.getDate().getDate(), 27);
-	}
+    private TimesheetServiceImpl service = new TimesheetServiceImpl();
+
+    @SuppressWarnings("deprecation")
+    @Test
+    public void testGetBlankWeekSheet() throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        Date date = formatter.parse("2015/12/29");
+        WeekSheet weekSheet = service.getBlankWeekSheet(date, null, null);
+        DaySheet first = weekSheet.getSheets().get(0);
+        assertEquals(first.getDate().getDate(), 27);
+    }
 }

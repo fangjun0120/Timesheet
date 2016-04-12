@@ -26,62 +26,62 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
-		ServiceConfig.class,
-		DataAccessConfig.class,
-		DataSourceConfig.class})
+        ServiceConfig.class,
+        DataAccessConfig.class,
+        DataSourceConfig.class})
 @ActiveProfiles("test")
 @TestPropertySource("classpath:application-test.properties")
 public class TimesheetServiceTest {
 
-	@Resource
-	private TimesheetService timesheetService;
-	
-	@Resource
-	private EmployeeRepository employeeRepository;
-	
-	@Resource
-	private WeekSheetRepository weekSheetRepository;
+    @Resource
+    private TimesheetService timesheetService;
 
-	@Test
-	public void testSaveWeekSheet() {
-		Integer[] hours = {1,2,3,4,5,6,7};
-		Employee employee = employeeRepository.findByUsername("emp1");
-		timesheetService.saveWeekSheet(employee, "bsscores", "2016/01/10", Arrays.asList(hours));
-		Date startDate = StringProecessUtil.StringToDate("2016/01/10");
-		WeekSheet weekSheet = weekSheetRepository.findByStartDateAndEmployeeIdAndProjectId(startDate, 1, 1);
-		assertNotNull(weekSheet);
-	}
-	
-	@Test
-	public void testUpdate() {
-		Integer[] hours = {1,2,3,4,5,6,7};
-		Employee employee = employeeRepository.findByUsername("emp1");
-		timesheetService.saveWeekSheet(employee, "bsscores", "2016/01/03", Arrays.asList(hours));
-		Date startDate = StringProecessUtil.StringToDate("2016/01/03");
-		WeekSheet weekSheet = weekSheetRepository.findByStartDateAndEmployeeIdAndProjectId(startDate, 1, 1);
-		assertEquals(1, weekSheet.getWeekSheetId());
-		assertEquals(1, weekSheet.getSheets().get(0).getHour());
-		assertEquals(2, weekSheet.getSheets().get(1).getHour());
-		assertEquals(3, weekSheet.getSheets().get(2).getHour());
-		assertEquals(4, weekSheet.getSheets().get(3).getHour());
-		assertEquals(5, weekSheet.getSheets().get(4).getHour());
-		assertEquals(6, weekSheet.getSheets().get(5).getHour());
-		assertEquals(7, weekSheet.getSheets().get(6).getHour());
-	}
+    @Resource
+    private EmployeeRepository employeeRepository;
 
-	@Test
-	public void testInsert() {
-		Integer[] hours = {1,2,3,4,5,6,7};
-		Employee employee = employeeRepository.findByUsername("emp1");
-		timesheetService.saveWeekSheet(employee, "bsscores", "2016/01/10", Arrays.asList(hours));
-		Date startDate = StringProecessUtil.StringToDate("2016/01/10");
-		WeekSheet weekSheet = weekSheetRepository.findByStartDateAndEmployeeIdAndProjectId(startDate, 1, 1);
-		assertEquals(1, weekSheet.getSheets().get(0).getHour());
-		assertEquals(2, weekSheet.getSheets().get(1).getHour());
-		assertEquals(3, weekSheet.getSheets().get(2).getHour());
-		assertEquals(4, weekSheet.getSheets().get(3).getHour());
-		assertEquals(5, weekSheet.getSheets().get(4).getHour());
-		assertEquals(6, weekSheet.getSheets().get(5).getHour());
-		assertEquals(7, weekSheet.getSheets().get(6).getHour());
-	}
+    @Resource
+    private WeekSheetRepository weekSheetRepository;
+
+    @Test
+    public void testSaveWeekSheet() {
+        Integer[] hours = {1,2,3,4,5,6,7};
+        Employee employee = employeeRepository.findByUsername("emp1");
+        timesheetService.saveWeekSheet(employee, "bsscores", "2016/01/10", Arrays.asList(hours));
+        Date startDate = StringProecessUtil.StringToDate("2016/01/10");
+        WeekSheet weekSheet = weekSheetRepository.findByStartDateAndEmployeeIdAndProjectId(startDate, 1, 1);
+        assertNotNull(weekSheet);
+    }
+
+    @Test
+    public void testUpdate() {
+        Integer[] hours = {1,2,3,4,5,6,7};
+        Employee employee = employeeRepository.findByUsername("emp1");
+        timesheetService.saveWeekSheet(employee, "bsscores", "2016/01/03", Arrays.asList(hours));
+        Date startDate = StringProecessUtil.StringToDate("2016/01/03");
+        WeekSheet weekSheet = weekSheetRepository.findByStartDateAndEmployeeIdAndProjectId(startDate, 1, 1);
+        assertEquals(1, weekSheet.getWeekSheetId());
+        assertEquals(1, weekSheet.getSheets().get(0).getHour());
+        assertEquals(2, weekSheet.getSheets().get(1).getHour());
+        assertEquals(3, weekSheet.getSheets().get(2).getHour());
+        assertEquals(4, weekSheet.getSheets().get(3).getHour());
+        assertEquals(5, weekSheet.getSheets().get(4).getHour());
+        assertEquals(6, weekSheet.getSheets().get(5).getHour());
+        assertEquals(7, weekSheet.getSheets().get(6).getHour());
+    }
+
+    @Test
+    public void testInsert() {
+        Integer[] hours = {1,2,3,4,5,6,7};
+        Employee employee = employeeRepository.findByUsername("emp1");
+        timesheetService.saveWeekSheet(employee, "bsscores", "2016/01/10", Arrays.asList(hours));
+        Date startDate = StringProecessUtil.StringToDate("2016/01/10");
+        WeekSheet weekSheet = weekSheetRepository.findByStartDateAndEmployeeIdAndProjectId(startDate, 1, 1);
+        assertEquals(1, weekSheet.getSheets().get(0).getHour());
+        assertEquals(2, weekSheet.getSheets().get(1).getHour());
+        assertEquals(3, weekSheet.getSheets().get(2).getHour());
+        assertEquals(4, weekSheet.getSheets().get(3).getHour());
+        assertEquals(5, weekSheet.getSheets().get(4).getHour());
+        assertEquals(6, weekSheet.getSheets().get(5).getHour());
+        assertEquals(7, weekSheet.getSheets().get(6).getHour());
+    }
 }

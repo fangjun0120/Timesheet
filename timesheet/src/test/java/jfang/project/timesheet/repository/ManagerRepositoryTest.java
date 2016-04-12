@@ -26,21 +26,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @TestPropertySource("classpath:application-test.properties")
 public class ManagerRepositoryTest {
 
-	@Resource
-	private ManagerRepository managerRepository;
-	
-	@Test
-	public void testSaveManager() {
-		Manager manager = new Manager();
-		User user = new User("managerTest", "password", Constants.ROLE_EMPLOYEE);
-		manager.setUser(user);
-		manager = managerRepository.save(manager);
-		assertNotNull(manager.getManagerId());
-	}
-	
-	@Test
-	public void testGetManagerByUserId() {
-		Manager manager = managerRepository.findByUsername("manager");
-		assertEquals(1l, manager.getManagerId());
-	}
+    @Resource
+    private ManagerRepository managerRepository;
+
+    @Test
+    public void testSaveManager() {
+        Manager manager = new Manager();
+        User user = new User("managerTest", "password", Constants.ROLE_EMPLOYEE);
+        manager.setUser(user);
+        manager = managerRepository.save(manager);
+        assertNotNull(manager.getManagerId());
+    }
+
+    @Test
+    public void testGetManagerByUserId() {
+        Manager manager = managerRepository.findByUsername("manager");
+        assertEquals(1l, manager.getManagerId());
+    }
 }

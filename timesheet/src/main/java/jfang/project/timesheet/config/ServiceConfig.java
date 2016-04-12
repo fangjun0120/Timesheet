@@ -24,9 +24,9 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 @ComponentScan(basePackages = {"jfang.project.timesheet.service"})
 public class ServiceConfig {
 
-	private ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-	
-	// hibernate validator
+    private ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+
+    // hibernate validator
     @Bean(name="validator")
     public Validator validatorFactory() {
         ValidatorFactory factory= Validation.buildDefaultValidatorFactory();
@@ -44,15 +44,15 @@ public class ServiceConfig {
     
     // ehcache
     @Bean
-	public CacheManager cacheManager() {
-		return new EhCacheCacheManager(ehCacheCacheManager().getObject());
-	}
+    public CacheManager cacheManager() {
+        return new EhCacheCacheManager(ehCacheCacheManager().getObject());
+    }
 
-	@Bean
-	public EhCacheManagerFactoryBean ehCacheCacheManager() {
-		EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
-		cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
-		cmfb.setShared(true);
-		return cmfb;
-	}
+    @Bean
+    public EhCacheManagerFactoryBean ehCacheCacheManager() {
+        EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
+        cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
+        cmfb.setShared(true);
+        return cmfb;
+    }
 }

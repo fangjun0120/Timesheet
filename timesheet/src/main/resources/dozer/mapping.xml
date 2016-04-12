@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://dozer.sourceforge.net
+    xsi:schemaLocation="http://dozer.sourceforge.net
           http://dozer.sourceforge.net/schema/beanmapping.xsd">
 
-	<mapping>
-		<class-a>jfang.project.timesheet.model.User</class-a>
-		<class-b>jfang.project.timesheet.web.dto.UserForm</class-b>
-	</mapping>
+    <mapping>
+        <class-a>jfang.project.timesheet.model.User</class-a>
+        <class-b>jfang.project.timesheet.web.dto.UserForm</class-b>
+    </mapping>
 
-	<mapping>
-		<class-a>jfang.project.timesheet.model.WeekSheet</class-a>
-		<class-b>jfang.project.timesheet.web.dto.WeekSheetQueryRespDto</class-b>
-		<field>
-			<a>totalHour</a>
-			<b>totalHours</b>
-		</field>
-	</mapping>
+    <mapping>
+        <class-a>jfang.project.timesheet.model.WeekSheet</class-a>
+        <class-b>jfang.project.timesheet.web.dto.WeekSheetQueryRespDto</class-b>
+        <field>
+            <a>totalHour</a>
+            <b>totalHours</b>
+        </field>
+    </mapping>
 
-	<mapping date-format="yyyy/MM/dd">
-		<class-a>jfang.project.timesheet.model.Project</class-a>
-		<class-b>jfang.project.timesheet.web.dto.NewProjectDto</class-b>
-		<field>
-			<a>name</a>
-			<b>projectName</b>
-		</field>
-	</mapping>
+    <mapping date-format="yyyy/MM/dd">
+        <class-a>jfang.project.timesheet.model.Project</class-a>
+        <class-b>jfang.project.timesheet.web.dto.NewProjectDto</class-b>
+        <field>
+            <a>name</a>
+            <b>projectName</b>
+        </field>
+    </mapping>
 
-	<mapping date-format="yyyy/MM/dd">
-		<class-a>jfang.project.timesheet.model.Project</class-a>
-		<class-b>jfang.project.timesheet.web.dto.ProjectDto</class-b>
-	</mapping>
+    <mapping date-format="yyyy/MM/dd">
+        <class-a>jfang.project.timesheet.model.Project</class-a>
+        <class-b>jfang.project.timesheet.web.dto.ProjectDto</class-b>
+    </mapping>
 
 </mappings> 

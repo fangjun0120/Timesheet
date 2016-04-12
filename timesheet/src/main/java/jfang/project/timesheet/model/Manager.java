@@ -19,59 +19,59 @@ import javax.persistence.Table;
 @Table(name = "MANAGER")
 public class Manager implements Serializable {
 
-	private static final long serialVersionUID = 2556200613089026431L;
+    private static final long serialVersionUID = 2556200613089026431L;
 
-	@Id
+    @Id
     @GeneratedValue
     @Column(name = "MANAGER_ID", unique = true, nullable = false)
-	private long managerId;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="USER_ID")
-	private User user;
-	
-	@OneToMany(mappedBy="manager", fetch = FetchType.EAGER)
-	private List<Employee> employees = new ArrayList<Employee>();
-	
-	@OneToMany(mappedBy="manager", fetch = FetchType.EAGER)
-	private List<Project> projects = new ArrayList<Project>();
+    private long managerId;
 
-	public long getManagerId() {
-		return managerId;
-	}
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="USER_ID")
+    private User user;
 
-	public void setManagerId(long managerId) {
-		this.managerId = managerId;
-	}
+    @OneToMany(mappedBy="manager", fetch = FetchType.EAGER)
+    private List<Employee> employees = new ArrayList<Employee>();
 
-	public User getUser() {
-		return user;
-	}
+    @OneToMany(mappedBy="manager", fetch = FetchType.EAGER)
+    private List<Project> projects = new ArrayList<Project>();
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public long getManagerId() {
+        return managerId;
+    }
 
-	public List<Employee> getEmployees() {
-		return employees;
-	}
+    public void setManagerId(long managerId) {
+        this.managerId = managerId;
+    }
 
-	public void setEmployees(List<Employee> employees) {
-		this.employees = employees;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public List<Project> getProjects() {
-		return projects;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public void setProjects(List<Project> projects) {
-		this.projects = projects;
-	}
+    public List<Employee> getEmployees() {
+        return employees;
+    }
 
-	@Override
-	public String toString() {
-		return "Manager [managerId=" + managerId + ", user=" + user
-				+ ", employees=" + employees + ", projects=" + projects + "]";
-	}
-	
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
+    @Override
+    public String toString() {
+        return "Manager [managerId=" + managerId + ", user=" + user
+                + ", employees=" + employees + ", projects=" + projects + "]";
+    }
+
 }

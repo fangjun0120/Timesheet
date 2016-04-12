@@ -17,68 +17,68 @@ import javax.persistence.TemporalType;
 @Table(name = "DAY_SHEET")
 public class DaySheet implements Serializable {
 
-	private static final long serialVersionUID = 897800754266574883L;
-	
-	@Id
+    private static final long serialVersionUID = 897800754266574883L;
+
+    @Id
     @GeneratedValue
     @Column(name = "DAY_SHEET_ID", unique = true, nullable = false)
     private Long daySheetId;
-	
-	@Temporal(TemporalType.DATE)
+
+    @Temporal(TemporalType.DATE)
     @Column(name = "DATE", nullable = false)
-	private Date date;
-	
-	@Column(name = "HOUR", nullable = false)
-	private int hour;
-	
-	@ManyToOne
+    private Date date;
+
+    @Column(name = "HOUR", nullable = false)
+    private int hour;
+
+    @ManyToOne
     @JoinColumn(name="WEEK_SHEET_ID")
-	private WeekSheet weekSheet;
+    private WeekSheet weekSheet;
 
-	public DaySheet() {
-	}
+    public DaySheet() {
+    }
 
-	public DaySheet(Date date, int hour) {
-		this.date = date;
-		this.hour = hour;
-	}
+    public DaySheet(Date date, int hour) {
+        this.date = date;
+        this.hour = hour;
+    }
 
-	public Long getDaySheetId() {
-		return daySheetId;
-	}
+    public Long getDaySheetId() {
+        return daySheetId;
+    }
 
-	public void setDaySheetId(Long daySheetId) {
-		this.daySheetId = daySheetId;
-	}
+    public void setDaySheetId(Long daySheetId) {
+        this.daySheetId = daySheetId;
+    }
 
-	public Date getDate() {
-		return date;
-	}
+    public Date getDate() {
+        return date;
+    }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	public int getHour() {
-		return hour;
-	}
+    public int getHour() {
+        return hour;
+    }
 
-	public void setHour(int hour) {
-		this.hour = hour;
-	}
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
 
-	public WeekSheet getWeekSheet() {
-		return weekSheet;
-	}
+    public WeekSheet getWeekSheet() {
+        return weekSheet;
+    }
 
-	public void setWeekSheet(WeekSheet weekSheet) {
-		this.weekSheet = weekSheet;
-	}
+    public void setWeekSheet(WeekSheet weekSheet) {
+        this.weekSheet = weekSheet;
+    }
 
-	@Override
-	public String toString() {
-		return "DaySheet [daySheetId=" + daySheetId + ", date=" + date
-				+ ", hour=" + hour + ", weekSheet=" + weekSheet.getWeekSheetId() + "]";
-	}
+    @Override
+    public String toString() {
+        return "DaySheet [daySheetId=" + daySheetId + ", date=" + date
+                + ", hour=" + hour + ", weekSheet=" + weekSheet.getWeekSheetId() + "]";
+    }
 
 }

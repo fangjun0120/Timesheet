@@ -26,120 +26,120 @@ import org.hibernate.annotations.Type;
 @Table(name = "WEEK_SHEET")
 public class WeekSheet implements Serializable {
 
-	private static final long serialVersionUID = 4661026806800030373L;
-	
-	@Id
+    private static final long serialVersionUID = 4661026806800030373L;
+
+    @Id
     @GeneratedValue
     @Column(name = "WEEK_SHEET_ID", unique = true, nullable = false)
-	private long weekSheetId;
-	
-	@Temporal(TemporalType.DATE)
+    private long weekSheetId;
+
+    @Temporal(TemporalType.DATE)
     @Column(name = "START_DATE", nullable = false)
-	private Date startDate;
-	
-	@OrderBy("date")
-	@OneToMany(mappedBy="weekSheet", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<DaySheet> sheets = new ArrayList<DaySheet>();
-	
-	@Column(name = "TOTAL_HOUR", nullable = false)
-	private int totalHour;
-	
-	@ManyToOne
-	@JoinColumn(name="EMPLOYEE_ID")
-	private Employee employee;
-	
-	@ManyToOne
-	@JoinColumn(name="PROJECT_ID")
-	private Project project;
-	
-	@Type(type="yes_no")
+    private Date startDate;
+
+    @OrderBy("date")
+    @OneToMany(mappedBy="weekSheet", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<DaySheet> sheets = new ArrayList<DaySheet>();
+
+    @Column(name = "TOTAL_HOUR", nullable = false)
+    private int totalHour;
+
+    @ManyToOne
+    @JoinColumn(name="EMPLOYEE_ID")
+    private Employee employee;
+
+    @ManyToOne
+    @JoinColumn(name="PROJECT_ID")
+    private Project project;
+
+    @Type(type="yes_no")
     @Column(name = "SUBMITTED_IND", nullable = false)
-	private boolean submitted;
-	
-	@Type(type="yes_no")
+    private boolean submitted;
+
+    @Type(type="yes_no")
     @Column(name = "APPROVED_IND", nullable = false)
-	private boolean approved;
+    private boolean approved;
 
-	public WeekSheet() {}
-	
-	public WeekSheet(Employee employee, Project project) {
-		super();
-		this.employee = employee;
-		this.project = project;
-		submitted = false;
-		approved = false;
-	}
+    public WeekSheet() {}
 
-	public long getWeekSheetId() {
-		return weekSheetId;
-	}
+    public WeekSheet(Employee employee, Project project) {
+        super();
+        this.employee = employee;
+        this.project = project;
+        submitted = false;
+        approved = false;
+    }
 
-	public void setWeekSheetId(long weekSheetId) {
-		this.weekSheetId = weekSheetId;
-	}
+    public long getWeekSheetId() {
+        return weekSheetId;
+    }
 
-	public Date getStartDate() {
-		return startDate;
-	}
+    public void setWeekSheetId(long weekSheetId) {
+        this.weekSheetId = weekSheetId;
+    }
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
+    public Date getStartDate() {
+        return startDate;
+    }
 
-	public List<DaySheet> getSheets() {
-		return sheets;
-	}
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
-	public void setSheets(List<DaySheet> sheets) {
-		this.sheets = sheets;
-	}
+    public List<DaySheet> getSheets() {
+        return sheets;
+    }
 
-	public int getTotalHour() {
-		return totalHour;
-	}
+    public void setSheets(List<DaySheet> sheets) {
+        this.sheets = sheets;
+    }
 
-	public void setTotalHour(int totalHour) {
-		this.totalHour = totalHour;
-	}
+    public int getTotalHour() {
+        return totalHour;
+    }
 
-	public Employee getEmployee() {
-		return employee;
-	}
+    public void setTotalHour(int totalHour) {
+        this.totalHour = totalHour;
+    }
 
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
-	}
+    public Employee getEmployee() {
+        return employee;
+    }
 
-	public Project getProject() {
-		return project;
-	}
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 
-	public void setProject(Project project) {
-		this.project = project;
-	}
+    public Project getProject() {
+        return project;
+    }
 
-	public boolean isSubmitted() {
-		return submitted;
-	}
+    public void setProject(Project project) {
+        this.project = project;
+    }
 
-	public void setSubmitted(boolean submitted) {
-		this.submitted = submitted;
-	}
+    public boolean isSubmitted() {
+        return submitted;
+    }
 
-	public boolean isApproved() {
-		return approved;
-	}
+    public void setSubmitted(boolean submitted) {
+        this.submitted = submitted;
+    }
 
-	public void setApproved(boolean approved) {
-		this.approved = approved;
-	}
+    public boolean isApproved() {
+        return approved;
+    }
 
-	@Override
-	public String toString() {
-		return "WeekSheet [weekSheetId=" + weekSheetId + ", startDate="
-				+ startDate + ", sheets=" + sheets + ", totalHour=" + totalHour
-				+ ", employee=" + employee + ", project=" + project
-				+ ", submitted=" + submitted + ", approved=" + approved + "]";
-	}
-	
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
+    @Override
+    public String toString() {
+        return "WeekSheet [weekSheetId=" + weekSheetId + ", startDate="
+                + startDate + ", sheets=" + sheets + ", totalHour=" + totalHour
+                + ", employee=" + employee + ", project=" + project
+                + ", submitted=" + submitted + ", approved=" + approved + "]";
+    }
+
 }

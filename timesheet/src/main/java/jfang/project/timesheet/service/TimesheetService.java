@@ -7,9 +7,9 @@ import jfang.project.timesheet.model.WeekSheet;
 
 public interface TimesheetService {
 
-	WeekSheet getWeekSheetByDate(String date, Employee employee, String projectName);
-	
-	boolean saveWeekSheet(Employee employee, String projectName, String startDate, List<Integer> hours);
-	
-	boolean unsubmitWeekSheet(String date, Employee employee, String projectName);
+    WeekSheet getWeekSheetByDate(String date, Employee employee, String projectName);
+
+    boolean saveWeekSheet(Employee employee, String projectName, String startDate, List<Integer> hours);
+
+    boolean unsubmitWeekSheet(String date, Employee employee, String projectName);
 }

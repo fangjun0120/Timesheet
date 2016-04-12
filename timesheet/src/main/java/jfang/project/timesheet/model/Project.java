@@ -11,98 +11,98 @@ import javax.persistence.*;
 @Table(name = "PROJECT")
 public class Project implements Serializable {
 
-	private static final long serialVersionUID = -8581019159168298913L;
+    private static final long serialVersionUID = -8581019159168298913L;
 
-	@Id
+    @Id
     @GeneratedValue
     @Column(name = "PROJECT_ID", unique = true, nullable = false)
-	private long projectId;
-	
-	@Column(name = "PROJECT_NAME", nullable = false)
-	private String name;
-	
-	@ManyToOne
-	@JoinColumn(name="MANAGER_ID")
-	private Manager manager;
-	
-	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinTable(name = "EMPLOYEE_PROJECT", 
-		joinColumns = @JoinColumn(name = "PROJECT_ID"), 
-		inverseJoinColumns = @JoinColumn(name = "EMPLOYEE_ID"))
-	private List<Employee> employees = new ArrayList<Employee>();;
-	
-	@Temporal(TemporalType.DATE)
+    private long projectId;
+
+    @Column(name = "PROJECT_NAME", nullable = false)
+    private String name;
+
+    @ManyToOne
+    @JoinColumn(name="MANAGER_ID")
+    private Manager manager;
+
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(name = "EMPLOYEE_PROJECT",
+        joinColumns = @JoinColumn(name = "PROJECT_ID"),
+        inverseJoinColumns = @JoinColumn(name = "EMPLOYEE_ID"))
+    private List<Employee> employees = new ArrayList<Employee>();;
+
+    @Temporal(TemporalType.DATE)
     @Column(name = "START_DATE", nullable = false)
-	private Date startDate;
-	
-	@Temporal(TemporalType.DATE)
+    private Date startDate;
+
+    @Temporal(TemporalType.DATE)
     @Column(name = "END_DATE", nullable = false)
-	private Date endDate;
-	
-	public Project() {}
+    private Date endDate;
 
-	public Project(String name, Manager manager, Date startDate, Date endDate) {
-		this.name = name;
-		this.manager = manager;
-		this.startDate = startDate;
-		this.endDate = endDate;
-	}
+    public Project() {}
 
-	public long getProjectId() {
-		return projectId;
-	}
+    public Project(String name, Manager manager, Date startDate, Date endDate) {
+        this.name = name;
+        this.manager = manager;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
-	public void setProjectId(long projectId) {
-		this.projectId = projectId;
-	}
+    public long getProjectId() {
+        return projectId;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setProjectId(long projectId) {
+        this.projectId = projectId;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Manager getManager() {
-		return manager;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setManager(Manager manager) {
-		this.manager = manager;
-	}
+    public Manager getManager() {
+        return manager;
+    }
 
-	public List<Employee> getEmployees() {
-		return employees;
-	}
+    public void setManager(Manager manager) {
+        this.manager = manager;
+    }
 
-	public void setEmployees(List<Employee> employees) {
-		this.employees = employees;
-	}
+    public List<Employee> getEmployees() {
+        return employees;
+    }
 
-	public Date getStartDate() {
-		return startDate;
-	}
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
+    public Date getStartDate() {
+        return startDate;
+    }
 
-	public Date getEndDate() {
-		return endDate;
-	}
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
+    public Date getEndDate() {
+        return endDate;
+    }
 
-	@Override
-	public String toString() {
-		return "Project{" +
-				"projectId=" + projectId +
-				", name='" + name + '\'' +
-				", startDate=" + startDate +
-				", endDate=" + endDate +
-				'}';
-	}
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "projectId=" + projectId +
+                ", name='" + name + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                '}';
+    }
 }

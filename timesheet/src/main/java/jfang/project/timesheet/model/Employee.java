@@ -19,54 +19,54 @@ import javax.persistence.Table;
 @Table(name = "EMPLOYEE")
 public class Employee implements Serializable {
 
-	private static final long serialVersionUID = 598803739896116673L;
+    private static final long serialVersionUID = 598803739896116673L;
 
-	@Id
+    @Id
     @GeneratedValue
     @Column(name = "EMPLOYEE_ID", unique = true, nullable = false)
-	private long employeeId;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="USER_ID")
-	private User user;
-	
-	@ManyToOne
-	@JoinColumn(name="MANAGER_ID")
-	private Manager manager;
-	
-	@ManyToMany(mappedBy="employees")
-	private List<Project> projects = new ArrayList<Project>();
+    private long employeeId;
 
-	public long getEmployeeId() {
-		return employeeId;
-	}
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="USER_ID")
+    private User user;
 
-	public void setEmployeeId(long employeeId) {
-		this.employeeId = employeeId;
-	}
+    @ManyToOne
+    @JoinColumn(name="MANAGER_ID")
+    private Manager manager;
 
-	public User getUser() {
-		return user;
-	}
+    @ManyToMany(mappedBy="employees")
+    private List<Project> projects = new ArrayList<Project>();
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public long getEmployeeId() {
+        return employeeId;
+    }
 
-	public Manager getManager() {
-		return manager;
-	}
+    public void setEmployeeId(long employeeId) {
+        this.employeeId = employeeId;
+    }
 
-	public void setManager(Manager manager) {
-		this.manager = manager;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public List<Project> getProjects() {
-		return projects;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public void setProjects(List<Project> projects) {
-		this.projects = projects;
-	}
-	
+    public Manager getManager() {
+        return manager;
+    }
+
+    public void setManager(Manager manager) {
+        this.manager = manager;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
 }

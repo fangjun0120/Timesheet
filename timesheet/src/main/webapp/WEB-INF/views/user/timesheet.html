@@ -1,154 +1,154 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-		<meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-		<title>Employee Timesheet</title>
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.1/css/bootstrap-datepicker3.min.css" />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Employee Timesheet</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.1/css/bootstrap-datepicker3.min.css" />
 <!-- 		<link rel="stylesheet" href="../../../css/timesheet.css" /> -->
-		<link rel="stylesheet" href="/timesheet/css/timesheet.css" />
-	</head>
+        <link rel="stylesheet" href="/timesheet/css/timesheet.css" />
+    </head>
     <body>
-		<div th:replace="fragments/header :: header"></div>
-		<div class="container">
-			<div id="ajax_response" role="alert">
-        		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        			<span aria-hidden="true">&times;</span>
-        		</button>
-        	</div>
-			<div class="row">
-				<!-- left column, date picker -->
-				<div class="col-lg-4">
-					<div class="row">
-						<div class="col-md-6">
-							<!-- top dropdown, project selector -->
-							<div class="btn-group">
-								<button class="btn btn-primary dropdown-toggle" type="button"
-									id="project_dropdown" data-toggle="dropdown"
-									aria-haspopup="true" aria-expanded="false">
-									Projects<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" id="project_menu">
-									<li th:each="name: ${projectList}"><a class="project_item" th:text="${name}" href="#">name</a></li>
-								</ul>
-							</div>
+        <div th:replace="fragments/header :: header"></div>
+        <div class="container">
+            <div id="ajax_response" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="row">
+                <!-- left column, date picker -->
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- top dropdown, project selector -->
+                            <div class="btn-group">
+                                <button class="btn btn-primary dropdown-toggle" type="button"
+                                    id="project_dropdown" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    Projects<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" id="project_menu">
+                                    <li th:each="name: ${projectList}"><a class="project_item" th:text="${name}" href="#">name</a></li>
+                                </ul>
+                            </div>
 
-							<!-- top dropdown, employee selector -->
-							<div class="dropdown" th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
-								<button class="btn btn-block btn-primary dropdown-toggle" type="button"
-										id="employee_dropdown" data-toggle="dropdown"
-										aria-haspopup="true" aria-expanded="true">
-									Employees<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" aria-labelledby="project list"
-									id="employee_list"></ul>
-							</div>
-						</div>
-						<div class="class-md-6">
-							<strong id="project_name">Project X</strong>
-							<p th:if="${#authorization.expression('hasRole(''MANAGER'')')}"
-							   id="employee_name">Employee X</p>
-						</div>
-						<!-- date picker -->
-						<div id="datepicker"></div>
-					</div>
-				</div>
-				<!-- left column end -->
-				
-				<!-- right column, week sheet form table -->
-				<div class="col-lg-8">
-					<table class="table table-striped">
-						<colgroup>
-							<col class="col-md-2" />
-							<col class="col-md-7" />
-							<col class="col-md-3" />
-						</colgroup>
-						<thead>
-							<tr>
-								<th></th>
-								<th><p class="text-center">Date</p></th>
-								<th><p class="text-center">Hours</p></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td><p class="text-center">Sun</p></td>
-								<td><p id="sun_date" class="text-center"></p></td>
-								<td><input class="form-control enable-control" id="sun_hour" type="number" min="0"
-									max="24" step="1" value="0" /></td>
-							</tr>
-							<tr>
-								<td><p class="text-center">Mon</p></td>
-								<td><p id="mon_date" class="text-center"></p></td>
-								<td><input class="form-control enable-control" id="mon_hour" type="number" min="0"
-									max="24" step="1" value="0" /></td>
-							</tr>
-							<tr>
-								<td><p class="text-center">Tue</p></td>
-								<td><p id="tue_date" class="text-center"></p></td>
-								<td><input class="form-control enable-control" id="tue_hour" type="number" min="0"
-									max="24" step="1" value="0" /></td>
-							</tr>
-							<tr>
-								<td><p class="text-center">Wed</p></td>
-								<td><p id="wed_date" class="text-center"></p></td>
-								<td><input class="form-control enable-control" id="wed_hour" type="number" min="0"
-									max="24" step="1" value="0" /></td>
-							</tr>
-							<tr>
-								<td><p class="text-center">Thu</p></td>
-								<td><p id="thu_date" class="text-center"></p></td>
-								<td><input class="form-control enable-control" id="thu_hour" type="number" min="0"
-									max="24" step="1" value="0" /></td>
-							</tr>
-							<tr>
-								<td><p class="text-center">Fri</p></td>
-								<td><p id="fri_date" class="text-center"></p></td>
-								<td><input class="form-control enable-control" id="fri_hour" type="number" min="0"
-									max="24" step="1" value="0" /></td>
-							</tr>
-							<tr>
-								<td><p class="text-center">Sat</p></td>
-								<td><p id="sat_date" class="text-center"></p></td>
-								<td><input class="form-control enable-control" id="sat_hour" type="number" min="0"
-									max="24" step="1" value="0" /></td>
-							</tr>
-						</tbody>
-					</table>
-					<div class="row">
-						<div class="col-md-2 col-md-offset-1">
-							<button id="submit_btn" type="submit" class="btn btn-block btn-primary">Submit</button>
-						</div>
-						<div class="col-md-2"
-							th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
-							<button id="approve_btn" type="submit" class="btn btn-block btn-primary">Approve</button>
-						</div>
-						<div class="col-md-1 col-md-offset-4">
-							<p class="text-center">Total:</p>
-						</div>
-						<div class="col-md-1">
-							<p id="total_hour" class="text-center"></p>
-						</div>
-					</div>
-				</div>
-				<!-- right column end -->
-				
-			</div>
-		</div>
-		
-		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+                            <!-- top dropdown, employee selector -->
+                            <div class="dropdown" th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
+                                <button class="btn btn-block btn-primary dropdown-toggle" type="button"
+                                        id="employee_dropdown" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="true">
+                                    Employees<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="project list"
+                                    id="employee_list"></ul>
+                            </div>
+                        </div>
+                        <div class="class-md-6">
+                            <strong id="project_name">Project X</strong>
+                            <p th:if="${#authorization.expression('hasRole(''MANAGER'')')}"
+                               id="employee_name">Employee X</p>
+                        </div>
+                        <!-- date picker -->
+                        <div id="datepicker"></div>
+                    </div>
+                </div>
+                <!-- left column end -->
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.1/js/bootstrap-datepicker.min.js"></script>
+                <!-- right column, week sheet form table -->
+                <div class="col-lg-8">
+                    <table class="table table-striped">
+                        <colgroup>
+                            <col class="col-md-2" />
+                            <col class="col-md-7" />
+                            <col class="col-md-3" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th><p class="text-center">Date</p></th>
+                                <th><p class="text-center">Hours</p></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><p class="text-center">Sun</p></td>
+                                <td><p id="sun_date" class="text-center"></p></td>
+                                <td><input class="form-control enable-control" id="sun_hour" type="number" min="0"
+                                    max="24" step="1" value="0" /></td>
+                            </tr>
+                            <tr>
+                                <td><p class="text-center">Mon</p></td>
+                                <td><p id="mon_date" class="text-center"></p></td>
+                                <td><input class="form-control enable-control" id="mon_hour" type="number" min="0"
+                                    max="24" step="1" value="0" /></td>
+                            </tr>
+                            <tr>
+                                <td><p class="text-center">Tue</p></td>
+                                <td><p id="tue_date" class="text-center"></p></td>
+                                <td><input class="form-control enable-control" id="tue_hour" type="number" min="0"
+                                    max="24" step="1" value="0" /></td>
+                            </tr>
+                            <tr>
+                                <td><p class="text-center">Wed</p></td>
+                                <td><p id="wed_date" class="text-center"></p></td>
+                                <td><input class="form-control enable-control" id="wed_hour" type="number" min="0"
+                                    max="24" step="1" value="0" /></td>
+                            </tr>
+                            <tr>
+                                <td><p class="text-center">Thu</p></td>
+                                <td><p id="thu_date" class="text-center"></p></td>
+                                <td><input class="form-control enable-control" id="thu_hour" type="number" min="0"
+                                    max="24" step="1" value="0" /></td>
+                            </tr>
+                            <tr>
+                                <td><p class="text-center">Fri</p></td>
+                                <td><p id="fri_date" class="text-center"></p></td>
+                                <td><input class="form-control enable-control" id="fri_hour" type="number" min="0"
+                                    max="24" step="1" value="0" /></td>
+                            </tr>
+                            <tr>
+                                <td><p class="text-center">Sat</p></td>
+                                <td><p id="sat_date" class="text-center"></p></td>
+                                <td><input class="form-control enable-control" id="sat_hour" type="number" min="0"
+                                    max="24" step="1" value="0" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-md-2 col-md-offset-1">
+                            <button id="submit_btn" type="submit" class="btn btn-block btn-primary">Submit</button>
+                        </div>
+                        <div class="col-md-2"
+                            th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
+                            <button id="approve_btn" type="submit" class="btn btn-block btn-primary">Approve</button>
+                        </div>
+                        <div class="col-md-1 col-md-offset-4">
+                            <p class="text-center">Total:</p>
+                        </div>
+                        <div class="col-md-1">
+                            <p id="total_hour" class="text-center"></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- right column end -->
 
-		<script src="/timesheet/js/timesheet.js"></script>
+            </div>
+        </div>
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.1/js/bootstrap-datepicker.min.js"></script>
+
+        <script src="/timesheet/js/timesheet.js"></script>
 <!-- 		<script src="../../../js/timesheet.js"></script> -->
     </body>
 </html>

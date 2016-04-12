@@ -2,26 +2,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="utf-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-		<title>Error page</title>
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Error page</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
     </head>
     <body>
-    	<div th:replace="fragments/header :: header"></div>
-    	
-    	<div class="jumbotron">
-    	<div class="container">
-        	<h1 th:text="${errorCode}">404</h1>
-        	<p th:utext="${errorMessage}">Error java.lang.NullPointerException</p>
-        	<p th:utext="${errorReq}">Error request URL</p>
-        	<a th:href="@{/}">Back to Home Page</a>
-        	</div>
+        <div th:replace="fragments/header :: header"></div>
+
+        <div class="jumbotron">
+        <div class="container">
+            <h1 th:text="${errorCode}">404</h1>
+            <p th:utext="${errorMessage}">Error java.lang.NullPointerException</p>
+            <p th:utext="${errorReq}">Error request URL</p>
+            <a th:href="@{/}">Back to Home Page</a>
+            </div>
         </div>
         
         <!-- Latest compiled and minified JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     </body>
 </html>

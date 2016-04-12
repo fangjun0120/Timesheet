@@ -22,33 +22,33 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {
-		ServiceConfig.class,
-		DataAccessConfig.class,
-		DataSourceConfig.class})
+        ServiceConfig.class,
+        DataAccessConfig.class,
+        DataSourceConfig.class})
 @ActiveProfiles("test")
 @TestPropertySource("classpath:application-test.properties")
 public class DozerMappingTest {
 
-	@Autowired
-	private Mapper mapper;
-	
-	@Test
-	public void testMapping() {
-		User user = new User("username", "password", Constants.ROLE_EMPLOYEE);
-		UserForm form = mapper.map(user, UserForm.class);
-		assertEquals("username", form.getUsername());
-	}
+    @Autowired
+    private Mapper mapper;
 
-	@Test
-	public void testMappingConvert() {
-		NewProjectDto dto = new NewProjectDto();
-		dto.setProjectName("name");
-		dto.setStartDate("2015/01/01");
-		dto.setEndDate("2016/01/01");
-		Project project = mapper.map(dto, Project.class);
-		assertEquals("name", project.getName());
-		assertEquals(115, project.getStartDate().getYear());
-		assertEquals(0, project.getStartDate().getMonth());
-		assertEquals(1, project.getStartDate().getDate());
-	}
+    @Test
+    public void testMapping() {
+        User user = new User("username", "password", Constants.ROLE_EMPLOYEE);
+        UserForm form = mapper.map(user, UserForm.class);
+        assertEquals("username", form.getUsername());
+    }
+
+    @Test
+    public void testMappingConvert() {
+        NewProjectDto dto = new NewProjectDto();
+        dto.setProjectName("name");
+        dto.setStartDate("2015/01/01");
+        dto.setEndDate("2016/01/01");
+        Project project = mapper.map(dto, Project.class);
+        assertEquals("name", project.getName());
+        assertEquals(115, project.getStartDate().getYear());
+        assertEquals(0, project.getStartDate().getMonth());
+        assertEquals(1, project.getStartDate().getDate());
+    }
 }

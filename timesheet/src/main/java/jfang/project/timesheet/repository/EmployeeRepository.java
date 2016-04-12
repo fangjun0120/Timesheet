@@ -8,9 +8,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-	@SuppressWarnings("unchecked")
-	Employee save(Employee employee);
-	
-	@Query("select e from Employee e where e.user.username = :username")
-	Employee findByUsername(@Param("username") String username);
+    @SuppressWarnings("unchecked")
+    Employee save(Employee employee);
+
+    @Query("select e from Employee e where e.user.username = :username")
+    Employee findByUsername(@Param("username") String username);
 }
