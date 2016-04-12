@@ -26,23 +26,20 @@
 					<div class="row">
 						<div class="col-md-6">
 							<!-- top dropdown, project selector -->
-							<div class="dropdown">
-								<button class="btn btn-block dropdown-toggle" type="button"
+							<div class="btn-group">
+								<button class="btn btn-primary dropdown-toggle" type="button"
 									id="project_dropdown" data-toggle="dropdown"
-									aria-haspopup="true" aria-expanded="true">
+									aria-haspopup="true" aria-expanded="false">
 									Projects<span class="caret"></span>
 								</button>
-								<ul class="dropdown-menu" aria-labelledby="project list"
-									id="project_list">
-									<li th:each="name: ${projectList}">
-										<label th:text="${name}">name</label>
-									</li>
+								<ul class="dropdown-menu" id="project_menu">
+									<li th:each="name: ${projectList}"><a class="project_item" th:text="${name}" href="#">name</a></li>
 								</ul>
 							</div>
 
 							<!-- top dropdown, employee selector -->
 							<div class="dropdown" th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
-								<button class="btn btn-block dropdown-toggle" type="button"
+								<button class="btn btn-block btn-primary dropdown-toggle" type="button"
 										id="employee_dropdown" data-toggle="dropdown"
 										aria-haspopup="true" aria-expanded="true">
 									Employees<span class="caret"></span>
@@ -52,7 +49,7 @@
 							</div>
 						</div>
 						<div class="class-md-6">
-							<p id="project_name">Project X</p>
+							<strong id="project_name">Project X</strong>
 							<p th:if="${#authorization.expression('hasRole(''MANAGER'')')}"
 							   id="employee_name">Employee X</p>
 						</div>

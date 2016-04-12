@@ -5,6 +5,13 @@ $('#datepicker').datepicker({
 });
 
 $(document).ready(function() {
+	var first = $("#project_menu > li > a").first().text();
+	$("#project_name").text(first);
+
+	$(".project_item").click(function() {
+		$("#project_name").text($(this).text());
+	});
+
 	loadWeekSheet();
 	$('#datepicker').on("changeDate", function() {
 		var datePicked = $('#datepicker').datepicker('getDate');
