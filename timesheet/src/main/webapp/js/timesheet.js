@@ -123,6 +123,15 @@ function loadWeekSheet(isAsync) {
             $('#sat_date').text(response.satDate);
             $('#sat_hour').val(response.satHours);
             $('#total_hour').text(response.totalHours);
+            if (response.approved) {
+                $("#status").text("Approved");
+            }
+            else if (response.submitted) {
+                $("#status").text("Submitted");
+            }
+            else {
+                $("#status").text("Un-submitted");
+            }
             controlInputAndBtn(response.submitted, response.approved);
         },
 
@@ -172,6 +181,7 @@ function submitWeekSheet() {
         success: function(response) {
             $("#ajax_response").removeClass().addClass("alert alert-success");
             $("#ajax_response").text(response.message);
+            $("#status").text("Submitted");
             $('#total_hour').text(sumUpHours());
             controlInputAndBtn(true, false);
         }
@@ -196,6 +206,7 @@ function unsubmitWeekSheet() {
         success: function(response) {
             $("#ajax_response").removeClass().addClass("alert alert-success");
             $("#ajax_response").text(response.message);
+            $("#status").text("Un-submitted");
             controlInputAndBtn(false, false);
         }
     });
@@ -219,6 +230,7 @@ function approveWeekSheet() {
         success: function(response) {
             $("#ajax_response").removeClass().addClass("alert alert-success");
             $("#ajax_response").text(response.message);
+            $("#status").text("Approved");
             controlInputAndBtn(true, true);
         }
     });
@@ -242,6 +254,7 @@ function disapproveWeekSheet() {
         success: function(response) {
             $("#ajax_response").removeClass().addClass("alert alert-success");
             $("#ajax_response").text(response.message);
+            $("#status").text("Submitted");
             controlInputAndBtn(true, false);
         }
     });

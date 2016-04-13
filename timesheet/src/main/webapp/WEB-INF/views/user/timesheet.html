@@ -15,121 +15,139 @@
     <body>
         <div th:replace="fragments/header :: header"></div>
         <div class="container">
-            <div id="ajax_response" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+            <div id="ajax_response" role="alert"></div>
+
+            <!-- dropdown tabs -->
+            <ul class="nav nav-tabs">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" type="button"
+                       id="project_dropdown" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Projects<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="project list" id="project_menu"></ul>
+                </li>
+                <li class="dropdown" th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
+                    <a class="dropdown-toggle" type="button"
+                       id="employee_dropdown" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Employees<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="employee list" id="employee_menu"></ul>
+                </li>
+            </ul>
+
             <div class="row">
                 <!-- left column, date picker -->
                 <div class="col-lg-4">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <!-- top dropdown, project selector -->
-                            <div class="btn-group">
-                                <button class="btn btn-primary dropdown-toggle" type="button"
-                                    id="project_dropdown" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
-                                    Projects<span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="project list" id="project_menu"></ul>
-                            </div>
 
-                            <!-- top dropdown, employee selector -->
-                            <div class="dropdown" th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
-                                <button class="btn btn-primary dropdown-toggle" type="button"
-                                        id="employee_dropdown" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    Employees<span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="employee list" id="employee_menu"></ul>
-                            </div>
+                    <!-- date picker panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div id="datepicker"></div>
                         </div>
-                        <div class="class-md-6">
-                            <strong id="project_name">Project X</strong>
-                            <strong th:if="${#authorization.expression('hasRole(''MANAGER'')')}"
-                               id="employee_name">Employee X</strong>
+                    </div>
+
+                    <!-- summary panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td><p class="text-center">Project:</p></td>
+                                        <td><p id="project_name" class="text-center">Project X</p></td>
+                                    </tr>
+                                    <tr th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
+                                        <td><p class="text-center">Employee:</p></td>
+                                        <td><p id="employee_name" class="text-center">Employee X</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="text-center">Status:</p></td>
+                                        <td><p id="status" class="text-center">un-submitted</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="text-center">Total hours:</p></td>
+                                        <td><p id="total_hour" class="text-center">40</p></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <!-- date picker -->
-                        <div id="datepicker"></div>
                     </div>
                 </div>
                 <!-- left column end -->
 
                 <!-- right column, week sheet form table -->
                 <div class="col-lg-8">
-                    <table class="table table-striped">
-                        <colgroup>
-                            <col class="col-md-2" />
-                            <col class="col-md-7" />
-                            <col class="col-md-3" />
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th><p class="text-center">Date</p></th>
-                                <th><p class="text-center">Hours</p></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><p class="text-center">Sun</p></td>
-                                <td><p id="sun_date" class="text-center"></p></td>
-                                <td><input class="form-control enable-control" id="sun_hour" type="number" min="0"
-                                    max="24" step="1" value="0" /></td>
-                            </tr>
-                            <tr>
-                                <td><p class="text-center">Mon</p></td>
-                                <td><p id="mon_date" class="text-center"></p></td>
-                                <td><input class="form-control enable-control" id="mon_hour" type="number" min="0"
-                                    max="24" step="1" value="0" /></td>
-                            </tr>
-                            <tr>
-                                <td><p class="text-center">Tue</p></td>
-                                <td><p id="tue_date" class="text-center"></p></td>
-                                <td><input class="form-control enable-control" id="tue_hour" type="number" min="0"
-                                    max="24" step="1" value="0" /></td>
-                            </tr>
-                            <tr>
-                                <td><p class="text-center">Wed</p></td>
-                                <td><p id="wed_date" class="text-center"></p></td>
-                                <td><input class="form-control enable-control" id="wed_hour" type="number" min="0"
-                                    max="24" step="1" value="0" /></td>
-                            </tr>
-                            <tr>
-                                <td><p class="text-center">Thu</p></td>
-                                <td><p id="thu_date" class="text-center"></p></td>
-                                <td><input class="form-control enable-control" id="thu_hour" type="number" min="0"
-                                    max="24" step="1" value="0" /></td>
-                            </tr>
-                            <tr>
-                                <td><p class="text-center">Fri</p></td>
-                                <td><p id="fri_date" class="text-center"></p></td>
-                                <td><input class="form-control enable-control" id="fri_hour" type="number" min="0"
-                                    max="24" step="1" value="0" /></td>
-                            </tr>
-                            <tr>
-                                <td><p class="text-center">Sat</p></td>
-                                <td><p id="sat_date" class="text-center"></p></td>
-                                <td><input class="form-control enable-control" id="sat_hour" type="number" min="0"
-                                    max="24" step="1" value="0" /></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="row">
-                        <div class="col-md-2 col-md-offset-2"
-                             th:if="${#authorization.expression('!hasRole(''MANAGER'')')}">
-                            <button id="submit_btn" type="submit" class="btn btn-block btn-primary">Submit</button>
-                        </div>
-                        <div class="col-md-2 col-md-offset-2"
-                            th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
-                            <button id="approve_btn" type="submit" class="btn btn-block btn-primary">Approve</button>
-                        </div>
-                        <div class="col-md-2 col-md-offset-4">
-                            <p class="text-center">Total:</p>
-                        </div>
-                        <div class="col-md-2">
-                            <p id="total_hour" class="text-center"></p>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <table class="table table-striped">
+                                <colgroup>
+                                    <col class="col-md-2" />
+                                    <col class="col-md-7" />
+                                    <col class="col-md-3" />
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th><p class="text-center">Date</p></th>
+                                        <th><p class="text-center">Hours</p></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><p class="text-center">Sun</p></td>
+                                        <td><p id="sun_date" class="text-center"></p></td>
+                                        <td><input class="form-control enable-control" id="sun_hour" type="number" min="0"
+                                            max="24" step="1" value="0" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="text-center">Mon</p></td>
+                                        <td><p id="mon_date" class="text-center"></p></td>
+                                        <td><input class="form-control enable-control" id="mon_hour" type="number" min="0"
+                                            max="24" step="1" value="0" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="text-center">Tue</p></td>
+                                        <td><p id="tue_date" class="text-center"></p></td>
+                                        <td><input class="form-control enable-control" id="tue_hour" type="number" min="0"
+                                            max="24" step="1" value="0" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="text-center">Wed</p></td>
+                                        <td><p id="wed_date" class="text-center"></p></td>
+                                        <td><input class="form-control enable-control" id="wed_hour" type="number" min="0"
+                                            max="24" step="1" value="0" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="text-center">Thu</p></td>
+                                        <td><p id="thu_date" class="text-center"></p></td>
+                                        <td><input class="form-control enable-control" id="thu_hour" type="number" min="0"
+                                            max="24" step="1" value="0" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="text-center">Fri</p></td>
+                                        <td><p id="fri_date" class="text-center"></p></td>
+                                        <td><input class="form-control enable-control" id="fri_hour" type="number" min="0"
+                                            max="24" step="1" value="0" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><p class="text-center">Sat</p></td>
+                                        <td><p id="sat_date" class="text-center"></p></td>
+                                        <td><input class="form-control enable-control" id="sat_hour" type="number" min="0"
+                                            max="24" step="1" value="0" /></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-md-2 col-md-offset-2"
+                                     th:if="${#authorization.expression('!hasRole(''MANAGER'')')}">
+                                    <button id="submit_btn" type="submit" class="btn btn-block btn-primary">Submit</button>
+                                </div>
+                                <div class="col-md-2 col-md-offset-2"
+                                    th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
+                                    <button id="approve_btn" type="submit" class="btn btn-block btn-primary">Approve</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
