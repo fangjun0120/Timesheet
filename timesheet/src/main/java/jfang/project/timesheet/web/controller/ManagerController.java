@@ -15,6 +15,7 @@ import jfang.project.timesheet.model.Project;
 import jfang.project.timesheet.model.User;
 import jfang.project.timesheet.service.HumanResourceService;
 import jfang.project.timesheet.service.ProjectService;
+import jfang.project.timesheet.service.TimesheetService;
 import jfang.project.timesheet.service.UserService;
 import jfang.project.timesheet.web.dto.*;
 
@@ -44,6 +45,9 @@ public class ManagerController {
 
     @Resource
     private ProjectService projectService;
+
+    @Resource
+    private TimesheetService timesheetService;
 
     /**
      * GET method to employee management page.
@@ -252,6 +256,57 @@ public class ManagerController {
         else {
             response.setStatus(ResponseStatus.SUCCESS.value());
             response.setMessage("Employee list updated successfully.");
+        }
+        return response;
+    }
+
+    /**
+     * AJAX
+     * POST method to approve an employee weeksheet.
+     *
+     * @param employeeName
+     * @param projectName
+     * @param startDate
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value="/timesheet/approve", method=RequestMethod.POST)
+    public AjaxResponseStatus ajaxApproveWeekSheet(@RequestParam("employeeName") String employeeName,
+                                                   @RequestParam("projectName") String projectName,
+                                                   @RequestParam("startDate") String startDate) {
+        logger.debug("Approve weeksheet: " + employeeName + " " + projectName + " " + startDate);
+
+        Employee employee = humanResourceService.getEmployeeByRealName(employeeName);
+        boolean res = timesheetService.approveWeekSheet(startDate, employee, projectName);
+        AjaxResponseStatus response = new AjaxResponseStatus();
+        if (!res) {
+            response.setStatus(ResponseStatus.ERROR.value());
+            response.setMessage("Approval failed.");
+        }
+        else {
+            response.setStatus(ResponseStatus.SUCCESS.value());
+            response.setMessage("WeekSheet approved successfully.");
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/timesheet/disapprove", method=RequestMethod.POST)
+    public AjaxResponseStatus ajaxDisapproveWeekSheet(@RequestParam("employeeName") String employeeName,
+                                                   @RequestParam("projectName") String projectName,
+                                                   @RequestParam("startDate") String startDate) {
+        logger.debug("Disapprove weeksheet: " + employeeName + " " + projectName + " " + startDate);
+
+        Employee employee = humanResourceService.getEmployeeByRealName(employeeName);
+        boolean res = timesheetService.disapproveWeekSheet(startDate, employee, projectName);
+        AjaxResponseStatus response = new AjaxResponseStatus();
+        if (!res) {
+            response.setStatus(ResponseStatus.ERROR.value());
+            response.setMessage("Disapproval failed.");
+        }
+        else {
+            response.setStatus(ResponseStatus.SUCCESS.value());
+            response.setMessage("WeekSheet disapproved successfully.");
         }
         return response;
     }

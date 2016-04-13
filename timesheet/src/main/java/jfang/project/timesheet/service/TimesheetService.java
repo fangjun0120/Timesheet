@@ -11,5 +11,9 @@ public interface TimesheetService {
 
     boolean saveWeekSheet(Employee employee, String projectName, String startDate, List<Integer> hours);
 
-    boolean unsubmitWeekSheet(String date, Employee employee, String projectName);
+    boolean unsubmitWeekSheet(String dateString, Employee employee, String projectName);
+
+    boolean approveWeekSheet(String dateString, Employee employee, String projectName);
+
+    boolean disapproveWeekSheet(String dateString, Employee employee, String projectName);
 }

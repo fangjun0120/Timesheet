@@ -72,8 +72,14 @@ public class TimesheetServiceImpl implements TimesheetService {
         Date date = StringProecessUtil.StringToDate(dateString);
         WeekSheet weekSheet = weekSheetRepository.findByStartDateAndEmployeeIdAndProjectId(
                 getFirstDayOfWeek(date), employee.getEmployeeId(), project.getProjectId());
+
         // update existing weeksheet
         if (weekSheet != null) {
+            if (weekSheet.isSubmitted() || weekSheet.isApproved()) {
+                throw new IllegalArgumentException("Weeksheet cannot be submitted or approved. ID: "
+                        + weekSheet.getWeekSheetId());
+            }
+
             for (int i = 0; i < 7; i++) {
                 weekSheet.getSheets().get(i).setHour(hours.get(i));
             }
@@ -112,7 +118,54 @@ public class TimesheetServiceImpl implements TimesheetService {
         Date date = StringProecessUtil.StringToDate(dateString);
         WeekSheet weekSheet = weekSheetRepository.findByStartDateAndEmployeeIdAndProjectId(
                 getFirstDayOfWeek(date), employee.getEmployeeId(), project.getProjectId());
+        if (weekSheet == null) {
+            throw new IllegalArgumentException("Weeksheet not found.");
+        }
+        if (!weekSheet.isSubmitted() || weekSheet.isApproved()) {
+            throw new IllegalArgumentException("Weeksheet is not submitted or is approved. ID: "
+                    + weekSheet.getWeekSheetId());
+        }
         weekSheet.setSubmitted(false);
+        weekSheetRepository.save(weekSheet);
+        return true;
+    }
+
+    @Override
+    @CacheEvict(value = "weekSheetCache", key = "{#dateString, #employee.employeeId, #projectName}")
+    public boolean approveWeekSheet(String dateString, Employee employee, String projectName) {
+        Project project = projectService.getProjectByName(projectName);
+        Date date = StringProecessUtil.StringToDate(dateString);
+
+        WeekSheet weekSheet = weekSheetRepository.findByStartDateAndEmployeeIdAndProjectId(
+                getFirstDayOfWeek(date), employee.getEmployeeId(), project.getProjectId());
+        if (weekSheet == null) {
+            throw new IllegalArgumentException("Weeksheet not found.");
+        }
+        if (!weekSheet.isSubmitted() || weekSheet.isApproved()) {
+            throw new IllegalArgumentException("Weeksheet must be submitted and not be approved yet. ID: "
+                    + weekSheet.getWeekSheetId());
+        }
+        weekSheet.setApproved(true);
+        weekSheetRepository.save(weekSheet);
+        return true;
+    }
+
+    @Override
+    @CacheEvict(value = "weekSheetCache", key = "{#dateString, #employee.employeeId, #projectName}")
+    public boolean disapproveWeekSheet(String dateString, Employee employee, String projectName) {
+        Project project = projectService.getProjectByName(projectName);
+
+        Date date = StringProecessUtil.StringToDate(dateString);
+        WeekSheet weekSheet = weekSheetRepository.findByStartDateAndEmployeeIdAndProjectId(
+                getFirstDayOfWeek(date), employee.getEmployeeId(), project.getProjectId());
+        if (weekSheet == null) {
+            throw new IllegalArgumentException("Weeksheet not found.");
+        }
+        if (!weekSheet.isSubmitted() || !weekSheet.isApproved()) {
+            throw new IllegalArgumentException("Weeksheet must be submitted and approved. ID: "
+                    + weekSheet.getWeekSheetId());
+        }
+        weekSheet.setApproved(false);
         weekSheetRepository.save(weekSheet);
         return true;
     }

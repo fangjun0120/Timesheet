@@ -123,7 +123,7 @@ function loadWeekSheet(isAsync) {
             $('#sat_date').text(response.satDate);
             $('#sat_hour').val(response.satHours);
             $('#total_hour').text(response.totalHours);
-            controlInputAndBtn(response.submitted);
+            controlInputAndBtn(response.submitted, response.approved);
         },
 
         error: function(jqXHR, exception) {
@@ -173,7 +173,7 @@ function submitWeekSheet() {
             $("#ajax_response").removeClass().addClass("alert alert-success");
             $("#ajax_response").text(response.message);
             $('#total_hour').text(sumUpHours());
-            controlInputAndBtn(true);
+            controlInputAndBtn(true, false);
         }
     });
 }
@@ -196,7 +196,53 @@ function unsubmitWeekSheet() {
         success: function(response) {
             $("#ajax_response").removeClass().addClass("alert alert-success");
             $("#ajax_response").text(response.message);
-            controlInputAndBtn(false);
+            controlInputAndBtn(false, false);
+        }
+    });
+}
+
+// ajax call to approve weeksheet
+function approveWeekSheet() {
+    console.log("ajax approve weeksheet ...");
+    var employeeName =  $('#employee_name').text();
+    var projectName = $('#project_name').text();
+
+    $.ajax({
+        url: "/timesheet/admin/timesheet/approve?employeeName=" + employeeName + "&projectName="
+            + projectName + "&startDate=" + dateCurrent,
+        type: "POST",
+
+        beforeSend: function(xhrObj) {
+            xhrObj.setRequestHeader("Accept", "application/json");
+        },
+
+        success: function(response) {
+            $("#ajax_response").removeClass().addClass("alert alert-success");
+            $("#ajax_response").text(response.message);
+            controlInputAndBtn(true, true);
+        }
+    });
+}
+
+// ajax call to disapprove weeksheet
+function disapproveWeekSheet() {
+    console.log("ajax disapprove weeksheet ...");
+    var employeeName =  $('#employee_name').text();
+    var projectName = $('#project_name').text();
+
+    $.ajax({
+        url: "/timesheet/admin/timesheet/disapprove?employeeName=" + employeeName + "&projectName="
+            + projectName + "&startDate=" + dateCurrent,
+        type: "POST",
+
+        beforeSend: function(xhrObj) {
+            xhrObj.setRequestHeader("Accept", "application/json");
+        },
+
+        success: function(response) {
+            $("#ajax_response").removeClass().addClass("alert alert-success");
+            $("#ajax_response").text(response.message);
+            controlInputAndBtn(true, false);
         }
     });
 }
@@ -213,23 +259,55 @@ function sumUpHours() {
     return sum;
 }
 
-function controlInputAndBtn(submitted) {
-    if (submitted) {
+function controlInputAndBtn(submitted, approved) {
+    // admin mode
+    if ($("#approve_btn").length !== 0) {
         $(".enable-control").prop("disabled", true);
-        $("#submit_btn").removeClass().addClass("btn btn-block btn-danger");
-        $("#submit_btn").text("Unsubmit");
-        $("#submit_btn").unbind().click(function(event) {
-            unsubmitWeekSheet();
-            event.preventDefault();
-        });
+        if (approved) {
+            $("#approve_btn").removeClass().addClass("btn btn-block btn-danger");
+            $("#approve_btn").text("Disapprove");
+            $("#approve_btn").unbind().click(function(event) {
+                disapproveWeekSheet();
+                event.preventDefault();
+            });
+        }
+        else {
+            $("#approve_btn").removeClass().addClass("btn btn-block btn-primary");
+            $("#approve_btn").text("Approve");
+            if (submitted) {
+                $("#approve_btn").unbind().click(function(event) {
+                    approveWeekSheet();
+                    event.preventDefault();
+                });
+            }
+            else {
+                $("#approve_btn").prop("disabled", true);
+            }
+        }
     }
-    else {
-        $(".enable-control").prop("disabled", false);
-        $("#submit_btn").removeClass().addClass("btn btn-block btn-primary");
-        $("#submit_btn").text("submit");
-        $("#submit_btn").unbind().click(function(event) {
-            submitWeekSheet();
-            event.preventDefault();
-        });
+    if ($("#submit_btn").length !== 0) {
+        if (submitted) {
+            $(".enable-control").prop("disabled", true);
+            $("#submit_btn").removeClass().addClass("btn btn-block btn-danger");
+            $("#submit_btn").text("Unsubmit");
+            if (!approved) {
+                $("#submit_btn").unbind().click(function(event) {
+                    unsubmitWeekSheet();
+                    event.preventDefault();
+                });
+            }
+            else {
+                $("#submit_btn").prop("disabled", true);
+            }
+        }
+        else {
+            $(".enable-control").prop("disabled", false);
+            $("#submit_btn").removeClass().addClass("btn btn-block btn-primary");
+            $("#submit_btn").text("submit");
+            $("#submit_btn").unbind().click(function(event) {
+                submitWeekSheet();
+                event.preventDefault();
+            });
+        }
     }
 }
