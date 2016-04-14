@@ -36,7 +36,7 @@
                     <ul class="dropdown-menu" aria-labelledby="employee list" id="employee_menu"></ul>
                 </li>
             </ul>
-
+            <br/>
             <div class="row">
                 <!-- left column, date picker -->
                 <div class="col-lg-4">
@@ -51,26 +51,41 @@
                     <!-- summary panel -->
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <table class="table table-striped">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <p class="text-center">Project:</p>
+                                    <p class="text-center">Employee:</p>
+                                    <p class="text-center">Status:</p>
+                                    <p class="text-center">Total hours:</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <p id="project_name" class="text-center">Project X</p>
+                                    <p id="employee_name" class="text-center">Employee X</p>
+                                    <p id="status" class="text-center">un-submitted</p>
+                                    <p id="total_hour" class="text-center">40</p>
+                                </div>
+                            </div>
+
+                        <!--    <table class="table">
                                 <tbody>
-                                    <tr>
+                                    <tr class="borderless">
                                         <td><p class="text-center">Project:</p></td>
                                         <td><p id="project_name" class="text-center">Project X</p></td>
                                     </tr>
-                                    <tr th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
+                                    <tr class="borderless" th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
                                         <td><p class="text-center">Employee:</p></td>
                                         <td><p id="employee_name" class="text-center">Employee X</p></td>
                                     </tr>
-                                    <tr>
+                                    <tr class="borderless">
                                         <td><p class="text-center">Status:</p></td>
                                         <td><p id="status" class="text-center">un-submitted</p></td>
                                     </tr>
-                                    <tr>
+                                    <tr class="borderless">
                                         <td><p class="text-center">Total hours:</p></td>
                                         <td><p id="total_hour" class="text-center">40</p></td>
                                     </tr>
                                 </tbody>
-                            </table>
+                            </table>-->
                         </div>
                     </div>
                 </div>
@@ -139,11 +154,11 @@
                                 </tbody>
                             </table>
                             <div class="row">
-                                <div class="col-md-2 col-md-offset-2"
+                                <div class="col-md-2 col-md-offset-9"
                                      th:if="${#authorization.expression('!hasRole(''MANAGER'')')}">
                                     <button id="submit_btn" type="submit" class="btn btn-block btn-primary">Submit</button>
                                 </div>
-                                <div class="col-md-2 col-md-offset-2"
+                                <div class="col-md-2 col-md-offset-9"
                                     th:if="${#authorization.expression('hasRole(''MANAGER'')')}">
                                     <button id="approve_btn" type="submit" class="btn btn-block btn-primary">Approve</button>
                                 </div>

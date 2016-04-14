@@ -5,3 +5,7 @@
 .datepicker table {
     width: 100%;
 }
+
+.borderless tr {
+    border: none;
+}
