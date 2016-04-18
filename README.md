@@ -10,7 +10,7 @@ A personal toy project, a Java web application
   - registration form and validation
 - Models and relationship
   - hibernate as JPA implementation
-  - auto generate tables
+  - auto generated tables
   - relationship and cascade
 - Thymeleaf template
   - reusable header fragment
@@ -18,7 +18,7 @@ A personal toy project, a Java web application
   - map exceptions
 - Manager module
   - display all employees
-    - bootstrap table
+  - bootstrap table
   - add new employee
     - generate random password
     - ajax call to refresh employee list
@@ -26,8 +26,16 @@ A personal toy project, a Java web application
   - disable employees
 - User module
   - modify user profile
-- *Project module
-- *timesheet module
+- Project module
+  - create new project
+  - set employees to selected project
+  - multiselect plugin
+- timesheet module
+  - user action
+    - employee submit / unsubmit
+    - manager approve / disapprove
+  - ajax call to reload sheet based on project and date
+  - bootstrap-datepicker plugin
 - *home page summary
 
 ### Demo mode
@@ -36,6 +44,10 @@ DataSource is configured with profile "demo". Disable it in config.WebInitialize
 ```java
 servletContext.setInitParameter("spring.profiles.active", "demo");
 ```
+Accounts:
+manager:manager
+emp1:emp1
+emp2:emp2
 
 ### Frameworks & Tools
 Front end
